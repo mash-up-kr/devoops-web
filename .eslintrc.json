@@ -11,7 +11,6 @@
     "project": ["./tsconfig.json"]
   },
   "rules": {
-    "no-empty-function": "off",
     "@typescript-eslint/no-empty-function": ["warn", {}],
     "prettier/prettier": ["warn", { "singleQuote": true }],
     "import/order": [
