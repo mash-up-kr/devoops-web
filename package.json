@@ -39,9 +39,12 @@
     "tailwindcss": "^4"
   },
   "config": {
-    "commitizen": {
-      "path": "cz-customizable"
-    }
+  "commitizen": {
+    "path": "cz-customizable"
   },
+  "cz-customizable": {
+    "config": ".cz-config.js"
+  }
+},
   "packageManager": "yarn@4.9.1"
 }

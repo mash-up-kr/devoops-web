@@ -10,5 +10,6 @@ module.exports = {
   ],
   allowCustomScopes: false, 
   allowEmptyScopes: true,   
+  skipQuestions: ['scope'],
   subjectLimit: 72,
 };
