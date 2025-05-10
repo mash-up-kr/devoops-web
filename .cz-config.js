@@ -8,5 +8,7 @@ module.exports = {
     { value: "chore", name: "🍯 chore: 자잘한 수정" },
     { value: "style", name: "💄 style: style만 변경하는 경우" },
   ],
+  allowCustomScopes: false, 
+  allowEmptyScopes: true,   
   subjectLimit: 72,
 };
