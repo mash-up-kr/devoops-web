@@ -15,7 +15,6 @@
     "react-dom": "^19.0.0"
   },
   "devDependencies": {
-    "typescript":"^5",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
@@ -36,15 +35,16 @@
     "eslint-plugin-react-hooks": "^5.2.0",
     "husky": "^9.1.7",
     "prettier": "^3.5.3",
-    "tailwindcss": "^4"
+    "tailwindcss": "^4",
+    "typescript": "^5"
   },
   "config": {
-  "commitizen": {
-    "path": "cz-customizable"
+    "commitizen": {
+      "path": "cz-customizable"
+    },
+    "cz-customizable": {
+      "config": ".cz-config.js"
+    }
   },
-  "cz-customizable": {
-    "config": ".cz-config.js"
-  }
-},
   "packageManager": "yarn@4.9.1"
 }
