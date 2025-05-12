@@ -7,7 +7,12 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "prepare": "husky install"
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "**/*.{js,jsx,ts,tsx}": [
+      "eslint --ext .js,.jsx,.ts,.tsx --cache --fix"
+    ]
   },
   "dependencies": {
     "next": "15.3.1",
@@ -34,6 +39,7 @@
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^5.2.0",
     "husky": "^9.1.7",
+    "lint-staged": "^15.5.2",
     "prettier": "^3.5.3",
     "tailwindcss": "^4",
     "typescript": "^5"
