@@ -10,8 +10,8 @@
     "prepare": "husky install"
   },
   "lint-staged": {
-    "**/*.{js,ts,jsx,tsx}": [
-      "next lint --fix",
+    "**/*.{js,jsx,ts,tsx}": [
+      "eslint --fix",
       "git add"
     ]
   },
