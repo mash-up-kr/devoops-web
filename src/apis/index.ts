@@ -1,6 +1,6 @@
 import axios, { AxiosInstance, AxiosResponse, InternalAxiosRequestConfig, AxiosError } from 'axios';
 
-export interface ErrorResponse {
+interface IErrorResponse {
   code: string;
   status: number;
   message: string;
@@ -24,7 +24,7 @@ const onResponse = (response: AxiosResponse): AxiosResponse => {
   return response;
 };
 
-const onError = (error: AxiosError<ErrorResponse> | Error) => {
+const onError = (error: AxiosError<IErrorResponse> | Error) => {
   return Promise.reject(error);
 };
 
