@@ -24,7 +24,10 @@ const onResponse = (response: AxiosResponse): AxiosResponse => {
   return response;
 };
 
-const onError = (error: AxiosError<IErrorResponse> | Error) => {
+const onError = (error: AxiosError<IErrorResponse>): Promise<never> => {
+  if (error.response?.data) {
+    return Promise.reject(error.response.data);
+  }
   return Promise.reject(error);
 };
 
