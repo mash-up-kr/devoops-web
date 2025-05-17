@@ -35,4 +35,4 @@ const setInterceptors = (axiosInstance: AxiosInstance): AxiosInstance => {
   return axiosInstance;
 };
 
-export const api = setInterceptors(instance);
+export default setInterceptors(instance);
