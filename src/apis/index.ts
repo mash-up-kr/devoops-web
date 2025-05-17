@@ -10,7 +10,6 @@ const instance: AxiosInstance = axios.create({
   },
 });
 
-/** 인터셉터 핸들러 */
 const onRequest = (config: InternalAxiosRequestConfig): Promise<InternalAxiosRequestConfig> => {
   return Promise.resolve(config);
 };
@@ -19,7 +18,6 @@ const onResponse = (response: AxiosResponse): AxiosResponse => {
   return response;
 };
 
-/** 에러 처리 */
 const onError = (status: number, message: string) => {
   throw { status, message };
 };
