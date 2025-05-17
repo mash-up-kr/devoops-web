@@ -25,9 +25,18 @@ const onResponse = (response: AxiosResponse) => {
 };
 
 const onError = (error: AxiosError<IErrorResponse>) => {
-  if (error.response?.data) {
-    return Promise.reject(error.response.data);
+  if (error.response) {
+    return Promise.reject(error);
   }
+
+  if (error.request) {
+    return Promise.reject(error.request);
+  }
+
+  if (error.message) {
+    return Promise.reject(error.message);
+  }
+
   return Promise.reject(error);
 };
 
