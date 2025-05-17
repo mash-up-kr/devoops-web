@@ -16,22 +16,22 @@ const instance: AxiosInstance = axios.create({
   },
 });
 
-const onRequest = (config: InternalAxiosRequestConfig): Promise<InternalAxiosRequestConfig> => {
+const onRequest = (config: InternalAxiosRequestConfig) => {
   return Promise.resolve(config);
 };
 
-const onResponse = (response: AxiosResponse): AxiosResponse => {
+const onResponse = (response: AxiosResponse) => {
   return response;
 };
 
-const onError = (error: AxiosError<IErrorResponse>): Promise<never> => {
+const onError = (error: AxiosError<IErrorResponse>) => {
   if (error.response?.data) {
     return Promise.reject(error.response.data);
   }
   return Promise.reject(error);
 };
 
-const setInterceptors = (axiosInstance: AxiosInstance): AxiosInstance => {
+const setInterceptors = (axiosInstance: AxiosInstance) => {
   axiosInstance.interceptors.request.use(onRequest, onError);
   axiosInstance.interceptors.response.use(onResponse, onError);
 
