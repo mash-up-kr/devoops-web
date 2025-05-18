@@ -8,7 +8,7 @@ interface IErrorResponse {
 
 const { API_BASE_URL } = process.env;
 
-const instance: AxiosInstance = axios.create({
+const instance = axios.create({
   baseURL: API_BASE_URL,
   timeout: 30000,
   headers: {
