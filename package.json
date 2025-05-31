@@ -53,5 +53,11 @@
       "config": ".cz-config.js"
     }
   },
-  "packageManager": "yarn@1.22.22"
+  "packageManager": "yarn@1.22.22",
+  "engines": {
+    "node": "^22.x",
+    "npm": "please-use-yarn",
+    "pnpm": "please-use-yarn",
+    "yarn": "^1.22.x"
+  }
 }
