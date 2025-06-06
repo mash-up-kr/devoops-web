@@ -1,0 +1,40 @@
+'use client';
+
+import React, { useEffect } from 'react';
+
+import { ModalProvider, useModalDispatch, useModalState } from './ModalContext';
+import ModalPortal from './ModalPortal';
+
+interface ModalRootProps {
+  children: React.ReactNode;
+  defaultOpen?: boolean;
+}
+
+function ModalContainer({ children }: { children: React.ReactNode }) {
+  const { isOpen } = useModalState();
+  const dispatch = useModalDispatch();
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        dispatch({ type: 'CLOSE' });
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [dispatch]);
+
+  if (!isOpen) return null;
+
+  return <ModalPortal>{children}</ModalPortal>;
+}
+
+export default function ModalRoot({ children, defaultOpen }: ModalRootProps) {
+  return (
+    <ModalProvider>
+      {defaultOpen && <ModalContainer>{children}</ModalContainer>}
+      {!defaultOpen && children}
+    </ModalProvider>
+  );
+}
