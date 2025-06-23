@@ -1,0 +1,46 @@
+@theme {
+  --font-pretendard:
+    'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans',
+    'Droid Sans', 'Helvetica Neue', sans-serif;
+
+  /* Font Weight Tokens */
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  /* Font Size Tokens */
+  --text-caption: 13px; /* Caption */
+  --text-body-small: 14px; /* Body(S) */
+  --text-body-medium: 15px; /* Body(M) */
+  --text-body-large: 16px; /* Body(L) */
+  --text-h5: 18px; /* H5 */
+  --text-h4: 20px; /* H4 */
+  --text-h3: 24px; /* H3 */
+  --text-h2: 28px; /* H2 */
+  --text-h1: 32px; /* H1 */
+
+  /* Line Height Tokens */
+  --leading-caption: 13px; /* Caption */
+  --leading-body-small: 22px; /* Body(S) */
+  --leading-body-medium: 24px; /* Body(M) */
+  --leading-body-large: 25.6px; /* Body(L) */
+  --leading-h5: 24px; /* H5 */
+  --leading-h4: 28px; /* H4 */
+  --leading-h3: 34px; /* H3 */
+  --leading-h2: 38px; /* H2 */
+  --leading-h1: 44px; /* H1 */
+
+  /* Spacing Tokens */
+  --spacing-0: 0;
+  --spacing-1: 4px;
+  --spacing-2: 8px;
+  --spacing-3: 12px;
+  --spacing-4: 16px;
+  --spacing-5: 20px;
+  --spacing-6: 24px;
+  --spacing-8: 32px;
+  --spacing-10: 40px;
+  --spacing-12: 48px;
+  --spacing-16: 64px;
+}
