@@ -1,13 +1,13 @@
 import type { ReactNode } from 'react';
 import { createPortal } from 'react-dom';
 
-interface ModalPortalProps {
+interface PortalProps {
   children: ReactNode;
 }
 
-function ModalPortal({ children }: ModalPortalProps) {
+function Portal({ children }: PortalProps) {
   const portalRoot = typeof window !== 'undefined' ? document.getElementById('portal') : null;
   return portalRoot ? createPortal(children, portalRoot) : null;
 }
 
-export default ModalPortal;
+export default Portal;

@@ -3,7 +3,7 @@
 import type { ReactNode } from 'react';
 
 import { useModalState } from '@/components/modal/ModalContext';
-import ModalPortal from '@/components/modal/ModalPortal';
+import ModalPortal from '@/components/modal/Portal';
 import { Z_INDEX } from '@/constants/zIndex';
 
 interface ModalContentProps {

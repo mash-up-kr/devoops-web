@@ -3,7 +3,7 @@
 import React, { useEffect, type ReactNode } from 'react';
 
 import { ModalProvider, useModalDispatch, useModalState } from '@/components/modal/ModalContext';
-import ModalPortal from '@/components/modal/ModalPortal';
+import ModalPortal from '@/components/modal/Portal';
 
 interface ModalRootProps {
   children: ReactNode;
