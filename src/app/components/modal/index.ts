@@ -1,7 +1,7 @@
-import ModalContent from './ModalContent';
-import { ModalProvider } from './ModalContext';
-import ModalPortal from './ModalPortal';
-import ModalToggle from './ModalToggle';
+import ModalContent from '@/components/modal/ModalContent';
+import { ModalProvider } from '@/components/modal/ModalContext';
+import ModalPortal from '@/components/modal/ModalPortal';
+import ModalToggle from '@/components/modal/ModalToggle';
 
 export const Modal = {
   Root: ModalProvider,
