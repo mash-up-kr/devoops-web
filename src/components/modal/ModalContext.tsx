@@ -16,7 +16,7 @@ type ModalDispatch = Dispatch<ModalAction>;
 const ModalStateContext = createContext<ModalState | null>(null);
 const ModalDispatchContext = createContext<ModalDispatch | null>(null);
 
-function modalReducer(state: ModalState, action: ModalAction): ModalState {
+function modalReducer(state: ModalState, action: ModalAction) {
   switch (action.type) {
     case 'OPEN':
       return { isOpen: true };
