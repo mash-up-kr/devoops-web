@@ -10,7 +10,11 @@ interface ModalRootProps {
   defaultOpen?: boolean;
 }
 
-function ModalContainer({ children }: { children: React.ReactNode }) {
+interface ModalContainerProps {
+  children: ReactNode;
+}
+
+function ModalContainer({ children }: ModalContainerProps) {
   const { isOpen } = useModalState();
   const dispatch = useModalDispatch();
 
