@@ -15,7 +15,7 @@ export default function RootLayout({
   children: ReactNode;
 }>) {
   return (
-    <html lang={'en'}>
+    <html lang={'ko-KR'}>
       <QueryProvider>
         <body>{children}</body>
       </QueryProvider>
