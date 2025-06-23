@@ -5,6 +5,5 @@
   "semi": true,
   "jsxSingleQuote": true,
   "arrowParens": "always",
-  "trailingComma": "all",
-  "plugins": ["prettier-plugin-tailwindcss"]
+  "trailingComma": "all"
 }
