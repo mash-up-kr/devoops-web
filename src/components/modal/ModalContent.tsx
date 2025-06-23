@@ -2,8 +2,8 @@
 
 import React from 'react';
 
-import { useModalState } from './ModalContext';
-import ModalPortal from './ModalPortal';
+import { useModalState } from '@/components/modal/ModalContext';
+import ModalPortal from '@/components/modal/ModalPortal';
 
 interface ModalContentProps {
   children: React.ReactNode;

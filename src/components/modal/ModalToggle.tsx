@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import { useModalDispatch } from './ModalContext';
+import { useModalDispatch } from '@/components/modal/ModalContext';
 
 interface ModalToggleProps {
   action: 'open' | 'close';
