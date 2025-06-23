@@ -2,14 +2,6 @@
 @import '../styles/colors.css';
 @import '../styles/typography.css';
 
-@font-face {
-  font-family: 'Pretendard';
-  src: url('https://static.dev-oops.kr/fonts/PretendardVariable.woff2') format('woff2-variations');
-  font-weight: 100 900;
-  font-style: normal;
-  font-display: swap;
-}
-
 :root {
   --background: #14151a;
   --foreground: #ffffff;

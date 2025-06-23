@@ -16,6 +16,17 @@ export default function RootLayout({
 }>) {
   return (
     <html lang={'ko-KR'}>
+      <head>
+        <link rel={'preconnect'} href={'https://cdn.jsdelivr.net'} crossOrigin={'anonymous'} />
+        <link
+          rel={'preload'}
+          as={'font'}
+          type={'font/woff2'}
+          crossOrigin={'anonymous'}
+          href={'http://static.dev-oops.kr/fonts/PretendardVariable.woff2'}
+        />
+        <link rel={'stylesheet'} href={'https://static.dev-oops.kr/fonts/pretendardvariable.css'} />
+      </head>
       <QueryProvider>
         <body>{children}</body>
       </QueryProvider>
