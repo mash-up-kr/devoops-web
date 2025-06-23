@@ -1,12 +1,12 @@
 'use client';
 
-import React from 'react';
+import type { ReactNode } from 'react';
 
 import { useModalState } from '@/components/modal/ModalContext';
 import ModalPortal from '@/components/modal/ModalPortal';
 
 interface ModalContentProps {
-  children: React.ReactNode;
+  children: ReactNode;
 }
 
 function ModalContent({ children }: ModalContentProps) {

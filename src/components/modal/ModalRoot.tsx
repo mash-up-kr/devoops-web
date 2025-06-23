@@ -1,12 +1,12 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React, { useEffect, type ReactNode } from 'react';
 
 import { ModalProvider, useModalDispatch, useModalState } from '@/components/modal/ModalContext';
 import ModalPortal from '@/components/modal/ModalPortal';
 
 interface ModalRootProps {
-  children: React.ReactNode;
+  children: ReactNode;
   defaultOpen?: boolean;
 }
 

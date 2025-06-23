@@ -1,12 +1,12 @@
 'use client';
 
-import React from 'react';
+import React, { type ReactNode } from 'react';
 
 import { useModalDispatch } from '@/components/modal/ModalContext';
 
 interface ModalToggleProps {
   action: 'open' | 'close';
-  children: React.ReactNode;
+  children: ReactNode;
 }
 
 function ModalToggle({ action, children }: ModalToggleProps) {
