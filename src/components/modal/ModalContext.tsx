@@ -2,6 +2,8 @@
 
 import { createContext, useContext, useReducer, type Dispatch, type ReactNode } from 'react';
 
+import type { ModalAction } from '@/types/modal';
+
 type ModalState = {
   isOpen: boolean;
 };
@@ -10,7 +12,6 @@ const initialState: ModalState = {
   isOpen: false,
 };
 
-type ModalAction = { type: 'OPEN' } | { type: 'CLOSE' };
 type ModalDispatch = Dispatch<ModalAction>;
 
 const ModalStateContext = createContext<ModalState | null>(null);

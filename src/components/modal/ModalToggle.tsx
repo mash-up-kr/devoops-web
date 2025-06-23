@@ -1,19 +1,13 @@
 'use client';
 
-import React, { type ReactNode } from 'react';
-
 import { useModalDispatch } from '@/components/modal/ModalContext';
-
-interface ModalToggleProps {
-  action: 'open' | 'close';
-  children: ReactNode;
-}
+import type { ModalToggleProps } from '@/types/modal';
 
 function ModalToggle({ action, children }: ModalToggleProps) {
   const dispatch = useModalDispatch();
 
   const handleClick = () => {
-    dispatch({ type: action === 'open' ? 'OPEN' : 'CLOSE' });
+    dispatch({ type: action });
   };
 
   return (
