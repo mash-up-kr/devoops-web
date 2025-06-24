@@ -23,10 +23,9 @@ function ModalContent({ children }: ModalContentProps) {
   return (
     <ModalPortal>
       <div
-        className={`fixed inset-0 flex items-center justify-center transition-opacity duration-200 ${
+        className={`fixed inset-0 flex items-center justify-center transition-opacity duration-200 z-[--z-modal] ${
           isOpen ? 'opacity-100 pointer-events-auto bg-black/40' : 'opacity-0 pointer-events-none'
         }`}
-        style={{ zIndex: 'var(--z-modal)' }}
       >
         <div className={'relative rounded-xl bg-white p-6 shadow-xl'}>{children}</div>
       </div>
