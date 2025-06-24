@@ -1,7 +1,14 @@
 'use client';
 
+import type { ReactNode } from 'react';
+
 import { useModalDispatch } from '@/components/modal/ModalContext';
-import type { ModalToggleProps } from '@/types/modal';
+import type { ModalActionType } from '@/types/modal';
+
+interface ModalToggleProps {
+  action: ModalActionType;
+  children: ReactNode;
+}
 
 function ModalToggle({ action, children }: ModalToggleProps) {
   const dispatch = useModalDispatch();
