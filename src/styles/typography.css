@@ -11,26 +11,26 @@
   --font-weight-bold: 700;
 
   /* Font Size Tokens */
-  --text-caption: 13px; /* Caption */
-  --text-body-small: 14px; /* Body(S) */
-  --text-body-medium: 15px; /* Body(M) */
-  --text-body-large: 16px; /* Body(L) */
-  --text-h5: 18px; /* H5 */
-  --text-h4: 20px; /* H4 */
-  --text-h3: 24px; /* H3 */
-  --text-h2: 28px; /* H2 */
-  --text-h1: 32px; /* H1 */
+  --font-size-h1: 32px; /* H1 */
+  --font-size-h2: 28px; /* H2 */
+  --font-size-h3: 24px; /* H3 */
+  --font-size-h4: 20px; /* H4 */
+  --font-size-h5: 17px; /* H5 */
+  --font-size-body-large: 16px; /* Body(L) */
+  --font-size-body-medium: 15px; /* Body(M) */
+  --font-size-body-small: 14px; /* Body(S) */
+  --font-size-caption: 13px; /* Caption */
 
   /* Line Height Tokens */
-  --leading-caption: 13px; /* Caption */
-  --leading-body-small: 22px; /* Body(S) */
-  --leading-body-medium: 24px; /* Body(M) */
-  --leading-body-large: 25.6px; /* Body(L) */
-  --leading-h5: 24px; /* H5 */
-  --leading-h4: 28px; /* H4 */
-  --leading-h3: 34px; /* H3 */
-  --leading-h2: 38px; /* H2 */
   --leading-h1: 44px; /* H1 */
+  --leading-h2: 38px; /* H2 */
+  --leading-h3: 34px; /* H3 */
+  --leading-h4: 28px; /* H4 */
+  --leading-h5: 24px; /* H5 */
+  --leading-body-large: 25.6px; /* Body(L) */
+  --leading-body-medium: 24px; /* Body(M) */
+  --leading-body-small: 22px; /* Body(S) */
+  --leading-caption: 13px; /* Caption */
 
   /* Spacing Tokens */
   --spacing-0: 0;
@@ -44,4 +44,50 @@
   --spacing-10: 40px;
   --spacing-12: 48px;
   --spacing-16: 64px;
+}
+
+/* Typography Utility Classes */
+@utility text-h1 {
+  font-size: var(--font-size-h1);
+  line-height: var(--leading-h1);
+}
+
+@utility text-h2 {
+  font-size: var(--font-size-h2);
+  line-height: var(--leading-h2);
+}
+
+@utility text-h3 {
+  font-size: var(--font-size-h3);
+  line-height: var(--leading-h3);
+}
+
+@utility text-h4 {
+  font-size: var(--font-size-h4);
+  line-height: var(--leading-h4);
+}
+
+@utility text-h5 {
+  font-size: var(--font-size-h5);
+  line-height: var(--leading-h5);
+}
+
+@utility text-body-large {
+  font-size: var(--font-size-body-large);
+  line-height: var(--leading-body-large);
+}
+
+@utility text-body-medium {
+  font-size: var(--font-size-body-medium);
+  line-height: var(--leading-body-medium);
+}
+
+@utility text-body-small {
+  font-size: var(--font-size-body-small);
+  line-height: var(--leading-body-small);
+}
+
+@utility text-caption {
+  font-size: var(--font-size-caption);
+  line-height: var(--leading-caption);
 }
