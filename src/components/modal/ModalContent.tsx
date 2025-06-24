@@ -17,7 +17,7 @@ function ModalContent({ children }: ModalContentProps) {
 
   return (
     <ModalPortal>
-      <div className={`fixed inset-0 z-[${Z_INDEX.modal}] flex items-center justify-center bg-black/40`}>
+      <div className={'fixed inset-0 flex items-center justify-center bg-black/40'} style={{ zIndex: Z_INDEX.modal }}>
         <div className={'relative rounded-xl bg-white p-6 shadow-xl'}>{children}</div>
       </div>
     </ModalPortal>
