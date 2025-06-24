@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useContext, useReducer, type Dispatch, type ReactNode } from 'react';
+import { createContext, useContext, useEffect, useReducer, type Dispatch, type ReactNode } from 'react';
 
 import type { ModalAction } from '@/types/modal';
 
@@ -8,16 +8,12 @@ type ModalState = {
   isOpen: boolean;
 };
 
-const initialState: ModalState = {
-  isOpen: false,
-};
-
 type ModalDispatch = Dispatch<ModalAction>;
 
 const ModalStateContext = createContext<ModalState | null>(null);
 const ModalDispatchContext = createContext<ModalDispatch | null>(null);
 
-function modalReducer(state: ModalState, action: ModalAction) {
+function modalReducer(state: ModalState, action: ModalAction): ModalState {
   switch (action.type) {
     case 'OPEN':
       return { isOpen: true };
@@ -28,8 +24,14 @@ function modalReducer(state: ModalState, action: ModalAction) {
   }
 }
 
-export function ModalProvider({ children }: { children: ReactNode }) {
-  const [state, dispatch] = useReducer(modalReducer, initialState);
+export function ModalProvider({ children, defaultOpen = false }: { children: ReactNode; defaultOpen?: boolean }) {
+  const [state, dispatch] = useReducer(modalReducer, { isOpen: false });
+
+  useEffect(() => {
+    if (defaultOpen) {
+      dispatch({ type: 'OPEN' });
+    }
+  }, [defaultOpen]);
 
   return (
     <ModalStateContext.Provider value={state}>

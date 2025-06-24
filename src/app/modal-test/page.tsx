@@ -2,7 +2,7 @@ import { Modal } from '@/components/modal';
 
 export default function ModalTestPage() {
   return (
-    <Modal.Root>
+    <Modal.Root defaultOpen>
       <Modal.Toggle action={'OPEN'}>{'모달 열기'}</Modal.Toggle>
       <Modal.Content>
         <h2>{'제목'}</h2>

@@ -10,23 +10,16 @@ interface ModalRootProps {
   defaultOpen?: boolean;
 }
 
-interface ModalContainerProps {
-  children: ReactNode;
-  defaultOpen?: boolean;
-}
-
-function ModalContainer({ children, defaultOpen }: ModalContainerProps) {
+function ModalContent({ children }: { children: ReactNode }) {
   const { isOpen } = useModalState();
 
-  if (!defaultOpen && !isOpen) return null;
+  if (!isOpen) return null;
 
   return <ModalPortal>{children}</ModalPortal>;
 }
 
 export default function ModalRoot({ children, defaultOpen }: ModalRootProps) {
-  return (
-    <ModalProvider>
-      <ModalContainer defaultOpen={defaultOpen}>{children}</ModalContainer>
-    </ModalProvider>
-  );
+  return <ModalProvider defaultOpen={defaultOpen}>{children}</ModalProvider>;
 }
+
+export { ModalContent };

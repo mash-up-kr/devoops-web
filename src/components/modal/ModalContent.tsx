@@ -1,6 +1,6 @@
 'use client';
 
-import type { ReactNode } from 'react';
+import { useEffect, useState, type ReactNode } from 'react';
 
 import { useModalState } from '@/components/modal/ModalContext';
 import ModalPortal from '@/components/modal/Portal';
@@ -12,13 +12,20 @@ interface ModalContentProps {
 
 function ModalContent({ children }: ModalContentProps) {
   const { isOpen } = useModalState();
+  const [isMounted, setIsMounted] = useState(false);
 
-  if (!isOpen) return null;
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  if (!isMounted) return null;
 
   return (
     <ModalPortal>
       <div
-        className={'fixed inset-0 flex items-center justify-center bg-black/40'}
+        className={`fixed inset-0 flex items-center justify-center transition-opacity duration-200 ${
+          isOpen ? 'opacity-100 pointer-events-auto bg-black/40' : 'opacity-0 pointer-events-none'
+        }`}
         style={{ zIndex: 'var(--z-modal)' }}
       >
         <div className={'relative rounded-xl bg-white p-6 shadow-xl'}>{children}</div>
