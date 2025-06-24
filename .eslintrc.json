@@ -55,7 +55,8 @@
     "react/no-array-index-key": "off",
     "react/jsx-filename-extension": "off",
     "no-use-before-define": "off",
-    "react/react-in-jsx-scope": "off"
+    "react/react-in-jsx-scope": "off",
+    "better-tailwindcss/no-unregistered-classes": "off"
   },
   "ignorePatterns": ["node_modules/"]
 }
