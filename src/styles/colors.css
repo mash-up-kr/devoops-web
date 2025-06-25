@@ -1,0 +1,68 @@
+@theme {
+  /* White Opacity Scale */
+  --color-white-opacity-25: rgba(227, 230, 254, 0.02); /* #E3E6FE, 2% */
+  --color-white-opacity-50: rgba(227, 230, 254, 0.05); /* #E3E6FE, 5% */
+  --color-white-opacity-100: rgba(182, 192, 252, 0.11); /* #B6C0FC, 11% */
+  --color-white-opacity-200: rgba(196, 203, 248, 0.19); /* #C4CBF8, 19% */
+  --color-white-opacity-300: rgba(197, 204, 251, 0.27); /* #C5CCFB, 27% */
+  --color-white-opacity-400: rgba(203, 209, 250, 0.36); /* #CBD1FA, 36% */
+  --color-white-opacity-500: rgba(222, 226, 255, 0.47); /* #DEE2FF, 47% */
+  --color-white-opacity-600: rgba(230, 233, 254, 0.6); /* #E6E9FE, 60% */
+  --color-white-opacity-700: rgba(241, 243, 255, 0.75); /* #F1F3FF, 75% */
+  --color-white-opacity-800: rgba(248, 249, 252, 0.89); /* #F8F9FC, 89% */
+  --color-white-opacity-900: rgba(255, 255, 255, 1); /* #ffffff, 100% */
+
+  /* Dark Theme Grey Scale */
+  --color-dark-grey-0: #000e12;
+  --color-dark-grey-25: #14151a;
+  --color-dark-grey-50: #1b1c22;
+  --color-dark-grey-100: #22232c;
+  --color-dark-grey-200: #2f313e;
+  --color-dark-grey-300: #454758;
+  --color-dark-grey-400: #595c6e;
+  --color-dark-grey-500: #7e8194;
+  --color-dark-grey-600: #9fa1ae;
+  --color-dark-grey-700: #bdbfc8;
+  --color-dark-grey-800: #e2e3e8;
+  --color-dark-grey-900: #fefefe;
+
+  /* Dark Theme Blue Scale */
+  --color-dark-blue-50: #14182e;
+  --color-dark-blue-100: #191f45;
+  --color-dark-blue-200: #212853;
+  --color-dark-blue-300: #2b3786;
+  --color-dark-blue-400: #4255ce;
+  --color-dark-blue-500: #6074f7;
+  --color-dark-blue-600: #8b9afc;
+  --color-dark-blue-700: #9eaaf9;
+  --color-dark-blue-800: #aab5ff;
+  --color-dark-blue-900: #c8cfff;
+  --color-dark-blue-950: #e6e9ff;
+
+  /* Tag Colors */
+  --color-sub-violet: #a97cf1;
+  --color-sub-orange: #fcbe88;
+  --color-sub-blue: #64a8ff;
+  --color-sub-olive: #ddf34f;
+  --color-sub-yellow: #debd6a;
+  --color-sub-skyblue: #00ceff;
+
+  /* Primary System Colors */
+  --color-primary: var(--color-dark-blue-500);
+  --color-primary-container: var(--color-dark-blue-100);
+  --color-on-primary: var(--color-dark-grey-900);
+  --color-on-primary-container: var(--color-dark-blue-950);
+
+  /* Surface System Colors */
+  --color-surface: var(--color-dark-grey-0);
+  --color-surface-container-lowest: var(--color-dark-grey-50);
+  --color-surface-container: var(--color-dark-grey-100);
+  --color-on-surface-highest: var(--color-dark-grey-900);
+  --color-on-surface: var(--color-dark-grey-800);
+  --color-on-surface-low: var(--color-dark-grey-600);
+  --color-on-surface-lowest: var(--color-dark-grey-500);
+
+  /* Outline Colors */
+  --color-outline: var(--color-dark-grey-200);
+  --color-outline-variant: var(--color-dark-grey-100);
+}
