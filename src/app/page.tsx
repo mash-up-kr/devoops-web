@@ -69,35 +69,35 @@ export default function Home() {
         <div className={'space-y-4'}>
           <h2 className={'text-h3 font-medium text-[var(--color-on-surface)]'}>{'Primary Buttons'}</h2>
           <div className={'flex items-center gap-4'}>
-            <Button variant={'filled_primary'} size={'large'}>
+            <Button variant={'filledPrimary'} size={'large'}>
               {'버튼'}
             </Button>
-            <Button variant={'filled_primary'} size={'medium'}>
+            <Button variant={'filledPrimary'} size={'medium'}>
               {'버튼'}
             </Button>
-            <Button variant={'filled_primary'} size={'small'}>
+            <Button variant={'filledPrimary'} size={'small'}>
               {'버튼'}
             </Button>
-            <Button variant={'filled_primary'} size={'tiny'}>
+            <Button variant={'filledPrimary'} size={'tiny'}>
               {'버튼'}
             </Button>
           </div>
 
           {/* With Icons */}
           <div className={'flex items-center gap-4'}>
-            <Button variant={'filled_primary'} size={'large'}>
+            <Button variant={'filledPrimary'} size={'large'}>
               <PlusIcon />
               {'버튼'}
             </Button>
-            <Button variant={'filled_primary'} size={'medium'}>
+            <Button variant={'filledPrimary'} size={'medium'}>
               <PlusIcon />
               {'버튼'}
             </Button>
-            <Button variant={'filled_primary'} size={'small'}>
+            <Button variant={'filledPrimary'} size={'small'}>
               <PlusIcon />
               {'버튼'}
             </Button>
-            <Button variant={'filled_primary'} size={'tiny'}>
+            <Button variant={'filledPrimary'} size={'tiny'}>
               <PlusIcon />
               {'버튼'}
             </Button>
@@ -105,16 +105,16 @@ export default function Home() {
 
           {/* Disabled State */}
           <div className={'flex items-center gap-4'}>
-            <Button variant={'filled_primary'} size={'large'} disabled>
+            <Button variant={'filledPrimary'} size={'large'} disabled>
               {'버튼'}
             </Button>
-            <Button variant={'filled_primary'} size={'medium'} disabled>
+            <Button variant={'filledPrimary'} size={'medium'} disabled>
               {'버튼'}
             </Button>
-            <Button variant={'filled_primary'} size={'small'} disabled>
+            <Button variant={'filledPrimary'} size={'small'} disabled>
               {'버튼'}
             </Button>
-            <Button variant={'filled_primary'} size={'tiny'} disabled>
+            <Button variant={'filledPrimary'} size={'tiny'} disabled>
               {'버튼'}
             </Button>
           </div>
@@ -124,35 +124,35 @@ export default function Home() {
         <div className={'space-y-4'}>
           <h2 className={'text-h3 font-medium text-[var(--color-on-surface)]'}>{'Secondary Buttons'}</h2>
           <div className={'flex items-center gap-4'}>
-            <Button variant={'weak_primary'} size={'large'}>
+            <Button variant={'weakPrimary'} size={'large'}>
               {'버튼'}
             </Button>
-            <Button variant={'weak_primary'} size={'medium'}>
+            <Button variant={'weakPrimary'} size={'medium'}>
               {'버튼'}
             </Button>
-            <Button variant={'weak_primary'} size={'small'}>
+            <Button variant={'weakPrimary'} size={'small'}>
               {'버튼'}
             </Button>
-            <Button variant={'weak_primary'} size={'tiny'}>
+            <Button variant={'weakPrimary'} size={'tiny'}>
               {'버튼'}
             </Button>
           </div>
 
           {/* With Icons */}
           <div className={'flex items-center gap-4'}>
-            <Button variant={'weak_primary'} size={'large'}>
+            <Button variant={'weakPrimary'} size={'large'}>
               <PlusIcon />
               {'버튼'}
             </Button>
-            <Button variant={'weak_primary'} size={'medium'}>
+            <Button variant={'weakPrimary'} size={'medium'}>
               <PlusIcon />
               {'버튼'}
             </Button>
-            <Button variant={'weak_primary'} size={'small'}>
+            <Button variant={'weakPrimary'} size={'small'}>
               <PlusIcon />
               {'버튼'}
             </Button>
-            <Button variant={'weak_primary'} size={'tiny'}>
+            <Button variant={'weakPrimary'} size={'tiny'}>
               <PlusIcon />
               {'버튼'}
             </Button>
@@ -160,16 +160,16 @@ export default function Home() {
 
           {/* Disabled State */}
           <div className={'flex items-center gap-4'}>
-            <Button variant={'weak_primary'} size={'large'} disabled>
+            <Button variant={'weakPrimary'} size={'large'} disabled>
               {'버튼'}
             </Button>
-            <Button variant={'weak_primary'} size={'medium'} disabled>
+            <Button variant={'weakPrimary'} size={'medium'} disabled>
               {'버튼'}
             </Button>
-            <Button variant={'weak_primary'} size={'small'} disabled>
+            <Button variant={'weakPrimary'} size={'small'} disabled>
               {'버튼'}
             </Button>
-            <Button variant={'weak_primary'} size={'tiny'} disabled>
+            <Button variant={'weakPrimary'} size={'tiny'} disabled>
               {'버튼'}
             </Button>
           </div>
@@ -179,35 +179,35 @@ export default function Home() {
         <div className={'space-y-4'}>
           <h2 className={'text-h3 font-medium text-[var(--color-on-surface)]'}>{'Ghost Buttons'}</h2>
           <div className={'flex items-center gap-4'}>
-            <Button variant={'outline_grey'} size={'large'}>
+            <Button variant={'outlineGrey'} size={'large'}>
               {'버튼'}
             </Button>
-            <Button variant={'outline_grey'} size={'medium'}>
+            <Button variant={'outlineGrey'} size={'medium'}>
               {'버튼'}
             </Button>
-            <Button variant={'outline_grey'} size={'small'}>
+            <Button variant={'outlineGrey'} size={'small'}>
               {'버튼'}
             </Button>
-            <Button variant={'outline_grey'} size={'tiny'}>
+            <Button variant={'outlineGrey'} size={'tiny'}>
               {'버튼'}
             </Button>
           </div>
 
           {/* With Icons */}
           <div className={'flex items-center gap-4'}>
-            <Button variant={'outline_grey'} size={'large'}>
+            <Button variant={'outlineGrey'} size={'large'}>
               <PlusIcon />
               {'버튼'}
             </Button>
-            <Button variant={'outline_grey'} size={'medium'}>
+            <Button variant={'outlineGrey'} size={'medium'}>
               <PlusIcon />
               {'버튼'}
             </Button>
-            <Button variant={'outline_grey'} size={'small'}>
+            <Button variant={'outlineGrey'} size={'small'}>
               <PlusIcon />
               {'버튼'}
             </Button>
-            <Button variant={'outline_grey'} size={'tiny'}>
+            <Button variant={'outlineGrey'} size={'tiny'}>
               <PlusIcon />
               {'버튼'}
             </Button>
@@ -215,16 +215,16 @@ export default function Home() {
 
           {/* Disabled State */}
           <div className={'flex items-center gap-4'}>
-            <Button variant={'outline_grey'} size={'large'} disabled>
+            <Button variant={'outlineGrey'} size={'large'} disabled>
               {'버튼'}
             </Button>
-            <Button variant={'outline_grey'} size={'medium'} disabled>
+            <Button variant={'outlineGrey'} size={'medium'} disabled>
               {'버튼'}
             </Button>
-            <Button variant={'outline_grey'} size={'small'} disabled>
+            <Button variant={'outlineGrey'} size={'small'} disabled>
               {'버튼'}
             </Button>
-            <Button variant={'outline_grey'} size={'tiny'} disabled>
+            <Button variant={'outlineGrey'} size={'tiny'} disabled>
               {'버튼'}
             </Button>
           </div>
