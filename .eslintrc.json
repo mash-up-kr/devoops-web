@@ -56,7 +56,8 @@
     "react/jsx-filename-extension": "off",
     "no-use-before-define": "off",
     "react/react-in-jsx-scope": "off",
-    "better-tailwindcss/no-unregistered-classes": "off"
+    "better-tailwindcss/no-unregistered-classes": "off",
+    "react/button-has-type": "off"
   },
   "ignorePatterns": ["node_modules/"]
 }

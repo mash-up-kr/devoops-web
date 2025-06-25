@@ -57,7 +57,7 @@ export default function Button({
   ...props
 }: PropsWithChildren<ButtonHTMLAttributes<HTMLButtonElement> & VariantProps<typeof buttonVariants>>) {
   return (
-    <button className={cn(buttonVariants({ variant, size, className }))} type={'submit'} disabled={disabled} {...props}>
+    <button className={cn(buttonVariants({ variant, size, className }))} disabled={disabled} {...props}>
       {children}
     </button>
   );
