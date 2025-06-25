@@ -5,7 +5,7 @@ import { cn } from '@/utils/cn';
 
 const dotVariants = cva('inline-block h-1.5 w-1.5 rounded-full', {
   variants: {
-    color: {
+    dotColor: {
       violet: 'bg-sub-violet',
       blue: 'bg-sub-blue',
       orange: 'bg-sub-orange',
@@ -18,11 +18,11 @@ const dotVariants = cva('inline-block h-1.5 w-1.5 rounded-full', {
 });
 
 interface TagProps {
-  color: VariantProps<typeof dotVariants>['color'];
+  dotColor: VariantProps<typeof dotVariants>['dotColor'];
   children: ReactNode;
 }
 
-export default function Tag({ color, children }: TagProps) {
+export default function Tag({ dotColor, children }: TagProps) {
   return (
     <span
       className={`
@@ -30,7 +30,7 @@ export default function Tag({ color, children }: TagProps) {
         px-2.5 py-[5px] text-nowrap
       `}
     >
-      <span className={cn(dotVariants({ color }))} />
+      <span className={cn(dotVariants({ dotColor }))} />
       {children}
     </span>
   );
