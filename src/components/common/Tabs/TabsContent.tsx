@@ -10,7 +10,7 @@ interface TabsContentProps {
   className?: string;
 }
 
-export function TabsContent({ value, children, className = '' }: TabsContentProps) {
+export default function TabsContent({ value, children, className = '' }: TabsContentProps) {
   const { activeTab } = useTabsContext();
 
   if (activeTab !== value) return null;

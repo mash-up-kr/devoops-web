@@ -10,7 +10,7 @@ interface TabsProps {
   className?: string;
 }
 
-export function Tabs({ defaultValue, children, className = '' }: TabsProps) {
+export default function Tabs({ defaultValue, children, className = '' }: TabsProps) {
   const [activeTab, setActiveTab] = useState(defaultValue);
   const tabRefs = useRef(new Map<string, HTMLButtonElement>());
 

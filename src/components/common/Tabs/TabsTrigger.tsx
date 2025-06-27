@@ -25,7 +25,7 @@ const tabsTriggerVariants = cva('flex cursor-pointer gap-2 font-medium', {
   },
 });
 
-export function TabsTrigger({ value, children, size, className = '', disabled = false }: TabsTriggerProps) {
+export default function TabsTrigger({ value, children, size, className = '', disabled = false }: TabsTriggerProps) {
   const { activeTab, setActiveTab, registerTab } = useTabsContext();
   const isActive = activeTab === value;
 

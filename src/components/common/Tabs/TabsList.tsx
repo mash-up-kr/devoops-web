@@ -5,7 +5,7 @@ interface TabsListProps {
   className?: string;
 }
 
-export function TabsList({ children, className = '' }: TabsListProps) {
+export default function TabsList({ children, className = '' }: TabsListProps) {
   return (
     <div
       role={'tablist'}
