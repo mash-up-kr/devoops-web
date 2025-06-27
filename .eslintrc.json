@@ -57,7 +57,8 @@
     "no-use-before-define": "off",
     "react/react-in-jsx-scope": "off",
     "better-tailwindcss/no-unregistered-classes": "off",
-    "react/button-has-type": "off"
+    "react/button-has-type": "off",
+    "@typescript-eslint/no-unused-vars": "error"
   },
   "ignorePatterns": ["node_modules/"]
 }
