@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, ReactNode, useMemo } from 'react';
+import { useState, useRef, ReactNode, useMemo, useCallback } from 'react';
 
 import { TabsContext } from '@/providers/TabsContext';
 
@@ -14,13 +14,13 @@ export function Tabs({ defaultValue, children, className = '' }: TabsProps) {
   const [activeTab, setActiveTab] = useState(defaultValue);
   const tabRefs = useRef(new Map<string, HTMLButtonElement>());
 
-  const registerTab = (value: string, element: HTMLButtonElement | null) => {
+  const registerTab = useCallback((value: string, element: HTMLButtonElement | null) => {
     if (element) {
       tabRefs.current.set(value, element);
     } else {
       tabRefs.current.delete(value);
     }
-  };
+  }, []);
 
   const contextValue = useMemo(
     () => ({
@@ -29,7 +29,7 @@ export function Tabs({ defaultValue, children, className = '' }: TabsProps) {
       registerTab,
       tabElements: tabRefs.current,
     }),
-    [activeTab],
+    [activeTab, registerTab],
   );
 
   return (
