@@ -57,6 +57,7 @@
   --color-surface: var(--color-dark-grey-0);
   --color-surface-container-lowest: var(--color-dark-grey-50);
   --color-surface-container: var(--color-dark-grey-100);
+  --color-on-surface-high: var(--color-dark-grey-800);
   --color-on-surface-highest: var(--color-dark-grey-900);
   --color-on-surface: var(--color-dark-grey-800);
   --color-on-surface-low: var(--color-dark-grey-600);
