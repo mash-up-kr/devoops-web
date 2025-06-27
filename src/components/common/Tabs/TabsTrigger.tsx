@@ -1,7 +1,7 @@
 'use client';
 
 import { cva, type VariantProps } from 'class-variance-authority';
-import { HTMLAttributes, ReactNode } from 'react';
+import { ReactNode } from 'react';
 
 import { useTabsContext } from '@/providers/TabsContext';
 import { cn } from '@/utils/cn';
@@ -25,15 +25,6 @@ const tabsTriggerVariants = cva('flex cursor-pointer gap-2 font-medium', {
   },
 });
 
-const TABS_TRIGGER_ACTIVE_STYLES: HTMLAttributes<HTMLButtonElement>['className'] =
-  'enabled:text-on-surface-high enabled:inset-shadow-tabs-active enabled:font-semibold';
-const TABS_TRIGGER_HOVER_STYLES: HTMLAttributes<HTMLButtonElement>['className'] =
-  'hover:enabled:text-dark-grey-700 hover:enabled:inset-shadow-tabs-hover';
-const TABS_TRIGGER_ENABLED_STYLES: HTMLAttributes<HTMLButtonElement>['className'] =
-  'enabled:text-shadow-on-surface-lowest enabled:inset-shadow-tabs-enabled';
-const TABS_TRIGGER_DISABLED_STYLES: HTMLAttributes<HTMLButtonElement>['className'] =
-  'disabled:text-dark-grey-300 disabled:cursor-not-allowed';
-
 export function TabsTrigger({ value, children, size, className = '', disabled = false }: TabsTriggerProps) {
   const { activeTab, setActiveTab, registerTab } = useTabsContext();
   const isActive = activeTab === value;
@@ -55,13 +46,16 @@ export function TabsTrigger({ value, children, size, className = '', disabled = 
         tabsTriggerVariants({ size }),
         isActive
           ? `
-            ${TABS_TRIGGER_ACTIVE_STYLES}
+            'enabled:text-on-surface-high
+            enabled:inset-shadow-tabs-active enabled:font-semibold'
           `
           : `
-            ${TABS_TRIGGER_ENABLED_STYLES}
-            ${TABS_TRIGGER_HOVER_STYLES}
+            'hover:enabled:text-dark-grey-700
+            hover:enabled:inset-shadow-tabs-hover'
+            'enabled:text-shadow-on-surface-lowest
+            enabled:inset-shadow-tabs-enabled'
           `,
-        disabled && TABS_TRIGGER_DISABLED_STYLES,
+        disabled && `disabled:text-dark-grey-300 disabled:cursor-not-allowed`,
         className,
       )}
       disabled={disabled}
