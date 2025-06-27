@@ -1,0 +1,5 @@
+@import './colors.css';
+
+@theme {
+  --inset-shadow-tabs-list: inset 0 -1px 0 var(--color-dark-grey-100);
+}
