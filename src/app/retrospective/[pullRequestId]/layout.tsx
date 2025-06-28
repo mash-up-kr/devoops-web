@@ -1,5 +1,9 @@
-import React from 'react';
+import { ReactNode } from 'react';
 
-export default function RetrospectiveLayout({ children }: { children: React.ReactNode }) {
+interface RetrospectiveLayoutProps {
+  children: ReactNode;
+}
+
+export default function RetrospectiveLayout({ children }: RetrospectiveLayoutProps) {
   return <div className={'px-[40px] pt-[68px] pb-[132px]'}>{children}</div>;
 }
