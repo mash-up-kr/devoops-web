@@ -1,3 +1,5 @@
+import SectionHeader from './SectionHeader';
+
 const DUMMY_SUMMARY = [
   {
     title: 'Redis 사용 설정',
@@ -24,15 +26,11 @@ const DUMMY_SUMMARY = [
 export default function PullRequestSummary() {
   return (
     <section className={'flex flex-col gap-[20px] pt-[36px]'}>
-      <div className={'flex flex-col items-start justify-start gap-[8px]'}>
-        {'요약 아이콘'}
-        <div className={'flex flex-col gap-[2px]'}>
-          <span className={'text-h4 font-semibold'}>{'AI 요약'}</span>
-          <span className={'text-body-medium font-regular text-on-surface-lowest'}>
-            {'이번 PR에서 작업한 내용이에요.'}
-          </span>
-        </div>
-      </div>
+      <SectionHeader
+        title={'AI 요약'}
+        description={'이번 PR에서 작업한 내용이에요.'}
+        icon={<span>{'요약 아이콘'}</span>}
+      />
 
       <div className={'bg-dark-grey-50 align-start flex flex-col justify-start gap-[20px] rounded-[8px] p-[24px]'}>
         {DUMMY_SUMMARY.map((summary) => (

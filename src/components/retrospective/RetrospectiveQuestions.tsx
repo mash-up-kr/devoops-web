@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 
+import SectionHeader from './SectionHeader';
 import Button from '../common/Button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../common/Tabs';
 
@@ -41,15 +42,11 @@ export default function RetrospectiveQuestions() {
 
   return (
     <section className={'flex flex-col gap-[20px]'}>
-      <div className={'flex flex-col gap-[8px]'}>
-        {'회고 아이콘'}
-        <div className={'flex flex-col gap-[2px]'}>
-          <span className={'text-h4 font-semibold'}>{'AI 생성 회고 질문'}</span>
-          <span className={'text-body-medium font-regular text-on-surface-lowest'}>
-            {'이번 작업에서 회고하고 싶은 질문을 골라보세요.'}
-          </span>
-        </div>
-      </div>
+      <SectionHeader
+        title={'AI 생성 회고 질문'}
+        description={'이번 작업에서 회고하고 싶은 질문을 골라보세요.'}
+        icon={<span>{'회고 아이콘'}</span>}
+      />
 
       <Tabs defaultValue={currentCategory}>
         <TabsList>
