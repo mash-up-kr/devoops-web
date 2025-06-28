@@ -1,4 +1,4 @@
-import SectionHeader from './SectionHeader';
+import SectionHeader from '@/components/retrospective/SectionHeader';
 
 export default function RetrospectiveAnswers() {
   return (

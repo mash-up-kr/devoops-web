@@ -1,6 +1,7 @@
-import SectionHeader from './SectionHeader';
-import Button from '../common/Button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../common/Tabs';
+
+import Button from '@/components/common/Button';
+import SectionHeader from '@/components/retrospective/SectionHeader';
 
 const DUMMY_QUESTIONS = [
   {
