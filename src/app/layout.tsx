@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { ReactNode } from 'react';
 
+import GlobalNavigation from '@/components/common/GlobalNavigation';
 import QueryProvider from '@/providers/QueryProvider';
 import './globals.css';
 
@@ -28,7 +29,10 @@ export default function RootLayout({
         <link rel={'stylesheet'} href={'https://static.dev-oops.kr/fonts/pretendardvariable.css'} />
       </head>
       <QueryProvider>
-        <body>{children}</body>
+        <body className={'pt-gnb-height'}>
+          <GlobalNavigation />
+          {children}
+        </body>
       </QueryProvider>
     </html>
   );
