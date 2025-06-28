@@ -44,12 +44,14 @@ export default function RetrospectiveQuestions() {
 
       <Tabs defaultValue={DUMMY_QUESTIONS[0].category}>
         <TabsList>
-          {DUMMY_QUESTIONS.map(({ category }) => (
-            <TabsTrigger value={category}>{category}</TabsTrigger>
+          {DUMMY_QUESTIONS.map(({ category }, index) => (
+            <TabsTrigger value={category} key={index}>
+              {category}
+            </TabsTrigger>
           ))}
         </TabsList>
-        {DUMMY_QUESTIONS.map(({ category, questions }) => (
-          <TabsContent value={category} className={'flex flex-col items-end gap-[20px] pt-[20px]'}>
+        {DUMMY_QUESTIONS.map(({ category, questions }, index) => (
+          <TabsContent value={category} className={'flex flex-col items-end gap-[20px] pt-[20px]'} key={index}>
             <ul className={'flex w-full flex-col gap-[12px]'}>
               {questions.map(({ questionId, question }) => (
                 <div

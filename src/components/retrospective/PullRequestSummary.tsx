@@ -34,11 +34,13 @@ export default function PullRequestSummary() {
 
       <div className={'bg-dark-grey-50 align-start flex flex-col justify-start gap-[20px] rounded-[8px] p-[24px]'}>
         {DUMMY_SUMMARY.map((summary) => (
-          <div className={'flex flex-col gap-[4px]'}>
+          <div className={'flex flex-col gap-[4px]'} key={summary.title}>
             <span className={'text-body-medium font-semibold'}>{summary.title}</span>
             <ul className={'flex flex-col gap-[4px]'}>
-              {summary.content.map((content) => (
-                <li className={'text-body-small font-regular text-on-surface-lowest'}>{content}</li>
+              {summary.content.map((content, index) => (
+                <li className={'text-body-small font-regular text-on-surface-lowest'} key={index}>
+                  {content}
+                </li>
               ))}
             </ul>
           </div>
