@@ -1,7 +1,3 @@
-'use client';
-
-import { useState } from 'react';
-
 import SectionHeader from './SectionHeader';
 import Button from '../common/Button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../common/Tabs';
@@ -38,8 +34,6 @@ const DUMMY_QUESTIONS = [
 ];
 
 export default function RetrospectiveQuestions() {
-  const [currentCategory] = useState(DUMMY_QUESTIONS[0].category);
-
   return (
     <section className={'flex flex-col gap-[20px]'}>
       <SectionHeader
@@ -48,7 +42,7 @@ export default function RetrospectiveQuestions() {
         icon={<span>{'회고 아이콘'}</span>}
       />
 
-      <Tabs defaultValue={currentCategory}>
+      <Tabs defaultValue={DUMMY_QUESTIONS[0].category}>
         <TabsList>
           {DUMMY_QUESTIONS.map(({ category }) => (
             <TabsTrigger value={category}>{category}</TabsTrigger>
