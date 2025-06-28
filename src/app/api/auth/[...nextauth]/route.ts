@@ -1,6 +1,8 @@
 import NextAuth from 'next-auth';
 import GithubProvider from 'next-auth/providers/github';
 
+import { login } from '@/apis/auth/login';
+
 const handler = NextAuth({
   providers: [
     GithubProvider({
@@ -18,10 +20,10 @@ const handler = NextAuth({
       return session;
     },
     async jwt({ token, account }) {
-      if (account) {
-        // TODO: 백엔드 로그인 API 전달받으면 실제 token 응답값으로 변경해야함
-        const dummyAccessToken = 'dummyAccessToken';
-        const newToken = { ...token, accessToken: dummyAccessToken };
+      if (account?.access_token) {
+        const response = await login({ body: { githubAccessToken: account.access_token } });
+
+        const newToken = { ...token, accessToken: response.data.accessToken, refreshToken: response.data.refreshToken };
 
         return newToken;
       }
