@@ -4,6 +4,7 @@ import { ReactNode } from 'react';
 
 import NextAuthSessionProvider from './providers/NextAuthSessionProvider';
 
+import GlobalNavigation from '@/components/common/GlobalNavigation';
 import QueryProvider from '@/providers/QueryProvider';
 import './globals.css';
 
@@ -33,7 +34,10 @@ export default function RootLayout({ session, children }: Readonly<RootLayoutPro
       </head>
       <NextAuthSessionProvider session={session}>
         <QueryProvider>
-          <body>{children}</body>
+          <body className={'pt-gnb-height'}>
+            <GlobalNavigation />
+            {children}
+          </body>
         </QueryProvider>
       </NextAuthSessionProvider>
     </html>

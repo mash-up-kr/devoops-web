@@ -1,9 +1,11 @@
 @import 'tailwindcss';
 @import '../styles/colors.css';
 @import '../styles/typography.css';
+@import '../styles/tabs.css';
+@import '../styles/spacing.css';
 
 :root {
-  --background: #14151a;
+  --background: #0d0e12;
   --foreground: #ffffff;
 }
 
