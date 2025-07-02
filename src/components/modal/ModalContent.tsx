@@ -1,15 +1,11 @@
 'use client';
 
-import { useEffect, useState, type ReactNode } from 'react';
+import { PropsWithChildren, useEffect, useState } from 'react';
 
-import { useModalState } from '@/components/modal/ModalContext';
 import ModalPortal from '@/components/modal/Portal';
+import { useModalState } from '@/providers/ModalContext';
 
-interface ModalContentProps {
-  children: ReactNode;
-}
-
-export default function ModalContent({ children }: ModalContentProps) {
+export default function ModalContent({ children }: PropsWithChildren) {
   const { isOpen } = useModalState();
   const [isMounted, setIsMounted] = useState(false);
 
