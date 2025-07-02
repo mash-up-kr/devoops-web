@@ -9,7 +9,7 @@ interface ModalContentProps {
   children: ReactNode;
 }
 
-function ModalContent({ children }: ModalContentProps) {
+export default function ModalContent({ children }: ModalContentProps) {
   const { isOpen } = useModalState();
   const [isMounted, setIsMounted] = useState(false);
 
@@ -26,10 +26,8 @@ function ModalContent({ children }: ModalContentProps) {
           isOpen ? 'pointer-events-auto bg-black/40 opacity-100' : 'pointer-events-none opacity-0'
         }`}
       >
-        <div className={'relative rounded-xl bg-white p-6 shadow-xl'}>{children}</div>
+        <div className={'relative rounded-xl bg-white p-6 text-black shadow-xl'}>{children}</div>
       </div>
     </ModalPortal>
   );
 }
-
-export default ModalContent;

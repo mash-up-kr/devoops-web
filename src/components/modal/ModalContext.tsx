@@ -1,17 +1,16 @@
 'use client';
 
-import { createContext, useContext, useEffect, useReducer, type Dispatch, type ReactNode } from 'react';
+import { createContext, useContext, useEffect, useReducer, Dispatch, ReactNode } from 'react';
 
-import type { ModalAction } from '@/types/modal';
+import { type ModalAction } from '@/types/modal';
 
-type ModalState = {
-  isOpen: boolean;
-};
-
+type ModalState = { isOpen: boolean };
 type ModalDispatch = Dispatch<ModalAction>;
 
-const ModalStateContext = createContext<ModalState | null>(null);
-const ModalDispatchContext = createContext<ModalDispatch | null>(null);
+interface ModalProviderProps {
+  children: ReactNode;
+  defaultOpen?: boolean;
+}
 
 function modalReducer(state: ModalState, action: ModalAction): ModalState {
   switch (action.type) {
@@ -24,7 +23,23 @@ function modalReducer(state: ModalState, action: ModalAction): ModalState {
   }
 }
 
-export function ModalProvider({ children, defaultOpen = false }: { children: ReactNode; defaultOpen?: boolean }) {
+const ModalStateContext = createContext<ModalState | null>(null);
+const ModalDispatchContext = createContext<ModalDispatch | null>(null);
+
+// TODO: 컨텍스트는 provider 폴더로 이전할 것
+export function useModalState() {
+  const context = useContext(ModalStateContext);
+  if (!context) throw new Error('useModalState must be used within a <ModalProvider>');
+  return context;
+}
+
+export function useModalDispatch() {
+  const context = useContext(ModalDispatchContext);
+  if (!context) throw new Error('useModalDispatch must be used within a <ModalProvider>');
+  return context;
+}
+
+export default function ModalProvider({ children, defaultOpen = false }: ModalProviderProps) {
   const [state, dispatch] = useReducer(modalReducer, { isOpen: false });
 
   useEffect(() => {
@@ -38,16 +53,4 @@ export function ModalProvider({ children, defaultOpen = false }: { children: Rea
       <ModalDispatchContext.Provider value={dispatch}>{children}</ModalDispatchContext.Provider>
     </ModalStateContext.Provider>
   );
-}
-
-export function useModalState() {
-  const context = useContext(ModalStateContext);
-  if (!context) throw new Error('useModalState must be used within a <ModalProvider>');
-  return context;
-}
-
-export function useModalDispatch() {
-  const context = useContext(ModalDispatchContext);
-  if (!context) throw new Error('useModalDispatch must be used within a <ModalProvider>');
-  return context;
 }

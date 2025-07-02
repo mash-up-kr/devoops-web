@@ -5,9 +5,7 @@ interface PortalProps {
   children: ReactNode;
 }
 
-function Portal({ children }: PortalProps) {
+export default function Portal({ children }: PortalProps) {
   const portalRoot = typeof window !== 'undefined' ? document.getElementById('portal') : null;
   return portalRoot ? createPortal(children, portalRoot) : null;
 }
-
-export default Portal;
