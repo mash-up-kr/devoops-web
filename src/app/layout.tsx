@@ -30,6 +30,7 @@ export default function RootLayout({
       </head>
       <QueryProvider>
         <body className={'pt-gnb-height'}>
+          <div id={'portal'} />
           <GlobalNavigation />
           {children}
         </body>
