@@ -2,7 +2,7 @@
 
 import { ReactNode } from 'react';
 
-import { useModalDispatch } from '@/components/modal/ModalContext';
+import { useModalDispatch } from '@/providers/ModalContext';
 import { type ModalActionType } from '@/types/modal';
 
 interface ModalToggleProps {

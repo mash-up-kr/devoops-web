@@ -2,7 +2,7 @@
 
 import { ReactNode } from 'react';
 
-import ModalProvider from '@/components/modal/ModalContext';
+import ModalProvider from '@/providers/ModalContext';
 
 interface ModalRootProps {
   children: ReactNode;
