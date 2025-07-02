@@ -1,5 +1,6 @@
 import AddIcon from '@/assets/svg/add.svg';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/common/Tabs';
+import Preview from '@/components/home/Preview';
 import { PRItem, PRStatus, PRContent } from '@/components/home/PRItem';
 
 const data: {
@@ -20,7 +21,8 @@ const data: {
       title: '사용자 인증 기능 추가',
       recordStatus: 'PENDING',
       mergedAt: '2025-06-20',
-      summary: '',
+      summary:
+        '알림 도메인의 책임을 타입 계층으로 분리해 Notification Service의 의존성과 복잡도를 낮추고, 각 알림 객체 내부로 발송 책임을 캡슐화한 리팩터링입니다.',
       tag: 'feat',
     },
     {
@@ -53,7 +55,7 @@ const data: {
       recordStatus: 'PENDING',
       mergedAt: '2025-06-15T07:12:01Z',
       summary: '',
-      tag: '',
+      tag: 'feature',
     },
   ],
 };
@@ -74,13 +76,21 @@ export default function MyPR() {
           <TabsTrigger value={'레포1'}>{'레포1'}</TabsTrigger>
           <AddIcon />
         </TabsList>
-        <TabsContent value={'전체'} className={'flex flex-col gap-5 py-4'}>
-          {data.pullRequests.map((pr, idx) => (
-            <PRItem key={idx}>
-              <PRStatus status={pr.recordStatus} />
-              <PRContent content={pr.title} label={pr.tag} />
-            </PRItem>
-          ))}
+        <TabsContent value={'전체'} className={'flex'}>
+          <div
+            className={`
+              border-dark-grey-100 flex flex-1 flex-col gap-5 border-e-1 py-4
+              pe-8
+            `}
+          >
+            {data.pullRequests.map((pr, idx) => (
+              <PRItem key={idx}>
+                <PRStatus status={pr.recordStatus} />
+                <PRContent content={pr.title} label={pr.tag} />
+              </PRItem>
+            ))}
+          </div>
+          <Preview content={data.pullRequests[0].summary} />
         </TabsContent>
         <TabsContent value={'레포1'} className={'p-4'}>
           <h3 className={'mb-4 text-lg font-medium'}>{'Password Settings'}</h3>
