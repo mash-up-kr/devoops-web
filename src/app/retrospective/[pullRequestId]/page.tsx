@@ -58,7 +58,7 @@ export default async function RetrospectivePage({ params }: RetrospectivePagePro
         <RetrospectiveAnswers answers={data.questions.filter((q) => q.isSelected)} />
       </main>
 
-      <FixedFooter />
+      <FixedFooter pullRequestId={pullRequestId} />
     </>
   );
 }

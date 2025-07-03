@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { ReactNode } from 'react';
+import { Toaster } from 'react-hot-toast';
 
 import GlobalNavigation from '@/components/common/GlobalNavigation';
 import QueryProvider from '@/providers/QueryProvider';
@@ -31,6 +32,7 @@ export default function RootLayout({
       <QueryProvider>
         <body className={'pt-gnb-height'}>
           <GlobalNavigation />
+          <Toaster position={'top-center'} reverseOrder={false} />
           {children}
         </body>
       </QueryProvider>

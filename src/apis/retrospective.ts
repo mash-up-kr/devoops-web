@@ -43,9 +43,11 @@ export async function fetchPullRequestById(pullRequestId: string, accessToken: s
 
 export async function markPRAsDone(pullRequestId: string): Promise<void> {
   const response = await fetch(`/api/pull-requests/${pullRequestId}/done`, {
+    // const response = await fetch(`https://api.dev-oops.kr/api/pull-requests/${pullRequestId}/done`, {
     method: 'PATCH',
     headers: {
       // Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+      // 'Content-Type': 'application/json',
     },
   });
 
