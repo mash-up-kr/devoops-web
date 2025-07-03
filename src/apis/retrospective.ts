@@ -18,6 +18,14 @@ export interface PullRequestDetail {
   questions: Question[];
 }
 
+export interface CategoryWithQuestions {
+  category: string;
+  questions: {
+    questionId: number;
+    question: string;
+  }[];
+}
+
 export async function fetchPullRequestById(pullRequestId: string, accessToken: string): Promise<PullRequestDetail> {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/pull-requests/${pullRequestId}`, {
     headers: {
