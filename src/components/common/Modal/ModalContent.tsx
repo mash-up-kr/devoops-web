@@ -2,7 +2,7 @@
 
 import { PropsWithChildren, useEffect, useState } from 'react';
 
-import ModalPortal from '@/components/modal/Portal';
+import ModalPortal from '@/components/common/Modal/Portal';
 import { useModalState } from '@/providers/ModalContext';
 
 export default function ModalContent({ children }: PropsWithChildren) {
