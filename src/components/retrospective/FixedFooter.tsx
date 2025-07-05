@@ -1,7 +1,5 @@
 'use client';
 
-import toast from 'react-hot-toast';
-
 import { markPRAsDone } from '@/apis/retrospective';
 import Button from '@/components/common/Button';
 
@@ -13,10 +11,9 @@ export default function FixedFooter({ pullRequestId }: FixedFooterProps) {
   const handleComplete = async () => {
     try {
       await markPRAsDone(pullRequestId);
-      toast.success('회고 완료!');
+      // 회고 완료 후 이동 처리 필요
     } catch (error) {
-      toast.error('회고 완료 실패');
-      console.error(error);
+      console.error('회고 완료 실패', error);
     }
   };
 
