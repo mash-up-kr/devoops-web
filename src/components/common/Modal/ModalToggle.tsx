@@ -1,16 +1,16 @@
 'use client';
 
-import { ReactNode } from 'react';
+import { ButtonHTMLAttributes, ReactNode } from 'react';
 
 import { useModalDispatch } from '@/providers/ModalContext';
 import { type ModalActionType } from '@/types/modal';
 
-interface ModalToggleProps {
+interface ModalToggleProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   action: ModalActionType;
   children: ReactNode;
 }
 
-export default function ModalToggle({ action, children }: ModalToggleProps) {
+export default function ModalToggle({ action, children, ...props }: ModalToggleProps) {
   const dispatch = useModalDispatch();
 
   const handleClick = () => {
@@ -18,7 +18,7 @@ export default function ModalToggle({ action, children }: ModalToggleProps) {
   };
 
   return (
-    <button type={'button'} onClick={handleClick}>
+    <button type={'button'} onClick={handleClick} {...props}>
       {children}
     </button>
   );
