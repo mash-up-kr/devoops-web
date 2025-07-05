@@ -13,7 +13,7 @@ export default function QuestionContent() {
   const currentCategory = categories[findIndexById(categories, activeCategory)];
 
   if (!currentCategory) {
-    return <div className={'text-center text-gray-500'}>{'카테고리를 찾을 수 없습니다.'}</div>;
+    return <div className={'text-dark-grey-500 text-center'}>{'카테고리를 찾을 수 없습니다.'}</div>;
   }
 
   return (
@@ -23,7 +23,7 @@ export default function QuestionContent() {
       ))}
 
       {currentCategory.questions.length === 0 && (
-        <div className={'py-8 text-center text-gray-500'}>{'이 카테고리에는 아직 질문이 없습니다.'}</div>
+        <div className={'text-dark-grey-500 py-8 text-center'}>{'이 카테고리에는 아직 질문이 없습니다.'}</div>
       )}
     </div>
   );
