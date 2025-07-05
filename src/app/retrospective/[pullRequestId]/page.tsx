@@ -1,5 +1,6 @@
 'use client';
 
+import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 import { fetchMockPullRequestById } from '@/apis/retrospective.mock';
@@ -12,14 +13,10 @@ import RetrospectiveHeader from '@/components/retrospective/RetrospectiveHeader'
 import RetrospectiveQuestions from '@/components/retrospective/RetrospectiveQuestions';
 import type { CategoryWithQuestions, PullRequestDetail } from '@/types/retrospective';
 
-interface RetrospectivePageProps {
-  params: {
-    pullRequestId: string;
-  };
-}
+export default function RetrospectivePage() {
+  const params = useParams();
+  const pullRequestId = params?.pullRequestId as string;
 
-export default function RetrospectivePage({ params }: RetrospectivePageProps) {
-  const { pullRequestId } = params;
   const [data, setData] = useState<PullRequestDetail | null>(null);
 
   useEffect(() => {
