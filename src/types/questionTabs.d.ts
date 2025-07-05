@@ -1,11 +1,11 @@
 export interface Question {
-  id: string;
+  id: number;
   title: string;
   description?: string;
 }
 
 export interface Category {
-  id: string;
+  id: number;
   name: string;
   questions: Question[];
 }
