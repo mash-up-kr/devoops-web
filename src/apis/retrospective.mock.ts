@@ -87,11 +87,13 @@ const mockData: Record<string, PullRequestDetail> = {
 };
 
 export async function fetchMockPullRequestById(pullRequestId: string): Promise<PullRequestDetail> {
-  const data = mockData[pullRequestId];
+  return new Promise((resolve, reject) => {
+    const data = mockData[pullRequestId];
 
-  if (!data) {
-    throw new Error(`Mock data not found for PR ID: ${pullRequestId}`);
-  }
-
-  return data;
+    if (!data) {
+      reject(new Error(`Mock data not found for PR ID: ${pullRequestId}`));
+    } else {
+      resolve(data);
+    }
+  });
 }
