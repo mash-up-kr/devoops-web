@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 export interface Question {
   questionId: number;
   category: string;
@@ -27,32 +29,36 @@ export interface CategoryWithQuestions {
 }
 
 export async function fetchPullRequestById(pullRequestId: string, accessToken: string): Promise<PullRequestDetail> {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/pull-requests/${pullRequestId}`, {
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-    },
-    cache: 'no-store',
-  });
+  try {
+    // const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/pull-requests/${pullRequestId}`, {
+    const res = await axios.get(`/api/pull-requests/${pullRequestId}`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
 
-  if (!res.ok) {
-    throw new Error('PR 정보 조회 실패');
+    return res.data;
+  } catch (error: any) {
+    const message = error.response?.data?.message || 'PR 정보 조회 실패';
+    throw new Error(message);
   }
-
-  return res.json();
 }
 
 export async function markPRAsDone(pullRequestId: string): Promise<void> {
-  const response = await fetch(`/api/pull-requests/${pullRequestId}/done`, {
-    // const response = await fetch(`https://api.dev-oops.kr/api/pull-requests/${pullRequestId}/done`, {
-    method: 'PATCH',
-    headers: {
-      // Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
-      // 'Content-Type': 'application/json',
-    },
-  });
-
-  if (!response.ok) {
-    const error = await response.json();
-    throw new Error(error.message || 'PR 회고 완료 요청 실패');
+  try {
+    // await axios.patch(`https://api.dev-oops.kr/api/pull-requests/${pullRequestId}/done`, {}, {
+    await axios.patch(
+      `/api/pull-requests/${pullRequestId}/done`,
+      {},
+      {
+        headers: {
+          // Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+          // 'Content-Type': 'application/json',
+        },
+      },
+    );
+  } catch (error: any) {
+    const message = error.response?.data?.message || 'PR 회고 완료 요청 실패';
+    throw new Error(message);
   }
 }
