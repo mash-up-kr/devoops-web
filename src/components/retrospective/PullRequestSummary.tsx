@@ -1,13 +1,5 @@
 import SectionHeader from '@/components/retrospective/SectionHeader';
-
-interface SummaryItem {
-  title: string;
-  content: string[];
-}
-
-interface PullRequestSummaryProps {
-  summary: SummaryItem[];
-}
+import type { PullRequestSummaryProps } from '@/types/retrospective';
 
 export default function PullRequestSummary({ summary }: PullRequestSummaryProps) {
   return (

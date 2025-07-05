@@ -29,3 +29,12 @@ export interface CategoryWithQuestions {
 export interface RetrospectiveQuestionsProps {
   questions: CategoryWithQuestions[];
 }
+
+export interface SummaryItem {
+  title: string;
+  content: string[];
+}
+
+export interface PullRequestSummaryProps {
+  summary: SummaryItem[];
+}
