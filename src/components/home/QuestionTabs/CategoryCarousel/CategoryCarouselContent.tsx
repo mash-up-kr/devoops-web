@@ -2,6 +2,8 @@
 
 import { ReactNode, useState, useLayoutEffect, useRef } from 'react';
 
+const GAP_SIZE = 4;
+
 export default function CategoryCarouselContent({
   currentIndex,
   children,
@@ -19,12 +21,12 @@ export default function CategoryCarouselContent({
     const buttons = Array.from(container.querySelectorAll('button'));
     if (!buttons.length) return;
 
-    const buttonsWidth = buttons.map((button) => button.offsetWidth + 4);
+    const buttonsWidth = buttons.map((button) => button.offsetWidth + GAP_SIZE);
     const totalWidth = buttonsWidth.reduce((sum, width) => sum + width, 0);
     const visibleWidth = container.parentElement?.clientWidth || 0;
 
     const totalWidthBeforeActiveButton = buttonsWidth.slice(0, currentIndex).reduce((sum, width) => sum + width, 0);
-    const activeButtonWidth = buttonsWidth[currentIndex] || 0;
+    const activeButtonWidth = buttonsWidth[currentIndex] ?? 0;
     const center = (visibleWidth - activeButtonWidth) / 2;
 
     let moveValue = totalWidthBeforeActiveButton - center;
