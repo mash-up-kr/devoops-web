@@ -83,8 +83,8 @@ export default function MyPR() {
               pe-8
             `}
           >
-            {data.pullRequests.map((pr, idx) => (
-              <PRItem key={idx}>
+            {data.pullRequests.map((pr) => (
+              <PRItem key={pr.id}>
                 <PRStatus status={pr.recordStatus} />
                 <PRContent content={pr.title} label={pr.tag} />
               </PRItem>
