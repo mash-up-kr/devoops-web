@@ -5,11 +5,12 @@ import React from 'react';
 import QuestionItem from '@/components/home/QuestionTabs/QuestionItem';
 import { useQuestionTabs } from '@/providers/QuestionTabsContext';
 import { Question } from '@/types/questionTabs';
+import { findIndexById } from '@/utils/findIndexById';
 
 export default function QuestionContent() {
   const { categories, activeCategory } = useQuestionTabs();
 
-  const currentCategory = categories.find((cat) => cat.id === activeCategory);
+  const currentCategory = categories[findIndexById(categories, activeCategory)];
 
   if (!currentCategory) {
     return <div className={'text-center text-gray-500'}>{'카테고리를 찾을 수 없습니다.'}</div>;
