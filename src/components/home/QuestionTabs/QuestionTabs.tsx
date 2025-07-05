@@ -2,8 +2,7 @@
 
 import { useState, useMemo, useCallback } from 'react';
 
-import CategoryCarousel from '@/components/home/QuestionTabs/CategoryCarousel/CategoryCarousel';
-import QuestionContent from '@/components/home/QuestionTabs/QuestionContent';
+import { CategoryCarousel, QuestionContent } from '@/components/home/QuestionTabs';
 import { QuestionTabsContext } from '@/providers/QuestionTabsContext';
 import { findIndexById } from '@/utils/findIndexById';
 

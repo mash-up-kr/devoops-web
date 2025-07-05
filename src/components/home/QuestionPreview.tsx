@@ -1,4 +1,4 @@
-import QuestionTabs from './QuestionTabs/QuestionTabs';
+import { QuestionTabs } from '@/components/home/QuestionTabs';
 
 export default function QuestionPreview() {
   return (
