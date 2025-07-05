@@ -1,11 +1,16 @@
-import { fetchMockPullRequestById as fetchPullRequestById } from '@/apis/retrospective.mock';
+'use client';
+
+import { useEffect, useState } from 'react';
+
+import { fetchMockPullRequestById } from '@/apis/retrospective.mock';
+// import { fetchPullRequestById } from '@/apis/retrospective';
+
 import FixedFooter from '@/components/retrospective/FixedFooter';
 import PullRequestSummary from '@/components/retrospective/PullRequestSummary';
 import RetrospectiveAnswers from '@/components/retrospective/RetrospectiveAnswers';
 import RetrospectiveHeader from '@/components/retrospective/RetrospectiveHeader';
 import RetrospectiveQuestions from '@/components/retrospective/RetrospectiveQuestions';
-// import { fetchPullRequestById } from '@/apis/retrospective';
-import type { CategoryWithQuestions } from '@/types/retrospective';
+import type { CategoryWithQuestions, PullRequestDetail } from '@/types/retrospective';
 
 interface RetrospectivePageProps {
   params: {
@@ -13,13 +18,27 @@ interface RetrospectivePageProps {
   };
 }
 
-export default async function RetrospectivePage({ params }: RetrospectivePageProps) {
+export default function RetrospectivePage({ params }: RetrospectivePageProps) {
   const { pullRequestId } = params;
-  console.log('현재 PR ID:', params.pullRequestId);
-  // const accessToken = 'YOUR_ACCESS_TOKEN';
+  const [data, setData] = useState<PullRequestDetail | null>(null);
 
-  const data = await fetchPullRequestById(pullRequestId);
-  // const data = await fetchPullRequestById(pullRequestId, accessToken);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await fetchMockPullRequestById(pullRequestId);
+        setData(res);
+        // const accessToken = localStorage.getItem('accessToken') ?? '';
+        // const res = await fetchPullRequestById(pullRequestId, accessToken);
+        // setData(res);
+      } catch (error) {
+        console.error('PR 데이터 불러오기 실패:', error);
+      }
+    };
+
+    fetchData();
+  }, [pullRequestId]);
+
+  if (!data) return <div>{'Loading...'}</div>;
 
   const formattedSummary = [
     {

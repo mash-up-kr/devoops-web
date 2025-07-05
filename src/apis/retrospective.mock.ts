@@ -1,4 +1,4 @@
-import type { PullRequestDetail } from './retrospective';
+import type { PullRequestDetail } from '@/types/retrospective';
 
 const mockData: Record<string, PullRequestDetail> = {
   test123: {
