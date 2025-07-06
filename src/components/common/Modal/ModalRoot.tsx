@@ -1,14 +1,36 @@
 'use client';
 
-import { ReactNode } from 'react';
+import { ReactNode, HTMLProps } from 'react';
 
-import ModalProvider from '@/providers/ModalContext';
+import ModalPortal from '@/components/common/Modal/Portal';
+import { useModalState, useModalDispatch } from '@/providers/ModalContext';
+import { cn } from '@/utils/cn';
 
-interface ModalRootProps {
+interface ModalRootProps extends HTMLProps<HTMLDivElement> {
   children: ReactNode;
-  defaultOpen?: boolean;
+  className?: string;
 }
 
-export default function ModalRoot({ children, defaultOpen }: ModalRootProps) {
-  return <ModalProvider defaultOpen={defaultOpen}>{children}</ModalProvider>;
+export default function ModalRoot({ children, className = '', ...props }: ModalRootProps) {
+  const { isOpen } = useModalState();
+  const dispatch = useModalDispatch();
+
+  const handleClose = () => dispatch({ type: 'CLOSE' });
+
+  return (
+    <ModalPortal>
+      <div
+        onClick={handleClose}
+        className={cn(
+          `z-modal fixed inset-0 flex items-center justify-center transition-opacity duration-200 ${
+            isOpen ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0'
+          }`,
+          className,
+        )}
+        {...props}
+      >
+        {children}
+      </div>
+    </ModalPortal>
+  );
 }

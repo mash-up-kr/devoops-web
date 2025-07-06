@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { ReactNode } from 'react';
 
 import GlobalNavigation from '@/components/common/GlobalNavigation';
+import ModalProvider from '@/providers/ModalContext';
 import QueryProvider from '@/providers/QueryProvider';
 import './globals.css';
 
@@ -30,9 +31,11 @@ export default function RootLayout({
       </head>
       <QueryProvider>
         <body className={'pt-gnb-height'}>
-          <div id={'portal'} />
-          <GlobalNavigation />
+          <ModalProvider>
+            <GlobalNavigation />
+          </ModalProvider>
           {children}
+          <div id={'portal'} />
         </body>
       </QueryProvider>
     </html>

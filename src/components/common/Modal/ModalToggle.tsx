@@ -18,7 +18,7 @@ export default function ModalToggle({ action, children, ...props }: ModalToggleP
   };
 
   return (
-    <button type={'button'} onClick={handleClick} {...props}>
+    <button type={'button'} onClick={handleClick} className={'cursor-pointer'} {...props}>
       {children}
     </button>
   );
