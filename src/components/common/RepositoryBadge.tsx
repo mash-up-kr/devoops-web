@@ -3,14 +3,13 @@ import { HTMLAttributes } from 'react';
 
 import { cn } from '@/utils/cn';
 
-interface RepositoryBadgeProps extends HTMLAttributes<HTMLSpanElement | HTMLButtonElement> {
+type RepositoryBadgeProps = {
   label: string;
   count?: number;
-  as?: 'span' | 'button';
   disabled?: boolean;
   className?: string;
   onClick?: () => void;
-}
+} & ((HTMLAttributes<HTMLSpanElement> & { as?: 'span' }) | (HTMLAttributes<HTMLButtonElement> & { as: 'button' }));
 
 const RepositoryBadgeVariants = cva(
   `text-body-small border-dark-grey-200 bg-white-opacity-50 flex items-center justify-center rounded-full border-1 font-medium`,
