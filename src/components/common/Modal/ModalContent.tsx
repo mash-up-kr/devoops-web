@@ -1,14 +1,13 @@
 'use client';
 
-import { PropsWithChildren, HTMLProps, MouseEvent } from 'react';
+import { PropsWithChildren, HTMLProps } from 'react';
+
+import { onKeyDown } from '@/utils/onKeydown';
+import { stopPropagation } from '@/utils/stopPropagation';
 
 export default function ModalContent({ children, ...props }: PropsWithChildren<HTMLProps<HTMLDivElement>>) {
-  const handleClick = (e: MouseEvent<HTMLDivElement>) => {
-    e.stopPropagation();
-  };
-
   return (
-    <div onClick={handleClick} {...props}>
+    <div role={'button'} tabIndex={0} onClick={stopPropagation} onKeyDown={onKeyDown(stopPropagation)} {...props}>
       {children}
     </div>
   );

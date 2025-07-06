@@ -62,9 +62,7 @@
     "better-tailwindcss/no-unregistered-classes": "off",
     "better-tailwindcss/enforce-consistent-line-wrapping": "off",
     "react/button-has-type": "off",
-    "@typescript-eslint/no-unused-vars": "error",
-    "jsx-a11y/no-static-element-interactions": "off",
-    "jsx-a11y/click-events-have-key-events": "off"
+    "@typescript-eslint/no-unused-vars": "error"
   },
   "ignorePatterns": ["node_modules/"]
 }
