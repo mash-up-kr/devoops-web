@@ -1,7 +1,6 @@
 import Link from 'next/link';
 
-import ProfileButton from '@/components/common/Profile/ProfileButton';
-import ProfileModal from '@/components/common/Profile/ProfileModal';
+import { ProfileModal, ProfileButton } from '@/components/common/Modal/ProfileModal';
 
 export default function GlobalNavigation() {
   return (

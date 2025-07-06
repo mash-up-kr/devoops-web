@@ -1,6 +1,5 @@
 import { Modal } from '@/components/common/Modal';
-import ProfileButton from '@/components/common/Profile/ProfileButton';
-import ProfileContent from '@/components/common/Profile/ProfileContent';
+import { ProfileButton, ProfileContent } from '@/components/common/Modal/ProfileModal';
 
 export default function ProfileModal() {
   return (
