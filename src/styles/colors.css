@@ -66,4 +66,7 @@
   /* Outline Colors */
   --color-outline: var(--color-dark-grey-200);
   --color-outline-variant: var(--color-dark-grey-100);
+
+  /* Box Shadow Colors */
+  --shadow-modal: 0px 12px 50px 0px rgba(0, 0, 0, 0.5);
 }
