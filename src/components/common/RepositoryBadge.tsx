@@ -39,8 +39,8 @@ export default function RepositoryBadge({
 
   return (
     <Component
-      {...(onClick && { onClick })}
-      {...(Component === 'button' && { disabled })}
+      onClick={onClick}
+      {...(Component === 'button' ? { disabled } : {})}
       className={cn(RepositoryBadgeVariants({ as }), className)}
       {...props}
     >
