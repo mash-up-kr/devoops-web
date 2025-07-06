@@ -7,7 +7,7 @@ export default function ProfileContent() {
   return (
     <div className={'flex w-[296px] flex-col'}>
       <div className={'flex w-full flex-col items-center gap-3'}>
-        <div className={'items-cetner flex size-25 justify-center overflow-hidden rounded-full'}>
+        <div className={'flex size-25 items-center justify-center overflow-hidden rounded-full'}>
           <Image src={Avatar} alt={'프로필 아바타 이미지'} />
         </div>
         <div className={'border-outline-variant flex w-full flex-col items-center gap-4 border-b pb-4'}>
