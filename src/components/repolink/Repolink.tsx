@@ -14,14 +14,14 @@ function Repolink() {
         'border-dark-grey-200 flex flex-col items-center rounded-[12px] border-[1px] px-[32px] pt-[52px] pb-[28px]'
       }
     >
-      <div
+      <section
         className={
           'border-dark-grey-200 flex w-fit items-center justify-center gap-[6px] rounded-full border-[1px] px-[10px] py-[6px]'
         }
       >
         <Image src={Avatar} alt={'프로필 아바타 이미지'} width={16} height={16} />
         <p className={'text-body-small'}>{'Hocaron'}</p>
-      </div>
+      </section>
 
       <section className={'flex w-[380px] flex-col items-center justify-center'}>
         <h3 className={'text-h3 mt-[12px]'}>{'회고 할 레포 추가해라~'}</h3>
@@ -29,9 +29,8 @@ function Repolink() {
         <p className={'text-body-small text-dark-grey-600 mt-[12px]'}>{'레포지토리는 5개까지 추가할 수 있어요'}</p>
       </section>
 
-      <section className={'mt-[40px] flex w-full flex-col'}>
+      <form className={'mt-[40px] flex w-full flex-col'}>
         <p className={'text-caption text-dark-grey-800 mb-[8px]'}>{'레포지토리 주소'}</p>
-
         <div className={'flex w-full gap-[12px]'}>
           <input
             className={
@@ -44,11 +43,11 @@ function Repolink() {
             {'추가'}
           </Button>
         </div>
-      </section>
+      </form>
 
-      <section className={'border-dark-grey-400 mt-[24px] h-[188px] w-full border-[1px]'}>
+      <div className={'border-dark-grey-400 mt-[24px] h-[188px] w-full border-[1px]'}>
         <p className={'text-white'}>{'이미지 넣을 예정'}</p>
-      </section>
+      </div>
 
       <Button className={'mt-[24px] w-full'}>{'시작하기'}</Button>
     </main>
