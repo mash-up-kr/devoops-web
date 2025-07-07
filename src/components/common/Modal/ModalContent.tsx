@@ -1,29 +1,14 @@
 'use client';
 
-import { PropsWithChildren, useEffect, useState } from 'react';
+import { PropsWithChildren, HTMLProps } from 'react';
 
-import ModalPortal from '@/components/common/Modal/Portal';
-import { useModalState } from '@/providers/ModalContext';
+import { onKeyDown } from '@/utils/onKeydown';
+import { stopPropagation } from '@/utils/stopPropagation';
 
-export default function ModalContent({ children }: PropsWithChildren) {
-  const { isOpen } = useModalState();
-  const [isMounted, setIsMounted] = useState(false);
-
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
-
-  if (!isMounted) return null;
-
+export default function ModalContent({ children, ...props }: PropsWithChildren<HTMLProps<HTMLDivElement>>) {
   return (
-    <ModalPortal>
-      <div
-        className={`z-modal fixed inset-0 flex items-center justify-center transition-opacity duration-200 ${
-          isOpen ? 'pointer-events-auto bg-black/40 opacity-100' : 'pointer-events-none opacity-0'
-        }`}
-      >
-        <div className={'relative rounded-xl bg-white p-6 text-black shadow-xl'}>{children}</div>
-      </div>
-    </ModalPortal>
+    <div role={'button'} tabIndex={0} onClick={stopPropagation} onKeyDown={onKeyDown(stopPropagation)} {...props}>
+      {children}
+    </div>
   );
 }
