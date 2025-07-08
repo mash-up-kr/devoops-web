@@ -1,19 +1,28 @@
 'use client';
 
 import type { UserType } from '@/__generated__/@types';
-import { markPRAsDone } from '@/apis/retrospective';
+import { markPRAsDone, submitRetrospectiveAnswers } from '@/apis/retrospective';
 import Button from '@/components/common/Button';
 
 interface FixedFooterProps {
   pullRequestId: string;
   user: UserType;
+  answers: { answerId: number; content: string }[];
 }
 
-export default function FixedFooter({ pullRequestId, user }: FixedFooterProps) {
+export default function FixedFooter({ pullRequestId, user, answers }: FixedFooterProps) {
   const handleComplete = async () => {
     try {
+      const hasEmpty = answers.some((a) => a.content.trim() === '');
+      if (hasEmpty) {
+        alert('모든 질문에 답변을 작성해주세요!');
+        return;
+      }
+
+      await submitRetrospectiveAnswers(user, answers);
+
       await markPRAsDone(Number(pullRequestId), user);
-      // 이동 처리
+
       console.log('회고 완료됨!');
     } catch (error) {
       console.error('회고 완료 실패', error);

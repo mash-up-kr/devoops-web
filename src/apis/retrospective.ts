@@ -23,3 +23,12 @@ export async function markPRAsDone(pullRequestId: number, user: UserType): Promi
     throw new Error(message);
   }
 }
+
+export async function submitRetrospectiveAnswers(user: UserType, answers: { answerId: number; content: string }[]) {
+  const res = await apiApi.updateAllAnswer({
+    query: { user },
+    data: { answers },
+  });
+
+  return res.data;
+}

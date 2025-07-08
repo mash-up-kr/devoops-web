@@ -1,3 +1,7 @@
+'use client';
+
+import React from 'react';
+
 import SectionHeader from '@/components/retrospective/SectionHeader';
 
 interface Question {
@@ -6,12 +10,37 @@ interface Question {
   answer: string | null;
 }
 
-interface RetrospectiveAnswersProps {
-  answers: Question[];
+interface WrittenAnswer {
+  answerId: number;
+  content: string;
 }
 
-export default function RetrospectiveAnswers({ answers }: RetrospectiveAnswersProps) {
+interface RetrospectiveAnswersProps {
+  answers: Question[];
+  writtenAnswers: WrittenAnswer[];
+  setWrittenAnswers: React.Dispatch<React.SetStateAction<WrittenAnswer[]>>;
+}
+
+export default function RetrospectiveAnswers({
+  answers,
+  writtenAnswers,
+  setWrittenAnswers,
+}: RetrospectiveAnswersProps) {
   const hasAnswers = answers.length > 0;
+
+  const getAnswerContent = (questionId: number) => {
+    return writtenAnswers.find((a) => a.answerId === questionId)?.content ?? '';
+  };
+
+  const handleChange = (questionId: number, newContent: string) => {
+    setWrittenAnswers((prev) => {
+      const exists = prev.some((a) => a.answerId === questionId);
+      if (exists) {
+        return prev.map((a) => (a.answerId === questionId ? { ...a, content: newContent } : a));
+      }
+      return [...prev, { answerId: questionId, content: newContent }];
+    });
+  };
 
   return (
     <section className={'flex flex-col gap-[20px]'}>
@@ -38,7 +67,15 @@ export default function RetrospectiveAnswers({ answers }: RetrospectiveAnswersPr
               className={'bg-dark-grey-50 flex flex-col gap-[8px] rounded-[8px] px-[24px] py-[20px]'}
             >
               <p className={'text-body-medium font-semibold'}>{answer.content}</p>
-              <p className={'text-body-small text-on-surface-lowest'}>{answer.answer}</p>
+              <textarea
+                value={getAnswerContent(answer.questionId)}
+                onChange={(e) => handleChange(answer.questionId, e.target.value)}
+                placeholder={'회고를 작성해 주세요...'}
+                className={
+                  'text-body-small border-dark-grey-100 resize-none rounded-md border bg-transparent px-4 py-2 text-white focus:ring-primary focus:ring-1 focus:outline-none'
+                }
+                rows={4}
+              />
             </li>
           ))}
         </ul>

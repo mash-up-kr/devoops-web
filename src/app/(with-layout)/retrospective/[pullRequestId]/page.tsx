@@ -19,6 +19,8 @@ export default function RetrospectivePage() {
 
   const [data, setData] = useState<PullRequestDetail | null>(null);
 
+  const [answers, setAnswers] = useState<{ answerId: number; content: string }[]>([]);
+
   const mockUser = {
     id: 1,
     githubId: 'mock-user',
@@ -78,11 +80,15 @@ export default function RetrospectivePage() {
       <main className={'flex flex-col gap-[68px]'}>
         <PullRequestSummary summary={formattedSummary} />
         <RetrospectiveQuestions questions={groupedQuestions} />
-        <RetrospectiveAnswers answers={data.questions.filter((q) => q.isSelected)} />
+        <RetrospectiveAnswers
+          answers={data.questions.filter((q) => q.isSelected)}
+          writtenAnswers={answers}
+          setWrittenAnswers={setAnswers}
+        />
       </main>
 
       {/* 실제 user로 변경 필요  */}
-      <FixedFooter pullRequestId={pullRequestId} user={mockUser} />
+      <FixedFooter pullRequestId={pullRequestId} user={mockUser} answers={answers} />
     </>
   );
 }
