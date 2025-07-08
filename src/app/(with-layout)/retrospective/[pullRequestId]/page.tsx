@@ -19,6 +19,13 @@ export default function RetrospectivePage() {
 
   const [data, setData] = useState<PullRequestDetail | null>(null);
 
+  const mockUser = {
+    id: 1,
+    githubId: 'mock-user',
+    nickname: '서진',
+    profileImageUrl: '',
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -74,7 +81,8 @@ export default function RetrospectivePage() {
         <RetrospectiveAnswers answers={data.questions.filter((q) => q.isSelected)} />
       </main>
 
-      <FixedFooter pullRequestId={pullRequestId} />
+      {/* 실제 user로 변경 필요  */}
+      <FixedFooter pullRequestId={pullRequestId} user={mockUser} />
     </>
   );
 }
