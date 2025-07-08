@@ -1,8 +1,7 @@
 import type { Metadata } from 'next';
 import { ReactNode } from 'react';
-import { Toaster } from 'react-hot-toast';
 
-import GlobalNavigation from '@/components/common/GlobalNavigation';
+import ModalProvider from '@/providers/ModalContext';
 import QueryProvider from '@/providers/QueryProvider';
 import './globals.css';
 
@@ -31,9 +30,8 @@ export default function RootLayout({
       </head>
       <QueryProvider>
         <body className={'pt-gnb-height'}>
-          <GlobalNavigation />
-          <Toaster position={'top-center'} reverseOrder={false} />
-          {children}
+          <ModalProvider>{children}</ModalProvider>
+          <div id={'portal'} />
         </body>
       </QueryProvider>
     </html>

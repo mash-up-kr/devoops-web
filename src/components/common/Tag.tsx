@@ -26,12 +26,12 @@ export default function Tag({ dotColor, children }: TagProps) {
   return (
     <span
       className={`
-        border-outline inline-flex items-center gap-1.5 rounded-full border-1
-        px-2.5 py-[5px] text-nowrap
+        border-dark-grey-200 inline-flex items-center gap-1.5 rounded-full
+        border-1 px-2.5 py-[5px] text-nowrap
       `}
     >
       <span className={cn(dotVariants({ dotColor }))} />
-      {children}
+      <p className={'text-caption text-dark-grey-800 font-medium'}>{children}</p>
     </span>
   );
 }

@@ -66,4 +66,25 @@
   /* Outline Colors */
   --color-outline: var(--color-dark-grey-200);
   --color-outline-variant: var(--color-dark-grey-100);
+  
+  /* Gradient Colors */
+  --color-blue-tiny-left: linear-gradient(270deg, #f6f6f9 20%, #adb7fb 88.94%);
+  --color-blue-tiny-right: linear-gradient(270deg, #adb7fb 14.14%, #f6f6f9 86.06%);
+
+  /* Box Shadow Colors */
+  --shadow-modal: 0px 12px 50px 0px rgba(0, 0, 0, 0.5);
+}
+
+@utility blue-tiny-left {
+  background: var(--color-blue-tiny-left);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+@utility blue-tiny-right {
+  background: var(--color-blue-tiny-right);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
