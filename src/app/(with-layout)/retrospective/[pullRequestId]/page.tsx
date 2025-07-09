@@ -1,45 +1,37 @@
 'use client';
 
 import { useParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
-import type { PullRequestReadResponseType } from '@/__generated__/@types';
-import { fetchPullRequestById } from '@/apis/retrospective';
+import type { UserType } from '@/__generated__/@types';
 import FixedFooter from '@/components/retrospective/FixedFooter';
 import PullRequestSummary from '@/components/retrospective/PullRequestSummary';
 import RetrospectiveAnswers from '@/components/retrospective/RetrospectiveAnswers';
 import RetrospectiveHeader from '@/components/retrospective/RetrospectiveHeader';
 import RetrospectiveQuestions from '@/components/retrospective/RetrospectiveQuestions';
+import { usePullRequestDetail } from '@/hooks/api/retrospective/usePullRequestDetail';
 import type { CategoryWithQuestions, Question } from '@/types/retrospective';
 
 export default function RetrospectivePage() {
   const params = useParams();
   const pullRequestId = params?.pullRequestId as string;
 
-  const [data, setData] = useState<PullRequestReadResponseType | null>(null);
   const [answers, setAnswers] = useState<{ answerId: number; content: string }[]>([]);
 
-  const mockUser = {
+  // UserType에 맞게 mockUser 작성 (모든 필드 optional)
+  const mockUser: UserType = {
     id: 1,
-    githubId: 'mock-user',
+    providerId: 1,
     nickname: '서진',
     profileImageUrl: '',
+    githubToken: { token: '' },
   };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await fetchPullRequestById(Number(pullRequestId), mockUser);
-        setData(res);
-      } catch (error) {
-        console.error('PR 데이터 불러오기 실패:', error);
-      }
-    };
+  // 커스텀 훅 사용
+  const { data, isLoading, error } = usePullRequestDetail(Number(pullRequestId), mockUser);
 
-    fetchData();
-  }, [pullRequestId]);
-
-  if (!data) return <div>{'Loading...'}</div>;
+  if (isLoading) return <div>{'Loading...'}</div>;
+  if (error || !data) return <div>{'데이터를 불러오지 못했습니다.'}</div>;
 
   const formattedSummary = [
     {
@@ -72,25 +64,32 @@ export default function RetrospectivePage() {
     return acc;
   }, []);
 
-  const mappedAnswers: Question[] = data.questions
-    .filter(
-      (q) =>
-        q.isSelected === true &&
-        typeof q.answer === 'string' &&
-        q.answer.trim() !== '' &&
-        typeof q.questionId === 'number' &&
-        typeof q.category === 'string' &&
-        typeof q.content === 'string' &&
-        (typeof q.answerId === 'number' || q.answerId === null),
-    )
-    .map((q) => ({
-      questionId: q.questionId!,
-      category: q.category!,
-      content: q.content!,
-      isSelected: q.isSelected!,
-      answerId: q.answerId ?? null,
-      answer: q.answer ?? null,
-    }));
+  // 타입 가드 함수 정의 (undefined 체크 추가)
+  const isValidSelectedQuestion = (
+    q: any,
+  ): q is Required<Pick<any, 'questionId' | 'category' | 'content' | 'isSelected'>> & {
+    answer: string;
+    answerId: number | null;
+  } => {
+    return (
+      q.isSelected === true &&
+      typeof q.answer === 'string' &&
+      q.answer.trim() !== '' &&
+      typeof q.questionId === 'number' &&
+      typeof q.category === 'string' &&
+      typeof q.content === 'string' &&
+      (typeof q.answerId === 'number' || q.answerId === null)
+    );
+  };
+
+  const mappedAnswers: Question[] = data.questions.filter(isValidSelectedQuestion).map((q) => ({
+    questionId: q.questionId as number,
+    category: q.category as string,
+    content: q.content as string,
+    isSelected: q.isSelected as boolean,
+    answerId: q.answerId ?? null,
+    answer: q.answer ?? null,
+  }));
 
   return (
     <>
