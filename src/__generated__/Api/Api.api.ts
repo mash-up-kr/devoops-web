@@ -9,7 +9,6 @@
  * ---------------------------------------------------------------
  */
 
-
 import instance from '@/apis/index';
 import { ContentType, HttpClient, RequestParams } from '../@http-client';
 import type {
