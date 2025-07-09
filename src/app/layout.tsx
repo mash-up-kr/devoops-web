@@ -29,7 +29,7 @@ export default function RootLayout({
         <link rel={'stylesheet'} href={'https://static.dev-oops.kr/fonts/pretendardvariable.css'} />
       </head>
       <QueryProvider>
-        <body className={'pt-gnb-height'}>
+        <body>
           <ModalProvider>{children}</ModalProvider>
           <div id={'portal'} />
         </body>
