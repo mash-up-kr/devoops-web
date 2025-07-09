@@ -8,9 +8,9 @@ export default function WithGlobalNavigationLayout({
   children: ReactNode;
 }>) {
   return (
-    <>
+    <div className={'pt-gnb-height'}>
       <GlobalNavigation />
       {children}
-    </>
+    </div>
   );
 }
