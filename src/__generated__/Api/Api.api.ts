@@ -9,7 +9,6 @@
  * ---------------------------------------------------------------
  */
 
-
 import instance from '@/apis/index';
 import { ContentType, HttpClient, RequestParams } from '../@http-client';
 import type {
@@ -241,7 +240,7 @@ export class ApiApi<SecurityDataType = unknown> extends HttpClient<SecurityDataT
   getRepositoryPullRequests = (variables: {
     repositoryId: number;
     query: {
-      user: UserType;
+      user?: UserType;
       /** @format int32 */
       size: number;
       /** @format int32 */
