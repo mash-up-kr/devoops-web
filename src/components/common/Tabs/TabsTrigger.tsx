@@ -1,12 +1,12 @@
 'use client';
 
 import { cva, type VariantProps } from 'class-variance-authority';
-import { ReactNode } from 'react';
+import { ReactNode, ButtonHTMLAttributes } from 'react';
 
 import { useTabsContext } from '@/providers/TabsContext';
 import { cn } from '@/utils/cn';
 
-interface TabsTriggerProps extends VariantProps<typeof tabsTriggerVariants> {
+interface TabsTriggerProps extends ButtonHTMLAttributes<HTMLButtonElement>, VariantProps<typeof tabsTriggerVariants> {
   value: string;
   children: ReactNode;
   className?: string;
