@@ -3,22 +3,20 @@
 import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
-import { fetchMockPullRequestById } from '@/apis/retrospective.mock';
-// import { fetchPullRequestById } from '@/apis/retrospective';
-
+import type { PullRequestReadResponseType } from '@/__generated__/@types';
+import { fetchPullRequestById } from '@/apis/retrospective';
 import FixedFooter from '@/components/retrospective/FixedFooter';
 import PullRequestSummary from '@/components/retrospective/PullRequestSummary';
 import RetrospectiveAnswers from '@/components/retrospective/RetrospectiveAnswers';
 import RetrospectiveHeader from '@/components/retrospective/RetrospectiveHeader';
 import RetrospectiveQuestions from '@/components/retrospective/RetrospectiveQuestions';
-import type { CategoryWithQuestions, PullRequestDetail } from '@/types/retrospective';
+import type { CategoryWithQuestions, Question } from '@/types/retrospective';
 
 export default function RetrospectivePage() {
   const params = useParams();
   const pullRequestId = params?.pullRequestId as string;
 
-  const [data, setData] = useState<PullRequestDetail | null>(null);
-
+  const [data, setData] = useState<PullRequestReadResponseType | null>(null);
   const [answers, setAnswers] = useState<{ answerId: number; content: string }[]>([]);
 
   const mockUser = {
@@ -31,11 +29,8 @@ export default function RetrospectivePage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await fetchMockPullRequestById(pullRequestId);
+        const res = await fetchPullRequestById(Number(pullRequestId), mockUser);
         setData(res);
-        // const accessToken = localStorage.getItem('accessToken') ?? '';
-        // const res = await fetchPullRequestById(pullRequestId, accessToken);
-        // setData(res);
       } catch (error) {
         console.error('PR 데이터 불러오기 실패:', error);
       }
@@ -54,6 +49,10 @@ export default function RetrospectivePage() {
   ];
 
   const groupedQuestions: CategoryWithQuestions[] = data.questions.reduce<CategoryWithQuestions[]>((acc, question) => {
+    if (question.questionId === undefined || question.content === undefined || question.category === undefined) {
+      return acc;
+    }
+
     const existing = acc.find((item) => item.category === question.category);
 
     const mappedQuestion = {
@@ -73,6 +72,26 @@ export default function RetrospectivePage() {
     return acc;
   }, []);
 
+  const mappedAnswers: Question[] = data.questions
+    .filter(
+      (q) =>
+        q.isSelected === true &&
+        typeof q.answer === 'string' &&
+        q.answer.trim() !== '' &&
+        typeof q.questionId === 'number' &&
+        typeof q.category === 'string' &&
+        typeof q.content === 'string' &&
+        (typeof q.answerId === 'number' || q.answerId === null),
+    )
+    .map((q) => ({
+      questionId: q.questionId!,
+      category: q.category!,
+      content: q.content!,
+      isSelected: q.isSelected!,
+      answerId: q.answerId ?? null,
+      answer: q.answer ?? null,
+    }));
+
   return (
     <>
       <RetrospectiveHeader title={data.title} tag={data.tag} mergedAt={data.mergedAt} />
@@ -80,14 +99,9 @@ export default function RetrospectivePage() {
       <main className={'flex flex-col gap-[68px]'}>
         <PullRequestSummary summary={formattedSummary} />
         <RetrospectiveQuestions questions={groupedQuestions} />
-        <RetrospectiveAnswers
-          answers={data.questions.filter((q) => q.isSelected)}
-          writtenAnswers={answers}
-          setWrittenAnswers={setAnswers}
-        />
+        <RetrospectiveAnswers answers={mappedAnswers} writtenAnswers={answers} setWrittenAnswers={setAnswers} />
       </main>
 
-      {/* 실제 user로 변경 필요  */}
       <FixedFooter pullRequestId={pullRequestId} user={mockUser} answers={answers} />
     </>
   );
