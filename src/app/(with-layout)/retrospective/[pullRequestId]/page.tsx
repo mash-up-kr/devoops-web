@@ -3,7 +3,6 @@
 import { useParams } from 'next/navigation';
 import { useState } from 'react';
 
-import type { UserType } from '@/__generated__/@types';
 import FixedFooter from '@/components/retrospective/FixedFooter';
 import PullRequestSummary from '@/components/retrospective/PullRequestSummary';
 import RetrospectiveAnswers from '@/components/retrospective/RetrospectiveAnswers';
@@ -18,18 +17,12 @@ export default function RetrospectivePage() {
 
   const [answers, setAnswers] = useState<{ answerId: number; content: string }[]>([]);
 
-  // UserType에 맞게 mockUser 작성 (모든 필드 optional)
-  const mockUser: UserType = {
-    id: 1,
-    providerId: 1,
-    nickname: '서진',
-    profileImageUrl: '',
-    githubToken: { token: '' },
-  };
+  const userString = localStorage.getItem('user');
+  const user = userString ? JSON.parse(userString) : null;
 
-  // 커스텀 훅 사용
-  const { data, isLoading, error } = usePullRequestDetail(Number(pullRequestId), mockUser);
+  const { data, isLoading, error } = usePullRequestDetail(Number(pullRequestId), user);
 
+  if (!user) return <div>{'로그인이 필요합니다.'}</div>;
   if (isLoading) return <div>{'Loading...'}</div>;
   if (error || !data) return <div>{'데이터를 불러오지 못했습니다.'}</div>;
 
@@ -64,7 +57,6 @@ export default function RetrospectivePage() {
     return acc;
   }, []);
 
-  // 타입 가드 함수 정의 (undefined 체크 추가)
   const isValidSelectedQuestion = (
     q: any,
   ): q is Required<Pick<any, 'questionId' | 'category' | 'content' | 'isSelected'>> & {
@@ -101,7 +93,7 @@ export default function RetrospectivePage() {
         <RetrospectiveAnswers answers={mappedAnswers} writtenAnswers={answers} setWrittenAnswers={setAnswers} />
       </main>
 
-      <FixedFooter pullRequestId={pullRequestId} user={mockUser} answers={answers} />
+      <FixedFooter pullRequestId={pullRequestId} user={user} answers={answers} />
     </>
   );
 }
