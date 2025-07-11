@@ -1,7 +1,7 @@
 'use client';
 
 import { cva, type VariantProps } from 'class-variance-authority';
-import { ReactNode, ButtonHTMLAttributes } from 'react';
+import { ReactNode, ButtonHTMLAttributes, MouseEvent } from 'react';
 
 import { useTabsContext } from '@/providers/TabsContext';
 import { cn } from '@/utils/cn';
@@ -25,13 +25,22 @@ const tabsTriggerVariants = cva('flex cursor-pointer gap-2 font-medium', {
   },
 });
 
-export default function TabsTrigger({ value, children, size, className = '', disabled = false }: TabsTriggerProps) {
+export default function TabsTrigger({
+  value,
+  children,
+  size,
+  className = '',
+  disabled = false,
+  onClick,
+  ...props
+}: TabsTriggerProps) {
   const { activeTab, setActiveTab, registerTab } = useTabsContext();
   const isActive = activeTab === value;
 
-  const handleClick = () => {
+  const handleClick = (e: MouseEvent<HTMLButtonElement>) => {
     if (!disabled) {
       setActiveTab(value);
+      onClick?.(e);
     }
   };
 
@@ -59,6 +68,7 @@ export default function TabsTrigger({ value, children, size, className = '', dis
         className,
       )}
       disabled={disabled}
+      {...props}
     >
       {children}
     </button>
