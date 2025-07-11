@@ -1,7 +1,7 @@
 'use client';
 
 import { useParams } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import FixedFooter from '@/components/retrospective/FixedFooter';
 import PullRequestSummary from '@/components/retrospective/PullRequestSummary';
@@ -16,13 +16,16 @@ export default function RetrospectivePage() {
   const pullRequestId = params?.pullRequestId as string;
 
   const [answers, setAnswers] = useState<{ answerId: number; content: string }[]>([]);
+  const [user, setUser] = useState(null);
 
-  const userString = localStorage.getItem('user');
-  const user = userString ? JSON.parse(userString) : null;
+  useEffect(() => {
+    const userString = localStorage.getItem('user');
+    setUser(userString ? JSON.parse(userString) : null);
+  }, []);
 
   const { data, isLoading, error } = usePullRequestDetail(Number(pullRequestId), user);
 
-  if (!user) return <div>{'로그인이 필요합니다.'}</div>;
+  if (user === null) return <div>{'로그인이 필요합니다.'}</div>;
   if (isLoading) return <div>{'Loading...'}</div>;
   if (error || !data) return <div>{'데이터를 불러오지 못했습니다.'}</div>;
 
