@@ -7,8 +7,8 @@ export const usePullRequestDetail = (pullRequestId: number, user: UserType | nul
   return useQuery({
     queryKey: ['pullRequestDetail', pullRequestId],
     queryFn: () => {
-      if (user) {
-        return fetchPullRequestById(pullRequestId, user);
+      if (user && 'accessToken' in user && typeof user.accessToken === 'string') {
+        return fetchPullRequestById(pullRequestId, user.accessToken);
       }
       throw new Error('로그인 정보가 없습니다.');
     },

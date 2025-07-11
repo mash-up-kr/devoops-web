@@ -9,6 +9,7 @@ import RetrospectiveAnswers from '@/components/retrospective/RetrospectiveAnswer
 import RetrospectiveHeader from '@/components/retrospective/RetrospectiveHeader';
 import RetrospectiveQuestions from '@/components/retrospective/RetrospectiveQuestions';
 import { usePullRequestDetail } from '@/hooks/api/retrospective/usePullRequestDetail';
+import { useUpdateAllAnswersMutation } from '@/hooks/api/retrospective/useUpdateAllAnswersMutation';
 import type { CategoryWithQuestions, Question } from '@/types/retrospective';
 
 export default function RetrospectivePage() {
@@ -24,6 +25,18 @@ export default function RetrospectivePage() {
   }, []);
 
   const { data, isLoading, error } = usePullRequestDetail(Number(pullRequestId), user);
+  const { mutate: autoSaveAnswers } = useUpdateAllAnswersMutation();
+
+  useEffect(() => {
+    if (!user || answers.length === 0) return undefined;
+    const interval = setInterval(() => {
+      autoSaveAnswers({
+        query: { user },
+        data: { answers },
+      });
+    }, 3000);
+    return () => clearInterval(interval);
+  }, [user, answers, autoSaveAnswers]);
 
   if (user === null) return <div>{'로그인이 필요합니다.'}</div>;
   if (isLoading) return <div>{'Loading...'}</div>;
