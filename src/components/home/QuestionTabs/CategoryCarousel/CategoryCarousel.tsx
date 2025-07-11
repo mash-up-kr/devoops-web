@@ -3,23 +3,41 @@
 import CategoryCarouselContent from '@/components/home/QuestionTabs/CategoryCarousel/CategoryCarouselContent';
 import CategoryCarouselItem from '@/components/home/QuestionTabs/CategoryCarousel/CategoryCarouselItem';
 import CategoryCarouselNavigator from '@/components/home/QuestionTabs/CategoryCarousel/CategoryCarouselNavigator';
-import { useQuestionTabs } from '@/providers/QuestionTabsContext';
 
-export default function CategoryCarousel() {
-  const { categories, activeCategory, setActiveCategory, currentIndex, canGoPrev, canGoNext, goToPrev, goToNext } =
-    useQuestionTabs();
+interface CategoryCarouselProps {
+  categories: string[];
+  activeCategory: string;
+  setActiveCategory: (category: string) => void;
+}
+
+export default function CategoryCarousel({ categories, activeCategory, setActiveCategory }: CategoryCarouselProps) {
+  const currentCategoryIndex = categories.findIndex((category) => category === activeCategory);
+  const canGoPrev = currentCategoryIndex > 0;
+  const canGoNext = currentCategoryIndex < categories.length - 1;
+
+  const goToPrev = () => {
+    if (canGoPrev) {
+      setActiveCategory(categories[currentCategoryIndex - 1]);
+    }
+  };
+
+  const goToNext = () => {
+    if (canGoNext) {
+      setActiveCategory(categories[currentCategoryIndex + 1]);
+    }
+  };
 
   return (
     <div className={'mb-6 flex w-full items-center gap-2'}>
       <CategoryCarouselNavigator direction={'prev'} onClick={goToPrev} disabled={!canGoPrev} />
 
-      <CategoryCarouselContent currentIndex={currentIndex}>
-        {categories.map((cat) => (
+      <CategoryCarouselContent currentIndex={currentCategoryIndex}>
+        {categories.map((category, index) => (
           <CategoryCarouselItem
-            key={cat.id}
-            category={cat}
-            isActive={cat.id === activeCategory}
-            onClick={() => setActiveCategory(cat.id)}
+            key={index}
+            category={category}
+            isActive={category === activeCategory}
+            onClick={() => setActiveCategory(category)}
           />
         ))}
       </CategoryCarouselContent>

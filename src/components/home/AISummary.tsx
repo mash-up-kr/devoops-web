@@ -1,8 +1,8 @@
 interface AISummaryProps {
-  content: string;
+  contents: string;
 }
 
-export default function AISummary({ content }: AISummaryProps) {
+export default function AISummary({ contents }: AISummaryProps) {
   return (
     <div className={'flex flex-col gap-2'}>
       <div className={'text-body-small text-dark-grey-500 font-medium'}>{'AI 요약'}</div>
@@ -11,7 +11,7 @@ export default function AISummary({ content }: AISummaryProps) {
           text-body-medium font-regular text-dark-grey-700
         `}
       >
-        {content}
+        {contents}
       </div>
     </div>
   );
