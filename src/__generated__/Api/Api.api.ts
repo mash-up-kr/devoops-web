@@ -253,6 +253,40 @@ export class ApiApi<SecurityDataType = unknown> extends HttpClient<SecurityDataT
   /**
    * No description
    *
+   * @tags Repository API
+   * @name GetRepositoryEntirePullRequests
+   * @summary 회원의 PR 리스트 반환
+   * @request GET:/api/repositories/pull-requests
+   * @secure
+   */
+  getRepositoryEntirePullRequests = (variables: {
+    query: {
+      /**
+       * 페이지 사이즈 크기
+       * @format int32
+       * @example 5
+       */
+      size: number;
+      /**
+       * 페이지 숫자
+       * @format int32
+       * @example 10
+       */
+      page: number;
+    };
+    params?: RequestParams;
+  }) =>
+    this.request<RepositoryPullRequestResponsesType, any>({
+      path: `/api/repositories/pull-requests`,
+      method: 'GET',
+      query: variables.query,
+      secure: true,
+      format: 'json',
+      ...variables.params,
+    });
+  /**
+   * No description
+   *
    * @tags Pull Request API
    * @name GetPullRequest
    * @summary PR 내역 조회
@@ -272,20 +306,17 @@ export class ApiApi<SecurityDataType = unknown> extends HttpClient<SecurityDataT
    *
    * @tags Repository API
    * @name GetMyRepositories
+   * @summary 나의 레포지토리 목록 조회
    * @request GET:/api/repositories/me
    * @secure
    */
-  getMyRepositories = (variables: {
-    query: {
-      user?: UserType;
-    };
-    params?: RequestParams;
-  }) =>
+  getMyRepositories = (variables: { data: RepositorySaveRequestType; params?: RequestParams }) =>
     this.request<MyRepositoriesResponseType, any>({
       path: `/api/repositories/me`,
       method: 'GET',
-      query: variables.query,
+      body: variables.data,
       secure: true,
+      type: ContentType.Json,
       format: 'json',
       ...variables.params,
     });
