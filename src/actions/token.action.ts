@@ -2,7 +2,7 @@
 
 import { cookies } from 'next/headers';
 
-const TOKEN_KEY = '@token';
+import { TOKEN_KEY } from '@/constants/cookies';
 
 export type TokenType = {
   accessToken: string;

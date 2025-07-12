@@ -26,7 +26,6 @@ function Landing() {
 
   const handleLogin = async () => {
     const hasToken = await checkHasToken();
-    console.log('#hasToken', hasToken);
     if (!hasToken) return router.push(`/auth/github`);
     const hasRepositories = await checkHasRepositories();
     if (hasRepositories) return router.replace(`/`);
