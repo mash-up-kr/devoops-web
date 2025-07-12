@@ -10,7 +10,7 @@ export default function TabsList({ children, className = '' }: TabsListProps) {
     <div
       role={'tablist'}
       className={`
-        inset-shadow-tabs-list
+        inset-shadow-tabs-list overflow-x-scroll
         ${className}
       `}
     >

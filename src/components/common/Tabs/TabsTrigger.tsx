@@ -13,7 +13,7 @@ interface TabsTriggerProps extends ButtonHTMLAttributes<HTMLButtonElement>, Vari
   disabled?: boolean;
 }
 
-const tabsTriggerVariants = cva('flex cursor-pointer gap-2 font-medium', {
+const tabsTriggerVariants = cva('flex cursor-pointer gap-2 font-medium whitespace-nowrap', {
   variants: {
     size: {
       medium: 'text-body-small px-3.5 pt-1 pb-3',
