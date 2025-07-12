@@ -4,7 +4,11 @@ import Button from '@/components/common/Button';
 import SectionHeader from '@/components/retrospective/SectionHeader';
 import type { RetrospectiveQuestionsProps } from '@/types/retrospective';
 
-export default function RetrospectiveQuestions({ questions }: RetrospectiveQuestionsProps) {
+export default function RetrospectiveQuestions({
+  questions,
+  selectedQuestionIds,
+  onSelectQuestion,
+}: RetrospectiveQuestionsProps) {
   return (
     <section className={'flex flex-col gap-[20px]'}>
       <SectionHeader
@@ -33,7 +37,14 @@ export default function RetrospectiveQuestions({ questions }: RetrospectiveQuest
                   key={questionId}
                 >
                   <p className={'grow-1'}>{question}</p>
-                  <span>{'+'}</span>
+                  <button
+                    className={
+                      'ml-auto flex h-8 w-8 items-center justify-center rounded-full border border-gray-500 bg-transparent text-lg'
+                    }
+                    onClick={() => onSelectQuestion(questionId)}
+                  >
+                    {selectedQuestionIds.includes(questionId) ? '✔️' : '+'}
+                  </button>
                 </div>
               ))}
             </ul>

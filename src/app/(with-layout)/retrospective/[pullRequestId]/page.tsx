@@ -10,7 +10,7 @@ import RetrospectiveHeader from '@/components/retrospective/RetrospectiveHeader'
 import RetrospectiveQuestions from '@/components/retrospective/RetrospectiveQuestions';
 import { usePullRequestDetail } from '@/hooks/api/retrospective/usePullRequestDetail';
 import { useUpdateAllAnswersMutation } from '@/hooks/api/retrospective/useUpdateAllAnswersMutation';
-import type { CategoryWithQuestions, Question } from '@/types/retrospective';
+import type { CategoryWithQuestions } from '@/types/retrospective';
 
 export default function RetrospectivePage() {
   const params = useParams();
@@ -18,6 +18,14 @@ export default function RetrospectivePage() {
 
   const [answers, setAnswers] = useState<{ answerId: number; content: string }[]>([]);
   const [user, setUser] = useState(null);
+
+  const [selectedQuestionIds, setSelectedQuestionIds] = useState<number[]>([]);
+
+  const handleSelectQuestion = (questionId: number) => {
+    setSelectedQuestionIds((prev) =>
+      prev.includes(questionId) ? prev.filter((id) => id !== questionId) : [...prev, questionId],
+    );
+  };
 
   useEffect(() => {
     const userString = localStorage.getItem('user');
@@ -73,31 +81,14 @@ export default function RetrospectivePage() {
     return acc;
   }, []);
 
-  const isValidSelectedQuestion = (
-    q: any,
-  ): q is Required<Pick<any, 'questionId' | 'category' | 'content' | 'isSelected'>> & {
-    answer: string;
-    answerId: number | null;
-  } => {
-    return (
-      q.isSelected === true &&
-      typeof q.answer === 'string' &&
-      q.answer.trim() !== '' &&
-      typeof q.questionId === 'number' &&
-      typeof q.category === 'string' &&
-      typeof q.content === 'string' &&
-      (typeof q.answerId === 'number' || q.answerId === null)
-    );
-  };
-
-  const mappedAnswers: Question[] = data.questions.filter(isValidSelectedQuestion).map((q) => ({
-    questionId: q.questionId as number,
-    category: q.category as string,
-    content: q.content as string,
-    isSelected: q.isSelected as boolean,
-    answerId: q.answerId ?? null,
-    answer: q.answer ?? null,
-  }));
+  const selectedQuestions = groupedQuestions
+    .flatMap((categoryItem) => categoryItem.questions)
+    .filter((q) => selectedQuestionIds.includes(q.questionId))
+    .map((q) => ({
+      questionId: q.questionId,
+      content: q.question,
+      answer: null,
+    }));
 
   return (
     <>
@@ -105,8 +96,12 @@ export default function RetrospectivePage() {
 
       <main className={'flex flex-col gap-[68px]'}>
         <PullRequestSummary summary={formattedSummary} />
-        <RetrospectiveQuestions questions={groupedQuestions} />
-        <RetrospectiveAnswers answers={mappedAnswers} writtenAnswers={answers} setWrittenAnswers={setAnswers} />
+        <RetrospectiveQuestions
+          questions={groupedQuestions}
+          selectedQuestionIds={selectedQuestionIds}
+          onSelectQuestion={handleSelectQuestion}
+        />
+        <RetrospectiveAnswers answers={selectedQuestions} writtenAnswers={answers} setWrittenAnswers={setAnswers} />
       </main>
 
       <FixedFooter pullRequestId={pullRequestId} user={user} answers={answers} />
