@@ -1,4 +1,5 @@
 import { apiApi } from '@/__generated__/Api/Api.api';
+import { githubApi } from '@/apis/github/github.api';
 import GithubCallback from '@/components/auth/GithubCallback';
 
 type Props = {
@@ -18,17 +19,23 @@ async function GithubAuthCallbackPage({ searchParams }: Props) {
     );
   }
 
-  const response = await fetch('https://github.com/login/oauth/access_token', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Accept: 'application/json',
-    },
-    body: JSON.stringify({
-      client_id: process.env.GITHUB_CLIENT_ID,
-      client_secret: process.env.GITHUB_CLIENT_SECRET,
-      code,
-    }),
+  // const response = await fetch('https://github.com/login/oauth/access_token', {
+  //   method: 'POST',
+  //   headers: {
+  //     'Content-Type': 'application/json',
+  //     Accept: 'application/json',
+  //   },
+  //   body: JSON.stringify({
+  //     client_id: process.env.GITHUB_CLIENT_ID,
+  //     client_secret: process.env.GITHUB_CLIENT_SECRET,
+  //     code,
+  //   }),
+  // });
+
+  const response = await githubApi.login({
+    code,
+    clientId: process.env.GITHUB_CLIENT_ID ?? '',
+    clientSecret: process.env.GITHUB_CLIENT_SECRET ?? '',
   });
 
   const data = await response.json();

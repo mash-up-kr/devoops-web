@@ -21,7 +21,6 @@ const onRequest = async (config: InternalAxiosRequestConfig) => {
   if (token) {
     const headers = new AxiosHeaders(config.headers);
     headers.set('Authorization', `Bearer ${token.accessToken}`);
-
     return {
       ...config,
       headers,
