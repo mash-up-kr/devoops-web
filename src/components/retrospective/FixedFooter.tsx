@@ -1,7 +1,7 @@
 'use client';
 
 import type { UserType } from '@/__generated__/@types';
-import { markPRAsDone, submitRetrospectiveAnswers } from '@/apis/retrospective';
+import { markPRAsDone, submitRetrospectiveAnswers } from '@/apis/pull-requests/retrospective.mutate';
 import Button from '@/components/common/Button';
 
 interface FixedFooterProps {

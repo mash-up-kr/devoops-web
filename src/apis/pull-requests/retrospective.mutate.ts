@@ -1,20 +1,5 @@
-import type { PullRequestReadResponseType, UserType } from '@/__generated__/@types';
+import type { UserType } from '@/__generated__/@types';
 import { apiApi } from '@/__generated__/Api/Api.api';
-
-export async function fetchPullRequestById(
-  pullRequestId: number,
-  accessToken: string,
-): Promise<PullRequestReadResponseType> {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL || ''}/api/pull-requests/${pullRequestId}`, {
-    method: 'GET',
-    headers: {
-      Accept: 'application/json',
-      Authorization: `Bearer ${accessToken}`,
-    },
-  });
-  if (!res.ok) throw new Error('PR 상세 조회 실패');
-  return res.json();
-}
 
 export async function markPRAsDone(pullRequestId: number, user: UserType): Promise<void> {
   try {

@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 
 import type { UserType } from '@/__generated__/@types';
-import { fetchPullRequestById } from '@/apis/retrospective';
+import { fetchPullRequestById } from '@/apis/pull-requests/retrospective.query';
 
 export const usePullRequestDetail = (pullRequestId: number, user: UserType | null) => {
   return useQuery({
