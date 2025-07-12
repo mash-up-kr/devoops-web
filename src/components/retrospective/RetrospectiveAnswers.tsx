@@ -70,7 +70,7 @@ export default function RetrospectiveAnswers({
               <textarea
                 value={getAnswerContent(answer.questionId)}
                 onChange={(e) => handleChange(answer.questionId, e.target.value)}
-                placeholder={'회고를 작성해 주세요...'}
+                placeholder={'어떻게 문제를 해결했는지 어떤 고민을 했었는지 생각하며 기록해보세요.'}
                 className={
                   'text-body-small border-dark-grey-100 resize-none rounded-md border bg-transparent px-4 py-2 text-white focus:ring-primary focus:ring-1 focus:outline-none'
                 }

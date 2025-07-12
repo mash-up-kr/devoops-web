@@ -8,9 +8,10 @@ interface FixedFooterProps {
   pullRequestId: string;
   user: UserType;
   answers: { answerId: number; content: string }[];
+  onComplete?: () => void;
 }
 
-export default function FixedFooter({ pullRequestId, user, answers }: FixedFooterProps) {
+export default function FixedFooter({ pullRequestId, user, answers, onComplete }: FixedFooterProps) {
   const handleComplete = async () => {
     try {
       const hasEmpty = answers.some((a) => a.content.trim() === '');
@@ -27,6 +28,7 @@ export default function FixedFooter({ pullRequestId, user, answers }: FixedFoote
     } catch (error) {
       console.error('회고 완료 실패', error);
     }
+    if (onComplete) onComplete();
   };
 
   return (
