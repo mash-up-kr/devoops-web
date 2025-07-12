@@ -1,3 +1,5 @@
+/* eslint-disable no-alert */
+
 import { useQueryClient } from '@tanstack/react-query';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
@@ -23,9 +25,11 @@ function RepolinkModal() {
         setInput('');
         queryClient.invalidateQueries({ queryKey: REPOSITORIES_API_QUERY_KEY.GET_REPOSITORIES_ME() });
       },
-      onError: () => {
-        // eslint-disable-next-line no-alert
-        alert('레포지토리 추가에 실패했습니다.');
+      onError: (error) => {
+        if (error.code === 'MALFORMED_GITHUB_REPOSITORY_URL') {
+          return alert('잘못된 형식의 레포지토리 url입니다');
+        }
+        return alert('레포지토리 추가에 실패했습니다.');
       },
     },
   });
@@ -68,20 +72,19 @@ function RepolinkModal() {
             <p className={'text-body-small'}>{'Hocaron'}</p>
           </section>
 
-          <section className={'flex w-[380px] flex-col items-center justify-center'}>
-            <h3 className={'text-h3 mt-[12px]'}>{'회고 할 레포 추가해라~'}</h3>
-            <h3 className={'text-h3'}>{'레포 주소를 입력해 주세요'}</h3>
-            <p className={'text-body-small text-dark-grey-600 mt-[12px]'}>{'레포지토리는 5개까지 추가할 수 있어요'}</p>
+          <section className={'flex w-[380px] flex-col items-center justify-center gap-[8px]'}>
+            <h3 className={'text-h3'}>{'회고할 레포지토리를 추가해 주세요!'}</h3>
+            <p className={'text-body-small text-dark-grey-600'}>{'레포지토리는 5개까지 추가할 수 있어요'}</p>
           </section>
 
           <form className={'mt-[40px] flex w-full flex-col'}>
             <p className={'text-caption text-dark-grey-800 mb-[8px]'}>{'레포지토리 주소'}</p>
-            <div className={'flex w-full gap-[12px]'}>
+            <div className={'flex w-full justify-between'}>
               <input
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 className={
-                  'text-body-medium text-dark-grey-900 border-dark-grey-200 h-[48px] w-[272px] rounded-[8px] border-[1px] px-[14px] py-[12px] placeholder:text-dark-grey-900'
+                  'text-body-medium text-dark-grey-900 border-dark-grey-200 h-[48px] w-[300px] rounded-[8px] border-[1px] px-[14px] py-[12px] placeholder:text-dark-grey-900'
                 }
                 type={'text'}
                 placeholder={'레포지토리 주소를 입력해 주세요'}
@@ -108,7 +111,10 @@ function RepolinkModal() {
                   <div className={'bg-dark-blue-500 h-[8px] w-[8px] rounded-full'} />
                   <p className={'text-body-small text-white'}>{repository.name}</p>
                 </div>
-                <MonoXIcon className={'mr-[8px] cursor-pointer'} />
+                {/* TODO: 삭제 기능 구현 */}
+                <button type={'button'} className={'mr-[8px] cursor-pointer'}>
+                  <MonoXIcon />
+                </button>
               </div>
             ))}
           </div>

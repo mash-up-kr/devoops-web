@@ -5,11 +5,7 @@ import React from 'react';
 import RepolinkModal from '../common/Modal/RepolinkModal/RepolinkModal';
 
 function Repolink() {
-  return (
-    <main>
-      <RepolinkModal />
-    </main>
-  );
+  return <RepolinkModal />;
 }
 
 export default Repolink;
