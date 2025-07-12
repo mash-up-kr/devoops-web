@@ -1,0 +1,52 @@
+import { apiApi } from '@/__generated__/Api/Api.api';
+import GithubCallback from '@/components/auth/GithubCallback';
+
+type Props = {
+  searchParams: {
+    code?: string;
+  };
+};
+
+async function GithubAuthCallbackPage({ searchParams }: Props) {
+  const { code } = await searchParams;
+
+  if (!code) {
+    return (
+      <div>
+        <h1>{'code가 없습니다.'}</h1>
+      </div>
+    );
+  }
+
+  const response = await fetch('https://github.com/login/oauth/access_token', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+    },
+    body: JSON.stringify({
+      client_id: process.env.GITHUB_CLIENT_ID,
+      client_secret: process.env.GITHUB_CLIENT_SECRET,
+      code,
+    }),
+  });
+
+  const data = await response.json();
+
+  try {
+    const { data: userData } = await apiApi.issueToken({ data: { githubAccessToken: data.access_token } });
+    return (
+      <div>
+        <GithubCallback accessToken={userData.accessToken ?? ''} refreshToken={userData.refreshToken ?? ''} />
+      </div>
+    );
+  } catch {
+    return (
+      <div>
+        <h1>{'토큰 설정 실패'}</h1>
+      </div>
+    );
+  }
+}
+
+export default GithubAuthCallbackPage;
