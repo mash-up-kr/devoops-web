@@ -1,6 +1,8 @@
 import { redirect } from 'next/navigation';
 
-const GITHUB_AUTH_URL = 'https://github.com/login/oauth/authorize';
+import { GITHUB_API_URL } from '@/apis/github/github.api';
+
+const GITHUB_AUTH_URL = `${GITHUB_API_URL}/login/oauth/authorize`;
 
 const GithubAuthPage = () => {
   redirect(
