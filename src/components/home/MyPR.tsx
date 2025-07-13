@@ -1,6 +1,6 @@
 'use client';
 
-import { Suspense, useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import { RepositoryPullRequestResponseType, RepositorySummaryType } from '@/__generated__/@types';
 import {
@@ -22,7 +22,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/common/Ta
 import Preview from '@/components/home/Preview';
 import { PRItem, PRStatus, PRContent } from '@/components/home/PRItem';
 import PRPreview from '@/components/home/PRPreview';
-import PreviewSkeleton from '@/components/home/Skeleton/PreviewSkeleton';
+import PRListSkeleton from '@/components/home/Skeleton/PRListSkeleton';
 import { usePagination } from '@/hooks/usePagination';
 
 export default function MyPR() {
@@ -33,7 +33,7 @@ export default function MyPR() {
 
   const { data: myRepositoriesData } = useRepositoriesMeQuery({ variables: { data: { url: '' } }, options: {} });
 
-  const { data: PRData } = useGetPullRequestsQuery({
+  const { data: PRData, isLoading: isPRDataLoading } = useGetPullRequestsQuery({
     variables: {
       repositoryId,
       query: {
@@ -46,7 +46,7 @@ export default function MyPR() {
     },
   });
 
-  const { data: entirePRData } = useGetEntirePullRequestsQuery({
+  const { data: entirePRData, isLoading: isEntirePRDataLoading } = useGetEntirePullRequestsQuery({
     variables: {
       query: {
         size: pageSize,
@@ -61,9 +61,10 @@ export default function MyPR() {
   const entireRepositoryData = {
     id: 0,
     name: '전체',
-    pullRequestCount: myRepositoriesData?.data.repositories?.reduce((acc, repository) => {
-      return acc + (repository.pullRequestCount || 0);
-    }, 0),
+    pullRequestCount:
+      myRepositoriesData?.data.repositories?.reduce((acc, repository) => {
+        return acc + (repository.pullRequestCount || 0);
+      }, 0) || 0,
   };
 
   const repositoryList = [entireRepositoryData, ...(myRepositoriesData?.data.repositories || [])];
@@ -73,7 +74,9 @@ export default function MyPR() {
   );
 
   useEffect(() => {
-    setPullRequestId(PRList[0]?.id);
+    if (PRList.length > 0 && PRList[0]?.id) {
+      setPullRequestId(PRList[0].id);
+    }
   }, [PRList]);
 
   const handleTabChange = (repository: RepositorySummaryType) => {
@@ -97,6 +100,8 @@ export default function MyPR() {
   const totalPage = Math.ceil((totalPullRequestCount || 0) / pageSize);
   const { pagesToShow } = usePagination({ totalPage, currentPage: page });
 
+  const isLoading = repositoryId === 0 ? isEntirePRDataLoading : isPRDataLoading;
+
   return (
     <div>
       <h1 className={`text-h1 blue-tiny-left inline-block pt-2.5 pb-6 font-semibold`}>{'내 PR'}</h1>
@@ -109,16 +114,19 @@ export default function MyPR() {
           ))}
           <AddIcon />
         </TabsList>
-
         {repositoryList.map((repository) => (
           <TabsContent key={repository.id} value={repository.name || ''} className={'flex'}>
             <div className={`border-dark-grey-100 flex flex-1 flex-col gap-5 border-e-1 py-4 pe-8`}>
-              {PRList.map((pr) => (
-                <PRItem key={pr.id} onMouseOver={() => handlePRItemOver(pr)}>
-                  <PRStatus status={pr.recordStatus} />
-                  <PRContent content={pr.title} label={pr.tag || ''} />
-                </PRItem>
-              ))}
+              {isLoading ? (
+                <PRListSkeleton />
+              ) : (
+                PRList.map((pr) => (
+                  <PRItem key={pr.id} onMouseOver={() => handlePRItemOver(pr)}>
+                    <PRStatus status={pr.recordStatus} />
+                    <PRContent content={pr.title} label={pr.tag || ''} />
+                  </PRItem>
+                ))
+              )}
 
               <Pagination>
                 <PaginationContent>
@@ -144,7 +152,7 @@ export default function MyPR() {
                         <PaginationLink
                           isActive={page === p}
                           onClick={() => setPage(p)}
-                          className={`text-body-medium flex size-10 items-center justify-center rounded-full transition-colors duration-100 ease-out ${page === p ? 'bg-dark-grey-50 font-medium' : 'font-regular'}`}
+                          className={`text-body-medium flex size-10 cursor-pointer items-center justify-center rounded-full transition-colors duration-100 ease-out ${page === p ? 'bg-dark-grey-50 font-medium' : 'font-regular'}`}
                         >
                           {p}
                         </PaginationLink>
@@ -161,9 +169,7 @@ export default function MyPR() {
                 </PaginationContent>
               </Pagination>
             </div>
-            <Suspense fallback={<PreviewSkeleton />}>
-              {pullRequestId ? <PRPreview pullRequestId={pullRequestId} /> : <Preview />}
-            </Suspense>
+            {pullRequestId ? <PRPreview pullRequestId={pullRequestId} /> : <Preview />}
           </TabsContent>
         ))}
       </Tabs>
