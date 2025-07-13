@@ -15,3 +15,12 @@ html {
   background-color: var(--background);
   color: var(--foreground);
 }
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 8px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(203, 209, 250, 0.36);
+  border-radius: 99px;
+}

@@ -1,4 +1,4 @@
-import { useQuery, useSuspenseQuery } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 
 import { apiApi } from '@/__generated__/Api/Api.api';
 import { UseQueryParams } from '@/types/tanstack-query/use-query-params';
@@ -6,8 +6,7 @@ import { isNotNull } from '@/types/utility/is-not-null';
 import { Parameter } from '@/types/utility/parameter';
 
 export const REPOSITORIES_API_QUERY_KEY = {
-  GET_MY_REPOSITORIES: (params?: Parameter<typeof apiApi.getMyRepositories>) =>
-    ['repositories', params].filter(isNotNull),
+  GET_REPOSITORIES_ME: () => ['repositories', 'me'].filter(isNotNull),
   GET_REPOSITORY_ENTIRE_PULL_REQUESTS: (params?: Parameter<typeof apiApi.getRepositoryEntirePullRequests>) =>
     ['entire-pull-requests', params].filter(isNotNull),
   GET_PULL_REQUESTS: (params?: Parameter<typeof apiApi.getRepositoryPullRequests>) =>
@@ -15,12 +14,11 @@ export const REPOSITORIES_API_QUERY_KEY = {
   GET_PULL_REQUEST: (params?: Parameter<typeof apiApi.getPullRequest>) => ['pull-request', params].filter(isNotNull),
 };
 
-export const useGetMyRepositoriesQuery = (params: UseQueryParams<typeof apiApi.getMyRepositories>) => {
-  const queryKey = REPOSITORIES_API_QUERY_KEY.GET_MY_REPOSITORIES(params?.variables);
-
-  return useSuspenseQuery({
+export const useRepositoriesMeQuery = (params: UseQueryParams<typeof apiApi.getMyRepositories>) => {
+  const queryKey = REPOSITORIES_API_QUERY_KEY.GET_REPOSITORIES_ME();
+  return useQuery({
     queryKey,
-    queryFn: () => apiApi.getMyRepositories(params?.variables),
+    queryFn: () => apiApi.getMyRepositories({ data: { url: '' } }),
     ...params?.options,
   });
 };
@@ -30,7 +28,7 @@ export const useGetEntirePullRequestsQuery = (
 ) => {
   const queryKey = REPOSITORIES_API_QUERY_KEY.GET_REPOSITORY_ENTIRE_PULL_REQUESTS(params?.variables);
 
-  return useSuspenseQuery({
+  return useQuery({
     queryKey,
     queryFn: () => apiApi.getRepositoryEntirePullRequests(params?.variables),
     ...params?.options,
