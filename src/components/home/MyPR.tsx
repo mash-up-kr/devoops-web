@@ -5,7 +5,7 @@ import { Suspense, useEffect, useMemo, useState } from 'react';
 import { RepositoryPullRequestResponseType, RepositorySummaryType } from '@/__generated__/@types';
 import {
   useGetEntirePullRequestsQuery,
-  useGetMyRepositoriesQuery,
+  useRepositoriesMeQuery,
   useGetPullRequestsQuery,
 } from '@/apis/repositories/repositories.query';
 import AddIcon from '@/assets/svg/add.svg';
@@ -31,11 +31,7 @@ export default function MyPR() {
   const [page, setPage] = useState(1);
   const pageSize = 5;
 
-  const { data: myRepositoriesData } = useGetMyRepositoriesQuery({
-    variables: {
-      data: { url: '' },
-    },
-  });
+  const { data: myRepositoriesData } = useRepositoriesMeQuery({ variables: { data: { url: '' } }, options: {} });
 
   const { data: PRData } = useGetPullRequestsQuery({
     variables: {
@@ -65,12 +61,12 @@ export default function MyPR() {
   const entireRepositoryData = {
     id: 0,
     name: '전체',
-    pullRequestCount: myRepositoriesData.data.repositories?.reduce((acc, repository) => {
+    pullRequestCount: myRepositoriesData?.data.repositories?.reduce((acc, repository) => {
       return acc + (repository.pullRequestCount || 0);
     }, 0),
   };
 
-  const repositoryList = [entireRepositoryData, ...(myRepositoriesData.data.repositories || [])];
+  const repositoryList = [entireRepositoryData, ...(myRepositoriesData?.data.repositories || [])];
   const PRList = useMemo(
     () => (repositoryId === 0 ? entirePRData?.data.pullRequests : PRData?.data.pullRequests) || [],
     [repositoryId, entirePRData, PRData],
