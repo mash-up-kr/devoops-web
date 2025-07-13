@@ -3,12 +3,12 @@
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 
+import RepoLoadingModal from '../common/Modal/RepoLoadingModal/RepoLoadingModal';
+
 import { apiApi } from '@/__generated__/Api/Api.api';
 import { getTokenAction, setTokenAction } from '@/actions/token.action';
 
 function GithubCallback({ accessToken, refreshToken }: { accessToken: string; refreshToken: string }) {
-  console.log('#accessToken', accessToken);
-  console.log('#refreshToken', refreshToken);
   const router = useRouter();
   const checkHasRepositories = async (): Promise<boolean> => {
     try {
@@ -33,7 +33,7 @@ function GithubCallback({ accessToken, refreshToken }: { accessToken: string; re
     fetchToken();
   }, []);
 
-  return null;
+  return <RepoLoadingModal />;
 }
 
 export default GithubCallback;
