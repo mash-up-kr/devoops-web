@@ -1,4 +1,5 @@
 import PreviewSkeleton from '@/components/home/Skeleton/PreviewSkeleton';
+import PRListSkeleton from '@/components/home/Skeleton/PRListSkeleton';
 
 function MyPRSkeleton() {
   return (
@@ -24,14 +25,7 @@ function MyPRSkeleton() {
 
           <div className={'flex'}>
             <div className={'border-dark-grey-100 flex flex-1 flex-col gap-5 border-e-1 py-4 pe-8'}>
-              <div className={'space-y-3'}>
-                {Array.from({ length: 5 }).map((_, index) => (
-                  <div key={index} className={`bg-dark-grey-50 flex flex-col gap-2 rounded-xl p-5`}>
-                    <div className={'text-body-small bg-dark-blue-700 h-2 w-20 rounded-md font-semibold'} />
-                    <div className={'text-h5 bg-dark-grey-300 h-4 w-full rounded-md font-medium'} />
-                  </div>
-                ))}
-              </div>
+              <PRListSkeleton />
             </div>
             <PreviewSkeleton />
           </div>
