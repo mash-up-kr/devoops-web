@@ -21,8 +21,9 @@ export default function CategoryCarouselContent({
     const buttons = Array.from(container.querySelectorAll('button'));
     if (!buttons.length) return;
 
-    const buttonsWidth = buttons.map((button) => button.offsetWidth + GAP_SIZE);
-    const totalWidth = buttonsWidth.reduce((sum, width) => sum + width, 0);
+    const buttonsWidth = buttons.map((button) => button.offsetWidth);
+    const totalGap = GAP_SIZE * (buttons.length - 1);
+    const totalWidth = buttonsWidth.reduce((sum, width) => sum + width, 0) + totalGap;
     const visibleWidth = container.parentElement?.clientWidth || 0;
 
     const totalWidthBeforeActiveButton = buttonsWidth.slice(0, currentIndex).reduce((sum, width) => sum + width, 0);
@@ -30,7 +31,7 @@ export default function CategoryCarouselContent({
     const center = (visibleWidth - activeButtonWidth) / 2;
 
     let moveValue = totalWidthBeforeActiveButton - center;
-    const maxValue = totalWidth - visibleWidth;
+    const maxValue = Math.max(totalWidth - visibleWidth, 0);
 
     if (moveValue < 0) moveValue = 0;
     if (moveValue > maxValue) moveValue = maxValue;

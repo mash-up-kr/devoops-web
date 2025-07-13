@@ -1,9 +1,7 @@
 import { type ButtonHTMLAttributes } from 'react';
 
-import { type Category } from '@/types/questionTabs';
-
 interface CategoryCarouselItemProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  category: Omit<Category, 'questions'>;
+  category: string;
   isActive: boolean;
 }
 
@@ -11,7 +9,7 @@ export default function CategoryCarouselItem({ category, isActive, ...props }: C
   return (
     <button
       type={'button'}
-      aria-label={`${category.name} 카테고리 선택`}
+      aria-label={`${category} 카테고리 선택`}
       className={`
       flex-shrink-0 rounded-full px-3.5 py-2 text-sm font-medium
       whitespace-nowrap transition-colors select-none
@@ -19,7 +17,7 @@ export default function CategoryCarouselItem({ category, isActive, ...props }: C
     `}
       {...props}
     >
-      {category.name}
+      {category}
     </button>
   );
 }
