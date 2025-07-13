@@ -14,10 +14,6 @@ interface QuestionContentProps {
 export default function QuestionContent({ questions, activeCategory }: QuestionContentProps) {
   const matchedQuestionByCategory = filterBy(questions, 'category', activeCategory);
 
-  if (!matchedQuestionByCategory) {
-    return <div className={'text-dark-grey-500 text-center'}>{'질문을 찾을 수 없습니다.'}</div>;
-  }
-
   return (
     <div className={'space-y-3'}>
       {matchedQuestionByCategory.map(({ id, category, content }) => (
