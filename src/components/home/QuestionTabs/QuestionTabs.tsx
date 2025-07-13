@@ -12,7 +12,7 @@ interface QuestionTabsProps {
 export default function QuestionTabs({ contents }: QuestionTabsProps) {
   const { categories } = contents;
 
-  const [activeCategory, setActiveCategory] = useState(categories[0]);
+  const [activeCategory, setActiveCategory] = useState(categories[0] || '');
 
   return (
     <>
