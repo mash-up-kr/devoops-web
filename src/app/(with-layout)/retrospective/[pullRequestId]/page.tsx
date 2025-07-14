@@ -129,7 +129,7 @@ export default function RetrospectivePage() {
         answers={answers}
         onComplete={handleRetrospectiveComplete}
       />
-      <TopButton icon={<span>{'top 버튼 '}</span>} />
+      <TopButton icon={<span>{'^'}</span>} />
     </>
   );
 }

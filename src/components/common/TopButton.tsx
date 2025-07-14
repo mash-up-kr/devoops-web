@@ -29,12 +29,7 @@ export default function TopButton({ icon, className = '' }: TopButtonProps) {
         className,
       )}
     >
-      {icon ?? (
-        <svg width={'20'} height={'20'} viewBox={'0 0 20 20'} fill={'none'} xmlns={'http://www.w3.org/2000/svg'}>
-          <path d={'M10 15V5'} stroke={'white'} strokeWidth={'2'} strokeLinecap={'round'} />
-          <path d={'M6 9L10 5L14 9'} stroke={'white'} strokeWidth={'2'} strokeLinecap={'round'} />
-        </svg>
-      )}
+      {icon ?? '^'}
     </button>
   );
 }
