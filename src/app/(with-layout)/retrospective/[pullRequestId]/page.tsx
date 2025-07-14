@@ -3,6 +3,7 @@
 import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
+import TopButton from '@/components/common/TopButton';
 import FixedFooter from '@/components/retrospective/FixedFooter';
 import PullRequestSummary from '@/components/retrospective/PullRequestSummary';
 import RetrospectiveAnswers from '@/components/retrospective/RetrospectiveAnswers';
@@ -128,6 +129,7 @@ export default function RetrospectivePage() {
         answers={answers}
         onComplete={handleRetrospectiveComplete}
       />
+      <TopButton icon={<span>{'top 버튼 '}</span>} />
     </>
   );
 }
