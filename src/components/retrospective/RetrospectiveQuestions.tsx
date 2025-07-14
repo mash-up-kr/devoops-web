@@ -1,6 +1,5 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../common/Tabs';
 
-import Button from '@/components/common/Button';
 import SectionHeader from '@/components/retrospective/SectionHeader';
 import type { RetrospectiveQuestionsProps } from '@/types/retrospective';
 
@@ -48,10 +47,6 @@ export default function RetrospectiveQuestions({
                 </div>
               ))}
             </ul>
-
-            <Button size={'tiny'} variant={'outlineGrey'}>
-              {'질문 생성하기'}
-            </Button>
           </TabsContent>
         ))}
       </Tabs>
