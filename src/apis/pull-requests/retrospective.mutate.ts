@@ -50,3 +50,20 @@ export async function createRetrospectiveAnswer(questionId: number, accessToken:
   }
   return res.json();
 }
+
+export async function updateRetrospectiveAnswer(answerId: number, content: string, accessToken: string) {
+  const res = await fetch(`https://api.dev-oops.kr/api/questions/answer/${answerId}`, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${accessToken}`,
+    },
+    body: JSON.stringify({ content }),
+    credentials: 'include',
+  });
+  if (!res.ok) {
+    const error = await res.json().catch(() => ({}));
+    throw new Error(error.message || '회고 답변 수정 실패');
+  }
+  return res.json();
+}

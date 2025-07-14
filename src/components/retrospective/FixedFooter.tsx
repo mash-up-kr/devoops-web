@@ -9,11 +9,23 @@ interface FixedFooterProps {
   pullRequestId: string;
   user: UserType;
   answers: { answerId: number; content: string }[];
+  lastSubmittedAnswers: { answerId: number; content: string }[];
+  setLastSubmittedAnswers: (answers: { answerId: number; content: string }[]) => void;
+  updateRetrospectiveAnswer: (answerId: number, content: string, accessToken: string) => Promise<any>;
   onComplete?: () => void;
   onErrorIds: (ids: number[]) => void;
 }
 
-export default function FixedFooter({ pullRequestId, user, answers, onComplete, onErrorIds }: FixedFooterProps) {
+export default function FixedFooter({
+  pullRequestId,
+  user,
+  answers,
+  lastSubmittedAnswers,
+  setLastSubmittedAnswers,
+  updateRetrospectiveAnswer,
+  onComplete,
+  onErrorIds,
+}: FixedFooterProps) {
   const handleComplete = async () => {
     const emptyIds = answers.filter((a) => a.content.trim() === '').map((a) => a.answerId);
     if (emptyIds.length > 0) {
@@ -24,13 +36,25 @@ export default function FixedFooter({ pullRequestId, user, answers, onComplete, 
     try {
       const accessToken = getAccessToken(user);
       if (!accessToken) {
-        alert('로그인 정보가 없거나 토큰이 만료되었습니다.');
         return;
       }
-      await submitRetrospectiveAnswers(accessToken, answers);
+      if (lastSubmittedAnswers.length === 0) {
+        // First submit 처리
+        await submitRetrospectiveAnswers(accessToken, answers);
+        setLastSubmittedAnswers([...answers]);
+      } else {
+        // Subsequent submit 처리
+        const changed = answers.filter((a) => {
+          const prev = lastSubmittedAnswers.find((p) => p.answerId === a.answerId);
+          return !prev || prev.content !== a.content;
+        });
+        if (changed.length > 0) {
+          await Promise.all(changed.map((ans) => updateRetrospectiveAnswer(ans.answerId, ans.content, accessToken)));
+          setLastSubmittedAnswers([...answers]);
+        }
+      }
       await markPRAsDone(Number(pullRequestId), accessToken);
-
-      console.log('회고 완료됨!');
+      // console.log('회고 완료됨!');
     } catch (error) {
       console.error('회고 완료 실패', error);
     }

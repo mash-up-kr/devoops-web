@@ -3,6 +3,7 @@
 import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
+import { updateRetrospectiveAnswer } from '@/apis/pull-requests/retrospective.mutate';
 import TopButton from '@/components/common/TopButton';
 import FixedFooter from '@/components/retrospective/FixedFooter';
 import PullRequestSummary from '@/components/retrospective/PullRequestSummary';
@@ -20,6 +21,7 @@ export default function RetrospectivePage() {
   const [errorIds, setErrorIds] = useState<number[]>([]);
 
   const [answers, setAnswers] = useState<{ answerId: number; content: string }[]>([]);
+  const [lastSubmittedAnswers, setLastSubmittedAnswers] = useState<{ answerId: number; content: string }[]>([]);
   const [user, setUser] = useState(null);
 
   const [selectedQuestionIds, setSelectedQuestionIds] = useState<number[]>([]);
@@ -129,10 +131,19 @@ export default function RetrospectivePage() {
       <FixedFooter
         pullRequestId={pullRequestId}
         user={user}
-        answers={selectedQuestions.map((q) => ({
-          answerId: q.questionId,
-          content: answers.find((a) => a.answerId === q.questionId)?.content ?? '',
-        }))}
+        answers={selectedQuestions
+          .map((q) => {
+            const backendQuestion = data.questions.find((dq) => dq.questionId === q.questionId);
+            if (backendQuestion?.answerId === undefined) return undefined;
+            return {
+              answerId: backendQuestion.answerId,
+              content: answers.find((a) => a.answerId === q.questionId)?.content ?? '',
+            };
+          })
+          .filter((a): a is { answerId: number; content: string } => a !== undefined)}
+        lastSubmittedAnswers={lastSubmittedAnswers}
+        setLastSubmittedAnswers={setLastSubmittedAnswers}
+        updateRetrospectiveAnswer={updateRetrospectiveAnswer}
         onComplete={handleRetrospectiveComplete}
         onErrorIds={setErrorIds}
       />
