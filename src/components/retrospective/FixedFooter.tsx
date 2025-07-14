@@ -3,6 +3,7 @@
 import type { UserType } from '@/__generated__/@types';
 import { markPRAsDone, submitRetrospectiveAnswers } from '@/apis/pull-requests/retrospective.mutate';
 import Button from '@/components/common/Button';
+import { getAccessToken } from '@/utils/getAccessToken';
 
 interface FixedFooterProps {
   pullRequestId: string;
@@ -20,9 +21,13 @@ export default function FixedFooter({ pullRequestId, user, answers, onComplete }
         return;
       }
 
-      await submitRetrospectiveAnswers(user, answers);
-
-      await markPRAsDone(Number(pullRequestId), user);
+      const accessToken = getAccessToken(user);
+      if (!accessToken) {
+        alert('로그인 정보가 없거나 토큰이 만료되었습니다.');
+        return;
+      }
+      await submitRetrospectiveAnswers(accessToken, answers);
+      await markPRAsDone(Number(pullRequestId), accessToken);
 
       console.log('회고 완료됨!');
     } catch (error) {
