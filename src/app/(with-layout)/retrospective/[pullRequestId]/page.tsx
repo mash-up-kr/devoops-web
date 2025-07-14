@@ -17,6 +17,8 @@ export default function RetrospectivePage() {
   const params = useParams();
   const pullRequestId = params?.pullRequestId as string;
 
+  const [errorIds, setErrorIds] = useState<number[]>([]);
+
   const [answers, setAnswers] = useState<{ answerId: number; content: string }[]>([]);
   const [user, setUser] = useState(null);
 
@@ -120,14 +122,19 @@ export default function RetrospectivePage() {
           writtenAnswers={answers}
           setWrittenAnswers={setAnswers}
           onDeleteAnswer={handleDeleteAnswer}
+          errorIds={errorIds}
         />
       </main>
 
       <FixedFooter
         pullRequestId={pullRequestId}
         user={user}
-        answers={answers}
+        answers={selectedQuestions.map((q) => ({
+          answerId: q.questionId,
+          content: answers.find((a) => a.answerId === q.questionId)?.content ?? '',
+        }))}
         onComplete={handleRetrospectiveComplete}
+        onErrorIds={setErrorIds}
       />
       <TopButton icon={<span>{'^'}</span>} />
     </>

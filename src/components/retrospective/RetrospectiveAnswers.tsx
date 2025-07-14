@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 
 import SectionHeader from '@/components/retrospective/SectionHeader';
 
@@ -20,6 +20,7 @@ interface RetrospectiveAnswersProps {
   writtenAnswers: WrittenAnswer[];
   setWrittenAnswers: React.Dispatch<React.SetStateAction<WrittenAnswer[]>>;
   onDeleteAnswer?: (questionId: number) => void;
+  errorIds: number[];
 }
 
 export default function RetrospectiveAnswers({
@@ -27,6 +28,7 @@ export default function RetrospectiveAnswers({
   writtenAnswers,
   setWrittenAnswers,
   onDeleteAnswer,
+  errorIds,
 }: RetrospectiveAnswersProps) {
   const hasAnswers = answers.length > 0;
 
@@ -43,6 +45,16 @@ export default function RetrospectiveAnswers({
       return [...prev, { answerId: questionId, content: newContent }];
     });
   };
+
+  const itemRefs = useRef<{ [key: number]: HTMLLIElement | null }>({});
+
+  useEffect(() => {
+    if (errorIds.length > 0) {
+      const firstErrorId = errorIds[0];
+      const el = itemRefs.current[firstErrorId];
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }, [errorIds]);
 
   return (
     <section className={'flex flex-col gap-[20px]'}>
@@ -63,34 +75,41 @@ export default function RetrospectiveAnswers({
         </div>
       ) : (
         <ul className={'flex flex-col gap-[20px]'}>
-          {answers.map((answer) => (
-            <li
-              key={answer.questionId}
-              className={'bg-dark-grey-50 relative flex flex-col gap-[8px] rounded-[8px] px-[24px] py-[20px]'}
-            >
-              <div className={'flex items-center justify-between'}>
-                <p className={'text-body-medium font-semibold'}>{answer.content}</p>
-                {onDeleteAnswer && (
-                  <button
-                    type={'button'}
-                    className={'text-on-surface-low ml-2 hover:text-red-500'}
-                    onClick={() => onDeleteAnswer(answer.questionId)}
-                  >
-                    <span>{'휴지통 아이콘'}</span>
-                  </button>
+          {answers.map((answer) => {
+            const isError = errorIds.includes(answer.questionId);
+            return (
+              <li
+                key={answer.questionId}
+                ref={(el) => {
+                  itemRefs.current[answer.questionId] = el;
+                }}
+                className={'bg-dark-grey-50 relative flex flex-col gap-[8px] rounded-[8px] px-[24px] py-[20px]'}
+              >
+                <div className={'flex items-center justify-between'}>
+                  <p className={'text-body-medium font-semibold'}>{answer.content}</p>
+                  {onDeleteAnswer && (
+                    <button
+                      type={'button'}
+                      className={'text-on-surface-low ml-2 hover:text-red-500'}
+                      onClick={() => onDeleteAnswer(answer.questionId)}
+                    >
+                      <span>{'휴지통 아이콘'}</span>
+                    </button>
+                  )}
+                </div>
+                <textarea
+                  value={getAnswerContent(answer.questionId)}
+                  onChange={(e) => handleChange(answer.questionId, e.target.value)}
+                  placeholder={'어떻게 문제를 해결했는지 어떤 고민을 했었는지 생각하며 기록해보세요.'}
+                  className={`text-body-small border-dark-grey-100 resize-none rounded-md border bg-transparent px-4 py-2 text-white focus:ring-primary focus:ring-1 focus:outline-none ${isError ? 'border-red-500' : ''}`}
+                  rows={4}
+                />
+                {isError && (
+                  <span className={'mt-1 text-xs text-red-500'}>{'회고를 완료하려면 답변을 작성해 주세요.'}</span>
                 )}
-              </div>
-              <textarea
-                value={getAnswerContent(answer.questionId)}
-                onChange={(e) => handleChange(answer.questionId, e.target.value)}
-                placeholder={'어떻게 문제를 해결했는지 어떤 고민을 했었는지 생각하며 기록해보세요.'}
-                className={
-                  'text-body-small border-dark-grey-100 resize-none rounded-md border bg-transparent px-4 py-2 text-white focus:ring-primary focus:ring-1 focus:outline-none'
-                }
-                rows={4}
-              />
-            </li>
-          ))}
+              </li>
+            );
+          })}
         </ul>
       )}
     </section>

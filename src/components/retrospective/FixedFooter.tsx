@@ -10,17 +10,18 @@ interface FixedFooterProps {
   user: UserType;
   answers: { answerId: number; content: string }[];
   onComplete?: () => void;
+  onErrorIds: (ids: number[]) => void;
 }
 
-export default function FixedFooter({ pullRequestId, user, answers, onComplete }: FixedFooterProps) {
+export default function FixedFooter({ pullRequestId, user, answers, onComplete, onErrorIds }: FixedFooterProps) {
   const handleComplete = async () => {
-    try {
-      const hasEmpty = answers.some((a) => a.content.trim() === '');
-      if (hasEmpty) {
-        alert('모든 질문에 답변을 작성해주세요!');
-        return;
-      }
+    const emptyIds = answers.filter((a) => a.content.trim() === '').map((a) => a.answerId);
+    if (emptyIds.length > 0) {
+      onErrorIds(emptyIds);
+      return;
+    }
 
+    try {
       const accessToken = getAccessToken(user);
       if (!accessToken) {
         alert('로그인 정보가 없거나 토큰이 만료되었습니다.');
