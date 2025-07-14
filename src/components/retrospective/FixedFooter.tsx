@@ -9,6 +9,7 @@ interface FixedFooterProps {
   pullRequestId: string;
   user: UserType;
   answers: { answerId: number; content: string }[];
+  questions: { answerId: number; questionId: number }[];
   lastSubmittedAnswers: { answerId: number; content: string }[];
   setLastSubmittedAnswers: (answers: { answerId: number; content: string }[]) => void;
   updateRetrospectiveAnswer: (answerId: number, content: string, accessToken: string) => Promise<any>;
@@ -20,6 +21,7 @@ export default function FixedFooter({
   pullRequestId,
   user,
   answers,
+  questions,
   lastSubmittedAnswers,
   setLastSubmittedAnswers,
   updateRetrospectiveAnswer,
@@ -27,9 +29,15 @@ export default function FixedFooter({
   onErrorIds,
 }: FixedFooterProps) {
   const handleComplete = async () => {
-    const emptyIds = answers.filter((a) => a.content.trim() === '').map((a) => a.answerId);
-    if (emptyIds.length > 0) {
-      onErrorIds(emptyIds);
+    const emptyQuestionIds = answers
+      .filter((a) => a.content.trim() === '')
+      .map((a) => {
+        const bq = questions.find((q) => q.answerId === a.answerId);
+        return bq?.questionId;
+      })
+      .filter((id): id is number => id !== undefined);
+    if (emptyQuestionIds.length > 0) {
+      onErrorIds(emptyQuestionIds);
       return;
     }
 
@@ -54,7 +62,6 @@ export default function FixedFooter({
         }
       }
       await markPRAsDone(Number(pullRequestId), accessToken);
-      // console.log('회고 완료됨!');
     } catch (error) {
       console.error('회고 완료 실패', error);
     }

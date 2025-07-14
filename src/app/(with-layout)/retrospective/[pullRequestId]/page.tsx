@@ -66,6 +66,7 @@ export default function RetrospectivePage() {
 
   const handleRetrospectiveComplete = () => {
     setIsRetrospectiveDone(true);
+    setErrorIds([]); // 에러 상태 초기화
   };
 
   const formattedSummary = [
@@ -131,16 +132,20 @@ export default function RetrospectivePage() {
       <FixedFooter
         pullRequestId={pullRequestId}
         user={user}
-        answers={selectedQuestions
-          .map((q) => {
-            const backendQuestion = data.questions.find((dq) => dq.questionId === q.questionId);
-            if (backendQuestion?.answerId === undefined) return undefined;
-            return {
-              answerId: backendQuestion.answerId,
-              content: answers.find((a) => a.answerId === q.questionId)?.content ?? '',
-            };
-          })
-          .filter((a): a is { answerId: number; content: string } => a !== undefined)}
+        answers={selectedQuestions.map((q) => {
+          const backend = data.questions.find((dq) => dq.questionId === q.questionId);
+          return {
+            answerId: backend?.answerId ?? q.questionId,
+            content: answers.find((a) => a.answerId === q.questionId)?.content ?? '',
+          };
+        })}
+        questions={selectedQuestions.map((q) => {
+          const backend = data.questions.find((dq) => dq.questionId === q.questionId);
+          return {
+            answerId: backend?.answerId ?? q.questionId,
+            questionId: q.questionId,
+          };
+        })}
         lastSubmittedAnswers={lastSubmittedAnswers}
         setLastSubmittedAnswers={setLastSubmittedAnswers}
         updateRetrospectiveAnswer={updateRetrospectiveAnswer}
