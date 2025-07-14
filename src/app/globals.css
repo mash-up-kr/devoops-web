@@ -4,6 +4,7 @@
 @import '../styles/tabs.css';
 @import '../styles/spacing.css';
 @import '../styles/z-index.css';
+@import '../assets/fonts/pretendardvariable.css';
 
 :root {
   --background: #0d0e12;
