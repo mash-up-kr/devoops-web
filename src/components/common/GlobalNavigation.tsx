@@ -1,5 +1,6 @@
 import Link from 'next/link';
 
+import Logo from '@/assets/svg/logo.svg';
 import { ProfileModal, ProfileButton } from '@/components/common/Modal/ProfileModal';
 
 export default function GlobalNavigation() {
@@ -12,7 +13,7 @@ export default function GlobalNavigation() {
       `}
       >
         <Link href={'/'} className={'text-h4 font-bold'}>
-          {'Devoops'}
+          <Logo />
         </Link>
         <div className={'flex items-center gap-[16px]'}>
           <ProfileButton action={'OPEN'} />
