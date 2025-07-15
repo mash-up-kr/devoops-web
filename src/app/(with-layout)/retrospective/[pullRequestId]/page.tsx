@@ -3,6 +3,7 @@
 import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
+import TopIcon from '@/components/common/icons/TopIcon';
 import TopButton from '@/components/common/TopButton';
 import FixedFooter from '@/components/retrospective/FixedFooter';
 import PullRequestSummary from '@/components/retrospective/PullRequestSummary';
@@ -154,7 +155,7 @@ export default function RetrospectivePage() {
         onErrorIds={setErrorIds}
         autoSaveStatus={autoSaveStatus}
       />
-      <TopButton icon={<span>{'^'}</span>} />
+      <TopButton icon={<TopIcon />} />
     </>
   );
 }

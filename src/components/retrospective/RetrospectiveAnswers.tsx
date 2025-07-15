@@ -2,6 +2,7 @@
 
 import React, { useRef, useEffect } from 'react';
 
+import PenIcon from '@/components/common/icons/PenIcon';
 import SectionHeader from '@/components/retrospective/SectionHeader';
 
 interface Question {
@@ -61,7 +62,7 @@ export default function RetrospectiveAnswers({
       <SectionHeader
         title={`PR 회고${hasAnswers ? ` (${answers.length})` : ''}`}
         description={'선택한 질문을 바탕으로 이번 작업을 회고해보세요.'}
-        icon={<span>{'펜 아이콘'}</span>}
+        icon={<PenIcon />}
       />
 
       {!hasAnswers ? (

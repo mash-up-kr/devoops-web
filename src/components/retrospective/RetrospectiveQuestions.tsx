@@ -1,5 +1,6 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../common/Tabs';
 
+import PrQuestionIcon from '@/components/common/icons/PrQuestionIcon';
 import SectionHeader from '@/components/retrospective/SectionHeader';
 import type { RetrospectiveQuestionsProps } from '@/types/retrospective';
 
@@ -13,7 +14,7 @@ export default function RetrospectiveQuestions({
       <SectionHeader
         title={'AI 생성 회고 질문'}
         description={'이번 작업에서 회고하고 싶은 질문을 골라보세요.'}
-        icon={<span>{'회고 아이콘'}</span>}
+        icon={<PrQuestionIcon />}
       />
 
       <Tabs defaultValue={questions[0]?.category}>

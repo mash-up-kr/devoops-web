@@ -1,15 +1,11 @@
+import SearchIcon from '@/components/common/icons/SearchIcon';
 import SectionHeader from '@/components/retrospective/SectionHeader';
 import type { PullRequestSummaryProps } from '@/types/retrospective';
 
 export default function PullRequestSummary({ summary }: PullRequestSummaryProps) {
   return (
     <section className={'flex flex-col gap-[20px] pt-[36px]'}>
-      <SectionHeader
-        title={'AI 요약'}
-        description={'이번 PR에서 작업한 내용이에요.'}
-        icon={<span>{'요약 아이콘'}</span>}
-      />
-
+      <SectionHeader title={'AI 요약'} description={'이번 PR에서 작업한 내용이에요.'} icon={<SearchIcon />} />
       <div className={'bg-dark-grey-50 align-start flex flex-col justify-start gap-[20px] rounded-[8px] p-[24px]'}>
         {summary.map((summaryItem) => (
           <div className={'flex flex-col gap-[4px]'} key={summaryItem.title}>
