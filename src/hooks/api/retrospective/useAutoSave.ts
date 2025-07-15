@@ -18,7 +18,7 @@ export const useAutoSave = ({ user, answers, debounceMs = 3000 }: UseAutoSavePro
   const getChangedAnswers = useCallback(() => {
     return answers.filter((answer) => {
       const lastSaved = lastSavedAnswers.find((saved) => saved.answerId === answer.answerId);
-      return !lastSaved || lastSaved.content !== answer.content;
+      return (!lastSaved || lastSaved.content !== answer.content) && answer.content.trim() !== '';
     });
   }, [answers, lastSavedAnswers]);
 
