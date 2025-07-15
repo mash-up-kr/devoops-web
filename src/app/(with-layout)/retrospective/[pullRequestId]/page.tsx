@@ -3,7 +3,6 @@
 import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
-import { updateRetrospectiveAnswer } from '@/apis/pull-requests/retrospective.mutate';
 import TopButton from '@/components/common/TopButton';
 import FixedFooter from '@/components/retrospective/FixedFooter';
 import PullRequestSummary from '@/components/retrospective/PullRequestSummary';
@@ -148,7 +147,6 @@ export default function RetrospectivePage() {
         })}
         lastSubmittedAnswers={lastSubmittedAnswers}
         setLastSubmittedAnswers={setLastSubmittedAnswers}
-        updateRetrospectiveAnswer={updateRetrospectiveAnswer}
         onComplete={handleRetrospectiveComplete}
         onErrorIds={setErrorIds}
       />

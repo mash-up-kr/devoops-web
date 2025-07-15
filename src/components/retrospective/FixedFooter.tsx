@@ -1,9 +1,10 @@
 'use client';
 
 import type { UserType } from '@/__generated__/@types';
-import { markPRAsDone, submitRetrospectiveAnswers } from '@/apis/pull-requests/retrospective.mutate';
 import Button from '@/components/common/Button';
-import { getAccessToken } from '@/utils/getAccessToken';
+import { useMarkPRAsDoneMutation } from '@/hooks/api/retrospective/useMarkPRAsDoneMutation';
+import { useUpdateAllAnswersMutation } from '@/hooks/api/retrospective/useUpdateAllAnswersMutation';
+import { useUpdateAnswerMutation } from '@/hooks/api/retrospective/useUpdateAnswerMutation';
 
 interface FixedFooterProps {
   pullRequestId: string;
@@ -12,7 +13,6 @@ interface FixedFooterProps {
   questions: { answerId: number; questionId: number }[];
   lastSubmittedAnswers: { answerId: number; content: string }[];
   setLastSubmittedAnswers: (answers: { answerId: number; content: string }[]) => void;
-  updateRetrospectiveAnswer: (answerId: number, content: string, accessToken: string) => Promise<any>;
   onComplete?: () => void;
   onErrorIds: (ids: number[]) => void;
 }
@@ -24,10 +24,13 @@ export default function FixedFooter({
   questions,
   lastSubmittedAnswers,
   setLastSubmittedAnswers,
-  updateRetrospectiveAnswer,
   onComplete,
   onErrorIds,
 }: FixedFooterProps) {
+  const updateAllAnswersMutation = useUpdateAllAnswersMutation();
+  const updateAnswerMutation = useUpdateAnswerMutation();
+  const markPRAsDoneMutation = useMarkPRAsDoneMutation();
+
   const handleComplete = async () => {
     const emptyQuestionIds = answers
       .filter((a) => a.content.trim() === '')
@@ -42,13 +45,9 @@ export default function FixedFooter({
     }
 
     try {
-      const accessToken = getAccessToken(user);
-      if (!accessToken) {
-        return;
-      }
       if (lastSubmittedAnswers.length === 0) {
         // First submit 처리
-        await submitRetrospectiveAnswers(accessToken, answers);
+        await updateAllAnswersMutation.mutateAsync({ user, answers });
         setLastSubmittedAnswers([...answers]);
       } else {
         // Subsequent submit 처리
@@ -57,11 +56,15 @@ export default function FixedFooter({
           return !prev || prev.content !== a.content;
         });
         if (changed.length > 0) {
-          await Promise.all(changed.map((ans) => updateRetrospectiveAnswer(ans.answerId, ans.content, accessToken)));
+          await Promise.all(
+            changed.map((ans) =>
+              updateAnswerMutation.mutateAsync({ user, answerId: ans.answerId, content: ans.content }),
+            ),
+          );
           setLastSubmittedAnswers([...answers]);
         }
       }
-      await markPRAsDone(Number(pullRequestId), accessToken);
+      await markPRAsDoneMutation.mutateAsync({ user, pullRequestId: Number(pullRequestId) });
     } catch (error) {
       console.error('회고 완료 실패', error);
     }
@@ -74,7 +77,17 @@ export default function FixedFooter({
         'fixed bottom-0 left-1/2 flex w-full max-w-[840px] -translate-x-1/2 justify-end bg-[linear-gradient(180deg,_rgba(20,22,26,0)_0%,_#14161A_48.11%)] px-[40px] pt-[80px] pb-[12px]'
       }
     >
-      <Button variant={'filledPrimary'} size={'medium'} onClick={handleComplete} disabled={answers.length === 0}>
+      <Button
+        variant={'filledPrimary'}
+        size={'medium'}
+        onClick={handleComplete}
+        disabled={
+          answers.length === 0 ||
+          updateAllAnswersMutation.isPending ||
+          updateAnswerMutation.isPending ||
+          markPRAsDoneMutation.isPending
+        }
+      >
         {'회고완료'}
       </Button>
     </footer>
