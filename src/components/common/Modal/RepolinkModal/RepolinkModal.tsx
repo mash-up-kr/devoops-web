@@ -63,11 +63,7 @@ function RepolinkModal() {
   return (
     <ModalComponent.Root defaultOpen isOutsideClickClose={false}>
       <ModalComponent.Content>
-        <div
-          className={
-            'border-dark-grey-200 flex flex-col items-center rounded-[12px] border-[1px] px-[32px] pt-[52px] pb-[28px]'
-          }
-        >
+        <ModalComponent.RepoLinkContainer>
           <section
             className={
               'border-dark-grey-200 flex w-fit items-center justify-center gap-[6px] rounded-full border-[1px] px-[10px] py-[6px]'
@@ -137,7 +133,7 @@ function RepolinkModal() {
           <Button className={'mt-[24px] w-full'} onClick={handleStart}>
             {'시작하기'}
           </Button>
-        </div>
+        </ModalComponent.RepoLinkContainer>
       </ModalComponent.Content>
     </ModalComponent.Root>
   );
