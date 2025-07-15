@@ -3,6 +3,7 @@ import { ReactNode } from 'react';
 
 import ModalProvider from '@/providers/ModalContext';
 import QueryProvider from '@/providers/QueryProvider';
+
 import './globals.css';
 
 export const metadata: Metadata = {
