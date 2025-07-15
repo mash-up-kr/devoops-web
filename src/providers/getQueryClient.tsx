@@ -1,7 +1,19 @@
 import { isServer, QueryClient } from '@tanstack/react-query';
 
+const TEN_MINUTES = 60 * 1000 * 10;
+
 function makeQueryClient() {
-  return new QueryClient();
+  return new QueryClient({
+    defaultOptions: {
+      queries: {
+        // With SSR, we usually want to set some default staleTime
+        // above 0 to avoid refetching immediately on the client
+        staleTime: TEN_MINUTES,
+        refetchOnWindowFocus: false,
+        refetchOnMount: false,
+      },
+    },
+  });
 }
 
 let browserQueryClient: QueryClient | undefined;

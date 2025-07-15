@@ -10,7 +10,7 @@ const nextConfig: NextConfig = {
     return config;
   },
   images: {
-    domains: ['static.dev-oops.kr'],
+    domains: ['static.dev-oops.kr', 'avatars.githubusercontent.com'],
   },
   turbopack: {
     rules: {

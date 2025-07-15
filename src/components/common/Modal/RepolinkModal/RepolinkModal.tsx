@@ -10,6 +10,7 @@ import Button from '../../Button';
 
 import { useSaveRepositoryMutation } from '@/apis/repositories/repositories.mutate';
 import { REPOSITORIES_API_QUERY_KEY, useRepositoriesMeQuery } from '@/apis/repositories/repositories.query';
+import { useGetMyInfoQuery } from '@/apis/user/user.query';
 import Avatar from '@/assets/images/avatar.png';
 import MonoXIcon from '@/assets/svg/mono_x.svg';
 
@@ -18,7 +19,11 @@ function RepolinkModal() {
   const queryClient = useQueryClient();
 
   const [input, setInput] = useState('');
-  const { data: repositoriesData } = useRepositoriesMeQuery({ variables: { data: { url: '' } }, options: {} });
+
+  const { data: userData, isLoading: isUserLoading } = useGetMyInfoQuery({});
+  const { data: repositoriesData, isLoading: isRepositoriesLoading } = useRepositoriesMeQuery({
+    variables: { data: { url: '' } },
+  });
   const { mutate } = useSaveRepositoryMutation({
     options: {
       onSuccess: () => {
@@ -33,6 +38,8 @@ function RepolinkModal() {
       },
     },
   });
+
+  const { nickname, profileImageUrl } = userData?.data || {};
 
   const repositories = (() => {
     // eslint-disable-next-line no-underscore-dangle
@@ -66,10 +73,14 @@ function RepolinkModal() {
               'border-dark-grey-200 flex w-fit items-center justify-center gap-[6px] rounded-full border-[1px] px-[10px] py-[6px]'
             }
           >
-            {/* TODO: 프로필 이미지 추가 */}
-            <Image src={Avatar} alt={'프로필 아바타 이미지'} width={16} height={16} />
-            {/* TODO: 닉네임 추가 */}
-            <p className={'text-body-small'}>{'Hocaron'}</p>
+            {isUserLoading ? (
+              <UserProfileSkeleton />
+            ) : (
+              <>
+                <Image src={profileImageUrl || Avatar} alt={'프로필 아바타 이미지'} width={16} height={16} />
+                <p className={'text-body-small'}>{nickname}</p>
+              </>
+            )}
           </section>
 
           <section className={'flex w-[380px] flex-col items-center justify-center gap-[8px]'}>
@@ -100,23 +111,27 @@ function RepolinkModal() {
               'border-dark-grey-25 custom-scrollbar mt-[24px] flex h-[188px] w-full flex-col overflow-y-scroll rounded-[8px] border-[1px] px-[20px] py-[16px]'
             }
           >
-            {repositories.map((repository) => (
-              <div
-                key={`repository-${repository.id}`}
-                className={
-                  'border-dark-grey-100 border-b-dark-grey-400 flex w-full items-center justify-between border-b-[1px] py-[8px]'
-                }
-              >
-                <div className={'flex items-center gap-[8px]'}>
-                  <div className={'bg-dark-blue-500 h-[8px] w-[8px] rounded-full'} />
-                  <p className={'text-body-small text-white'}>{repository.name}</p>
+            {isRepositoriesLoading ? (
+              <RepositoriesListSkeleton />
+            ) : (
+              repositories.map((repository) => (
+                <div
+                  key={`repository-${repository.id}`}
+                  className={
+                    'border-dark-grey-100 border-b-dark-grey-400 flex w-full items-center justify-between border-b-[1px] py-[8px]'
+                  }
+                >
+                  <div className={'flex items-center gap-[8px]'}>
+                    <div className={'bg-dark-blue-500 h-[8px] w-[8px] rounded-full'} />
+                    <p className={'text-body-small text-white'}>{repository.name}</p>
+                  </div>
+                  {/* TODO: 삭제 기능 구현 */}
+                  <button type={'button'} className={'mr-[8px] cursor-pointer'}>
+                    <MonoXIcon />
+                  </button>
                 </div>
-                {/* TODO: 삭제 기능 구현 */}
-                <button type={'button'} className={'mr-[8px] cursor-pointer'}>
-                  <MonoXIcon />
-                </button>
-              </div>
-            ))}
+              ))
+            )}
           </div>
 
           <Button className={'mt-[24px] w-full'} onClick={handleStart}>
@@ -129,3 +144,45 @@ function RepolinkModal() {
 }
 
 export default RepolinkModal;
+
+// 스켈레톤 애니메이션을 위한 공통 클래스
+const skeletonAnimation = 'animate-pulse bg-dark-grey-200';
+
+// 사용자 프로필 스켈레톤 컴포넌트
+function UserProfileSkeleton() {
+  return (
+    <div className={'flex items-center gap-[6px]'}>
+      <div className={`${skeletonAnimation} h-[16px] w-[16px] rounded-full`} />
+      <div className={`${skeletonAnimation} h-[14px] w-[60px] rounded-[4px]`} />
+    </div>
+  );
+}
+
+// 레포지토리 아이템 스켈레톤 컴포넌트
+function RepositoryItemSkeleton({ index }: { index: number }) {
+  return (
+    <div
+      key={`repository-skeleton-${index}`}
+      className={
+        'border-dark-grey-100 border-b-dark-grey-400 flex w-full items-center justify-between border-b-[1px] py-[8px]'
+      }
+    >
+      <div className={'flex items-center gap-[8px]'}>
+        <div className={`${skeletonAnimation} h-[8px] w-[8px] rounded-full`} />
+        <div className={`${skeletonAnimation} h-[14px] w-[120px] rounded-[4px]`} />
+      </div>
+      <div className={`${skeletonAnimation} mr-[8px] h-[16px] w-[16px] rounded-[4px]`} />
+    </div>
+  );
+}
+
+// 레포지토리 목록 스켈레톤 컴포넌트
+function RepositoriesListSkeleton() {
+  return (
+    <>
+      {Array.from({ length: 3 }).map((_, index) => (
+        <RepositoryItemSkeleton key={`skeleton-${index}`} index={index} />
+      ))}
+    </>
+  );
+}

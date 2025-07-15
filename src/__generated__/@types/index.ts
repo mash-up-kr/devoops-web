@@ -97,11 +97,11 @@ export interface UserSaveRequestType {
 
 export interface UserSaveResponseType {
   /**
-   * 깃허브 회원 아이디
+   * 애플리케이션 유저 아이디
    * @format int64
-   * @example 234558
+   * @example 1
    */
-  providerId?: number;
+  id?: number;
   /**
    * 깃허브 회원 닉네임
    * @example "my_nickname"
@@ -157,6 +157,25 @@ export interface AnswerUpdateResponseType {
    * @example "엄청난 깨달음!"
    */
   content: string;
+}
+
+export interface UserReadResponseType {
+  /**
+   * 유저 아이디
+   * @format int64
+   * @example 1
+   */
+  id?: number;
+  /**
+   * 깃허브 회원 닉네임
+   * @example "my_nickname"
+   */
+  nickname?: string;
+  /**
+   * 깃허브 프로필 url
+   * @example "https://avatars.githubusercontent.com/u/148152234?v=4"
+   */
+  profileImageUrl?: string;
 }
 
 /**

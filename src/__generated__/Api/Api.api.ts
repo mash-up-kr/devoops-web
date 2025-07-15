@@ -9,6 +9,7 @@
  * ---------------------------------------------------------------
  */
 
+
 import instance from '@/apis/index';
 import { ContentType, HttpClient, RequestParams } from '../@http-client';
 import type {
@@ -23,6 +24,7 @@ import type {
   RepositoryPullRequestResponsesType,
   RepositorySaveRequestType,
   RepositorySaveResponseType,
+  UserReadResponseType,
   UserSaveRequestType,
   UserSaveResponseType,
   UserTokenRefreshResponseType,
@@ -214,6 +216,21 @@ export class ApiApi<SecurityDataType = unknown> extends HttpClient<SecurityDataT
       method: 'PATCH',
       secure: true,
       ...variables.params,
+    });
+  /**
+   * No description
+   *
+   * @tags User API
+   * @name GetMyInfo
+   * @summary 유저 정보 조회
+   * @request GET:/api/users/me
+   */
+  getMyInfo = (variables?: { params?: RequestParams }) =>
+    this.request<UserReadResponseType, any>({
+      path: `/api/users/me`,
+      method: 'GET',
+      format: 'json',
+      ...variables?.params,
     });
   /**
    * No description
