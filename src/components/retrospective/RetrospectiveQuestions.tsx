@@ -1,5 +1,7 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../common/Tabs';
 
+import CheckIcon from '@/components/common/icons/CheckIcon';
+import PlusIcon from '@/components/common/icons/PlusIcon';
 import PrQuestionIcon from '@/components/common/icons/PrQuestionIcon';
 import SectionHeader from '@/components/retrospective/SectionHeader';
 import type { RetrospectiveQuestionsProps } from '@/types/retrospective';
@@ -37,13 +39,8 @@ export default function RetrospectiveQuestions({
                   key={questionId}
                 >
                   <p className={'grow-1'}>{question}</p>
-                  <button
-                    className={
-                      'ml-auto flex h-8 w-8 items-center justify-center rounded-full border border-gray-500 bg-transparent text-lg'
-                    }
-                    onClick={() => onSelectQuestion(questionId)}
-                  >
-                    {selectedQuestionIds.includes(questionId) ? '✔️' : '+'}
+                  <button onClick={() => onSelectQuestion(questionId)}>
+                    {selectedQuestionIds.includes(questionId) ? <CheckIcon /> : <PlusIcon />}
                   </button>
                 </div>
               ))}

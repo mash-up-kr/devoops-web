@@ -3,6 +3,7 @@
 import React, { useRef, useEffect } from 'react';
 
 import PenIcon from '@/components/common/icons/PenIcon';
+import WarningIcon from '@/components/common/icons/WarningIcon';
 import SectionHeader from '@/components/retrospective/SectionHeader';
 
 interface Question {
@@ -71,7 +72,7 @@ export default function RetrospectiveAnswers({
             'border-outline flex items-center justify-start gap-[8px] rounded-[8px] border-[1px] px-[24px] py-[16px]'
           }
         >
-          <span>{'경고 아이콘'}</span>
+          <span>{<WarningIcon />}</span>
           <span>{'아직 질문을 고르지 않았어요.'}</span>
         </div>
       ) : (
