@@ -3,11 +3,7 @@
 import { useEffect, useMemo, useState } from 'react';
 
 import { RepositoryPullRequestResponseType, RepositorySummaryType } from '@/__generated__/@types';
-import {
-  useGetEntirePullRequestsQuery,
-  useRepositoriesMeQuery,
-  useGetPullRequestsQuery,
-} from '@/apis/repositories/repositories.query';
+import { useGetEntirePullRequestsQuery, useGetPullRequestsQuery } from '@/apis/repositories/repositories.query';
 import AddIcon from '@/assets/svg/add.svg';
 import {
   Pagination,
@@ -25,13 +21,16 @@ import PRPreview from '@/components/home/PRPreview';
 import PRListSkeleton from '@/components/home/Skeleton/PRListSkeleton';
 import { usePagination } from '@/hooks/usePagination';
 
-export default function MyPR() {
-  const [repositoryId, setRepositoryId] = useState<number>(0);
+interface MyPRProps {
+  initialRepositoryList: RepositorySummaryType[];
+}
+
+export default function MyPR({ initialRepositoryList }: MyPRProps) {
+  const repositoryList = initialRepositoryList;
+  const [repositoryId, setRepositoryId] = useState<number>(repositoryList[0]?.id || 0);
   const [pullRequestId, setPullRequestId] = useState<number | undefined>(undefined);
   const [page, setPage] = useState(1);
   const pageSize = 5;
-
-  const { data: myRepositoriesData } = useRepositoriesMeQuery({ variables: { data: { url: '' } }, options: {} });
 
   const { data: PRData, isLoading: isPRDataLoading } = useGetPullRequestsQuery({
     variables: {
@@ -58,16 +57,6 @@ export default function MyPR() {
     },
   });
 
-  const entireRepositoryData = {
-    id: 0,
-    name: '전체',
-    pullRequestCount:
-      myRepositoriesData?.data.repositories?.reduce((acc, repository) => {
-        return acc + (repository.pullRequestCount || 0);
-      }, 0) || 0,
-  };
-
-  const repositoryList = [entireRepositoryData, ...(myRepositoriesData?.data.repositories || [])];
   const PRList = useMemo(
     () => (repositoryId === 0 ? entirePRData?.data.pullRequests : PRData?.data.pullRequests) || [],
     [repositoryId, entirePRData, PRData],
@@ -76,6 +65,8 @@ export default function MyPR() {
   useEffect(() => {
     if (PRList.length > 0 && PRList[0]?.id) {
       setPullRequestId(PRList[0].id);
+    } else {
+      setPullRequestId(undefined);
     }
   }, [PRList]);
 
@@ -92,10 +83,7 @@ export default function MyPR() {
     }
   };
 
-  const totalPullRequestCount =
-    repositoryId === 0
-      ? entireRepositoryData.pullRequestCount
-      : repositoryList.find((repo) => repo.id === repositoryId)?.pullRequestCount;
+  const totalPullRequestCount = repositoryList.find((repo) => repo.id === repositoryId)?.pullRequestCount;
 
   const totalPage = Math.ceil((totalPullRequestCount || 0) / pageSize);
   const { pagesToShow } = usePagination({ totalPage, currentPage: page });
@@ -104,7 +92,7 @@ export default function MyPR() {
 
   return (
     <div>
-      <h1 className={`text-h1 blue-tiny-left inline-block pt-2.5 pb-6 font-semibold`}>{'내 PR'}</h1>
+      <h1 className={'text-h1 blue-tiny-left inline-block pt-2.5 pb-6 font-semibold'}>{'내 PR'}</h1>
       <Tabs defaultValue={repositoryList[0]?.name || '전체'} className={'w-full'}>
         <TabsList>
           {repositoryList.map((repository) => (
