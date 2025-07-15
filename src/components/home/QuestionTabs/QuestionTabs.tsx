@@ -17,7 +17,7 @@ export default function QuestionTabs({ contents }: QuestionTabsProps) {
   return (
     <>
       <CategoryCarousel categories={categories} activeCategory={activeCategory} setActiveCategory={setActiveCategory} />
-      <QuestionContent questions={contents.questions} activeCategory={activeCategory} />
+      <QuestionContent pullRequestId={contents.id} questions={contents.questions} activeCategory={activeCategory} />
     </>
   );
 }

@@ -1,17 +1,20 @@
 'use client';
 
+import Link from 'next/link';
 import React from 'react';
 
 import { QuestionBriefResponseType } from '@/__generated__/@types';
+import Button from '@/components/common/Button';
 import QuestionItem from '@/components/home/QuestionTabs/QuestionItem';
 import { filterBy } from '@/utils/filter';
 
 interface QuestionContentProps {
+  pullRequestId: number | undefined;
   questions: QuestionBriefResponseType[];
   activeCategory: string;
 }
 
-export default function QuestionContent({ questions, activeCategory }: QuestionContentProps) {
+export default function QuestionContent({ pullRequestId, questions, activeCategory }: QuestionContentProps) {
   const matchedQuestionByCategory = filterBy(questions, 'category', activeCategory);
 
   return (
@@ -23,6 +26,12 @@ export default function QuestionContent({ questions, activeCategory }: QuestionC
       {matchedQuestionByCategory.length === 0 && (
         <div className={'text-dark-grey-500 py-8 text-center'}>{'이 카테고리에는 아직 질문이 없습니다.'}</div>
       )}
+
+      <div className={'mt-7 flex justify-end'}>
+        <Button className={'text-body-large cursor-pointer font-semibold'} disabled={!pullRequestId}>
+          <Link href={`/retrospective/${pullRequestId}`}>{'자세히보기'}</Link>
+        </Button>
+      </div>
     </div>
   );
 }
