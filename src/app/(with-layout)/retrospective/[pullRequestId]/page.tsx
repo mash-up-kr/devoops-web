@@ -9,8 +9,8 @@ import PullRequestSummary from '@/components/retrospective/PullRequestSummary';
 import RetrospectiveAnswers from '@/components/retrospective/RetrospectiveAnswers';
 import RetrospectiveHeader from '@/components/retrospective/RetrospectiveHeader';
 import RetrospectiveQuestions from '@/components/retrospective/RetrospectiveQuestions';
+import { useAutoSave } from '@/hooks/api/retrospective/useAutoSave';
 import { usePullRequestDetail } from '@/hooks/api/retrospective/usePullRequestDetail';
-// import { useUpdateAllAnswersMutation } from '@/hooks/api/retrospective/useUpdateAllAnswersMutation';
 import type { CategoryWithQuestions } from '@/types/retrospective';
 
 export default function RetrospectivePage() {
@@ -42,31 +42,25 @@ export default function RetrospectivePage() {
   }, []);
 
   const { data, isLoading, error } = usePullRequestDetail(Number(pullRequestId), user);
-  // const { mutate: autoSaveAnswers } = useUpdateAllAnswersMutation();
 
-  // useEffect(() => {
-  //   if (!user || answers.length === 0) return undefined;
-  //   const interval = setInterval(() => {
-  //     autoSaveAnswers({
-  //       query: { user },
-  //       data: { answers },
-  //     });
-  //   }, 3000);
-  //   return () => clearInterval(interval);
-  // }, [user, answers, autoSaveAnswers]);
+  // 자동저장 훅을 조건부 렌더링 이전에 호출
+  const { autoSaveStatus } = useAutoSave({
+    user,
+    answers: data
+      ? selectedQuestionIds.map((questionId) => {
+          const backend = data.questions.find((dq) => dq.questionId === questionId);
+          return {
+            answerId: backend?.answerId ?? questionId,
+            content: answers.find((a) => a.answerId === questionId)?.content ?? '',
+          };
+        })
+      : [],
+    debounceMs: 3000, // 3초 디바운스
+  });
 
   if (user === null) return <div>{'로그인이 필요합니다.'}</div>;
   if (isLoading) return <div>{'Loading...'}</div>;
   if (error || !data) return <div>{'데이터를 불러오지 못했습니다.'}</div>;
-
-  let status: '전' | '중' | '완료' = '전';
-  if (selectedQuestionIds.length > 0) status = '중';
-  if (isRetrospectiveDone) status = '완료';
-
-  const handleRetrospectiveComplete = () => {
-    setIsRetrospectiveDone(true);
-    setErrorIds([]); // 에러 상태 초기화
-  };
 
   const formattedSummary = [
     {
@@ -107,6 +101,15 @@ export default function RetrospectivePage() {
       content: q.question,
       answer: null,
     }));
+
+  let status: '전' | '중' | '완료' = '전';
+  if (selectedQuestionIds.length > 0) status = '중';
+  if (isRetrospectiveDone) status = '완료';
+
+  const handleRetrospectiveComplete = () => {
+    setIsRetrospectiveDone(true);
+    setErrorIds([]); // 에러 상태 초기화
+  };
 
   return (
     <>
@@ -149,6 +152,7 @@ export default function RetrospectivePage() {
         setLastSubmittedAnswers={setLastSubmittedAnswers}
         onComplete={handleRetrospectiveComplete}
         onErrorIds={setErrorIds}
+        autoSaveStatus={autoSaveStatus}
       />
       <TopButton icon={<span>{'^'}</span>} />
     </>
