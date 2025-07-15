@@ -2,6 +2,7 @@
 
 import React, { useRef, useEffect } from 'react';
 
+import EditButtonIcon from '@/components/common/icons/EditButtonIcon';
 import PenIcon from '@/components/common/icons/PenIcon';
 import WarningIcon from '@/components/common/icons/WarningIcon';
 import SectionHeader from '@/components/retrospective/SectionHeader';
@@ -95,7 +96,7 @@ export default function RetrospectiveAnswers({
                       className={'text-on-surface-low ml-2 hover:text-red-500'}
                       onClick={() => onDeleteAnswer(answer.questionId)}
                     >
-                      <span>{'휴지통 아이콘'}</span>
+                      <span>{<EditButtonIcon />}</span>
                     </button>
                   )}
                 </div>
