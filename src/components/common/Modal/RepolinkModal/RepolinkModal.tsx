@@ -2,20 +2,23 @@
 
 import { useQueryClient } from '@tanstack/react-query';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
-import React, { useState } from 'react';
-
-import { Modal as ModalComponent } from '..';
-import Button from '../../Button';
+import React, { useState, ReactNode } from 'react';
 
 import { useSaveRepositoryMutation } from '@/apis/repositories/repositories.mutate';
 import { REPOSITORIES_API_QUERY_KEY, useRepositoriesMeQuery } from '@/apis/repositories/repositories.query';
 import { useGetMyInfoQuery } from '@/apis/user/user.query';
 import Avatar from '@/assets/images/avatar.png';
 import MonoXIcon from '@/assets/svg/mono_x.svg';
+import Button from '@/components/common/Button';
+import { Modal as ModalComponent } from '@/components/common/Modal';
 
-function RepolinkModal() {
-  const router = useRouter();
+interface RepolinkModalProps {
+  children?: ReactNode;
+  defaultOpen: boolean;
+  isOutsideClickClose: boolean;
+}
+
+function RepolinkModal({ children, defaultOpen = false, isOutsideClickClose = false }: RepolinkModalProps) {
   const queryClient = useQueryClient();
 
   const [input, setInput] = useState('');
@@ -56,16 +59,16 @@ function RepolinkModal() {
     });
   };
 
-  const handleStart = () => {
-    router.replace('/');
-  };
-
   return (
-    <ModalComponent.Root defaultOpen isOutsideClickClose={false}>
+    <ModalComponent.Root
+      defaultOpen={defaultOpen}
+      isOutsideClickClose={isOutsideClickClose}
+      className={'bg-modal-dimmed'}
+    >
       <ModalComponent.Content>
         <div
           className={
-            'border-dark-grey-200 flex flex-col items-center rounded-[12px] border-[1px] px-[32px] pt-[52px] pb-[28px]'
+            'border-dark-grey-200 bg-modal flex flex-col items-center rounded-[12px] border-[1px] px-[32px] pt-[52px] pb-[28px]'
           }
         >
           <section
@@ -77,14 +80,20 @@ function RepolinkModal() {
               <UserProfileSkeleton />
             ) : (
               <>
-                <Image src={profileImageUrl || Avatar} alt={'프로필 아바타 이미지'} width={16} height={16} />
+                <Image
+                  src={profileImageUrl || Avatar}
+                  alt={'프로필 아바타 이미지'}
+                  width={16}
+                  height={16}
+                  className={'rounded-full'}
+                />
                 <p className={'text-body-small'}>{nickname}</p>
               </>
             )}
           </section>
 
           <section className={'flex w-[380px] flex-col items-center justify-center gap-[8px]'}>
-            <h3 className={'text-h3'}>{'회고할 레포지토리를 추가해 주세요!'}</h3>
+            <h3 className={'text-h3 pt-4.5'}>{'회고할 레포지토리를 추가해 주세요!'}</h3>
             <p className={'text-body-small text-dark-grey-600'}>{'레포지토리는 5개까지 추가할 수 있어요'}</p>
           </section>
 
@@ -133,10 +142,7 @@ function RepolinkModal() {
               ))
             )}
           </div>
-
-          <Button className={'mt-[24px] w-full'} onClick={handleStart}>
-            {'시작하기'}
-          </Button>
+          {children}
         </div>
       </ModalComponent.Content>
     </ModalComponent.Root>

@@ -5,6 +5,8 @@ import { useEffect, useMemo, useState } from 'react';
 import { RepositoryPullRequestResponseType, RepositorySummaryType } from '@/__generated__/@types';
 import { useGetEntirePullRequestsQuery, useGetPullRequestsQuery } from '@/apis/repositories/repositories.query';
 import AddIcon from '@/assets/svg/add.svg';
+import { Modal } from '@/components/common/Modal';
+import RepolinkModal from '@/components/common/Modal/RepolinkModal/RepolinkModal';
 import {
   Pagination,
   PaginationContent,
@@ -20,6 +22,7 @@ import { PRItem, PRStatus, PRContent } from '@/components/home/PRItem';
 import PRPreview from '@/components/home/PRPreview';
 import PRListSkeleton from '@/components/home/Skeleton/PRListSkeleton';
 import { usePagination } from '@/hooks/usePagination';
+import ModalProvider from '@/providers/ModalContext';
 
 interface MyPRProps {
   initialRepositoryList: RepositorySummaryType[];
@@ -100,7 +103,22 @@ export default function MyPR({ initialRepositoryList }: MyPRProps) {
               {repository.name}
             </TabsTrigger>
           ))}
-          <AddIcon />
+          <ModalProvider>
+            <Modal.Toggle action={'OPEN'} type={'button'} className={'h-full cursor-pointer hover:brightness-150'}>
+              <AddIcon />
+            </Modal.Toggle>
+            <RepolinkModal defaultOpen={false} isOutsideClickClose>
+              <Modal.Toggle
+                action={'CLOSE'}
+                type={'button'}
+                className={
+                  'text-body-large mt-[24px] inline-flex w-full cursor-pointer items-center justify-center gap-1.5 rounded-lg px-5 py-3 font-semibold whitespace-nowrap enabled:bg-primary enabled:text-on-primary enabled:hover:bg-dark-blue-400 enabled:hover:text-on-primary disabled:text-dark-grey-300 disabled:bg-dark-grey-100 disabled:pointer-events-none'
+                }
+              >
+                {'완료'}
+              </Modal.Toggle>
+            </RepolinkModal>
+          </ModalProvider>
         </TabsList>
         {repositoryList.map((repository) => (
           <TabsContent key={repository.id} value={repository.name || ''} className={'flex'}>
