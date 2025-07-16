@@ -1,14 +1,16 @@
-import { Suspense } from 'react';
-
+import { apiApi } from '@/__generated__/Api/Api.api';
 import MyPR from '@/components/home/MyPR';
-import MyPRSkeleton from '@/components/home/Skeleton/MyPRSkeleton';
 
-export default function Home() {
+export default async function Home() {
+  const { data: myReposRes } = await apiApi.getMyRepositories({ data: { url: '' } });
+
+  const repos = myReposRes.repositories ?? [];
+  const totalCount = repos.reduce((sum, r) => sum + (r.pullRequestCount || 0), 0);
+  const initialRepositoryList = [{ id: 0, name: '전체', pullRequestCount: totalCount }, ...repos];
+
   return (
     <div className={'mx-auto max-w-[1200px] px-[40px]'}>
-      <Suspense fallback={<MyPRSkeleton />}>
-        <MyPR />
-      </Suspense>
+      <MyPR initialRepositoryList={initialRepositoryList} />
     </div>
   );
 }

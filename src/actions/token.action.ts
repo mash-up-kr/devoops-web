@@ -30,6 +30,16 @@ export async function setTokenAction({ accessToken, refreshToken }: TokenType) {
   });
 }
 
+export async function deleteTokenAction() {
+  const cookieStore = await cookies();
+  cookieStore.delete({
+    name: TOKEN_KEY,
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'lax',
+  });
+}
+
 const stringifyToken = ({ accessToken, refreshToken }: TokenType) => {
   return JSON.stringify({ accessToken, refreshToken });
 };

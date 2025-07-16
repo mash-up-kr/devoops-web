@@ -2,20 +2,23 @@
 
 import { useQueryClient } from '@tanstack/react-query';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
-import React, { useState } from 'react';
-
-import { Modal as ModalComponent } from '..';
-import Button from '../../Button';
+import React, { useState, ReactNode } from 'react';
 
 import { useSaveRepositoryMutation } from '@/apis/repositories/repositories.mutate';
 import { REPOSITORIES_API_QUERY_KEY, useRepositoriesMeQuery } from '@/apis/repositories/repositories.query';
 import { useGetMyInfoQuery } from '@/apis/user/user.query';
 import Avatar from '@/assets/images/avatar.png';
 import MonoXIcon from '@/assets/svg/mono_x.svg';
+import Button from '@/components/common/Button';
+import { Modal as ModalComponent } from '@/components/common/Modal';
 
-function RepolinkModal() {
-  const router = useRouter();
+interface RepolinkModalProps {
+  children?: ReactNode;
+  defaultOpen: boolean;
+  isOutsideClickClose: boolean;
+}
+
+function RepolinkModal({ children, defaultOpen = false, isOutsideClickClose = false }: RepolinkModalProps) {
   const queryClient = useQueryClient();
 
   const [input, setInput] = useState('');
@@ -56,83 +59,92 @@ function RepolinkModal() {
     });
   };
 
-  const handleStart = () => {
-    router.replace('/');
-  };
-
   return (
-    <ModalComponent.Root defaultOpen isOutsideClickClose={false}>
+    <ModalComponent.Root
+      defaultOpen={defaultOpen}
+      isOutsideClickClose={isOutsideClickClose}
+      className={'bg-modal-dimmed'}
+    >
       <ModalComponent.Content>
         <ModalComponent.RepoLinkContainer>
-          <section
-            className={
-              'border-dark-grey-200 flex w-fit items-center justify-center gap-[6px] rounded-full border-[1px] px-[10px] py-[6px]'
-            }
-          >
-            {isUserLoading ? (
-              <UserProfileSkeleton />
-            ) : (
-              <>
-                <Image src={profileImageUrl || Avatar} alt={'프로필 아바타 이미지'} width={16} height={16} />
-                <p className={'text-body-small'}>{nickname}</p>
-              </>
-            )}
-          </section>
-
-          <section className={'flex w-[380px] flex-col items-center justify-center gap-[8px]'}>
-            <h3 className={'text-h3'}>{'회고할 레포지토리를 추가해 주세요!'}</h3>
-            <p className={'text-body-small text-dark-grey-600'}>{'레포지토리는 5개까지 추가할 수 있어요'}</p>
-          </section>
-
-          <form className={'mt-[40px] flex w-full flex-col'}>
-            <p className={'text-caption text-dark-grey-800 mb-[8px]'}>{'레포지토리 주소'}</p>
-            <div className={'flex w-full justify-between'}>
-              <input
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                className={
-                  'text-body-medium text-dark-grey-900 border-dark-grey-200 h-[48px] w-[300px] rounded-[8px] border-[1px] px-[14px] py-[12px] placeholder:text-dark-grey-900'
-                }
-                type={'text'}
-                placeholder={'레포지토리 주소를 입력해 주세요'}
-              />
-              <Button type={'button'} variant={'weakPrimary'} size={'medium'} onClick={saveRepository}>
-                {'추가'}
-              </Button>
-            </div>
-          </form>
-
           <div
             className={
-              'border-dark-grey-25 custom-scrollbar mt-[24px] flex h-[188px] w-full flex-col overflow-y-scroll rounded-[8px] border-[1px] px-[20px] py-[16px]'
+              'border-dark-grey-200 bg-modal flex flex-col items-center rounded-[12px] border-[1px] px-[32px] pt-[52px] pb-[28px]'
             }
           >
-            {isRepositoriesLoading ? (
-              <RepositoriesListSkeleton />
-            ) : (
-              repositories.map((repository) => (
-                <div
-                  key={`repository-${repository.id}`}
-                  className={
-                    'border-dark-grey-100 border-b-dark-grey-400 flex w-full items-center justify-between border-b-[1px] py-[8px]'
-                  }
-                >
-                  <div className={'flex items-center gap-[8px]'}>
-                    <div className={'bg-dark-blue-500 h-[8px] w-[8px] rounded-full'} />
-                    <p className={'text-body-small text-white'}>{repository.name}</p>
-                  </div>
-                  {/* TODO: 삭제 기능 구현 */}
-                  <button type={'button'} className={'mr-[8px] cursor-pointer'}>
-                    <MonoXIcon />
-                  </button>
-                </div>
-              ))
-            )}
-          </div>
+            <section
+              className={
+                'border-dark-grey-200 flex w-fit items-center justify-center gap-[6px] rounded-full border-[1px] px-[10px] py-[6px]'
+              }
+            >
+              {isUserLoading ? (
+                <UserProfileSkeleton />
+              ) : (
+                <>
+                  <Image
+                    src={profileImageUrl || Avatar}
+                    alt={'프로필 아바타 이미지'}
+                    width={16}
+                    height={16}
+                    className={'rounded-full'}
+                  />
+                  <p className={'text-body-small'}>{nickname}</p>
+                </>
+              )}
+            </section>
 
-          <Button className={'mt-[24px] w-full'} onClick={handleStart}>
-            {'시작하기'}
-          </Button>
+            <section className={'flex w-[380px] flex-col items-center justify-center gap-[8px]'}>
+              <h3 className={'text-h3 pt-4.5'}>{'회고할 레포지토리를 추가해 주세요!'}</h3>
+              <p className={'text-body-small text-dark-grey-600'}>{'레포지토리는 5개까지 추가할 수 있어요'}</p>
+            </section>
+
+            <form className={'mt-[40px] flex w-full flex-col'}>
+              <p className={'text-caption text-dark-grey-800 mb-[8px]'}>{'레포지토리 주소'}</p>
+              <div className={'flex w-full justify-between'}>
+                <input
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                  className={
+                    'text-body-medium text-dark-grey-900 border-dark-grey-200 h-[48px] w-[300px] rounded-[8px] border-[1px] px-[14px] py-[12px] placeholder:text-dark-grey-900'
+                  }
+                  type={'text'}
+                  placeholder={'레포지토리 주소를 입력해 주세요'}
+                />
+                <Button type={'button'} variant={'weakPrimary'} size={'medium'} onClick={saveRepository}>
+                  {'추가'}
+                </Button>
+              </div>
+            </form>
+
+            <div
+              className={
+                'border-dark-grey-25 custom-scrollbar mt-[24px] flex h-[188px] w-full flex-col overflow-y-scroll rounded-[8px] border-[1px] px-[20px] py-[16px]'
+              }
+            >
+              {isRepositoriesLoading ? (
+                <RepositoriesListSkeleton />
+              ) : (
+                repositories.map((repository) => (
+                  <div
+                    key={`repository-${repository.id}`}
+                    className={
+                      'border-dark-grey-100 border-b-dark-grey-400 flex w-full items-center justify-between border-b-[1px] py-[8px]'
+                    }
+                  >
+                    <div className={'flex items-center gap-[8px]'}>
+                      <div className={'bg-dark-blue-500 h-[8px] w-[8px] rounded-full'} />
+                      <p className={'text-body-small text-white'}>{repository.name}</p>
+                    </div>
+                    {/* TODO: 삭제 기능 구현 */}
+                    <button type={'button'} className={'mr-[8px] cursor-pointer'}>
+                      <MonoXIcon />
+                    </button>
+                  </div>
+                ))
+              )}
+            </div>
+            {children}
+          </div>
         </ModalComponent.RepoLinkContainer>
       </ModalComponent.Content>
     </ModalComponent.Root>
