@@ -1,3 +1,5 @@
+import { format } from 'date-fns';
+
 import Tag from '@/components/common/Tag';
 
 interface RetrospectiveHeaderProps {
@@ -8,6 +10,7 @@ interface RetrospectiveHeaderProps {
 }
 
 export default function RetrospectiveHeader({ title, tag, mergedAt, status }: RetrospectiveHeaderProps) {
+  const formattedMergedAt = mergedAt ? format(new Date(mergedAt), 'MMM dd, yyyy') : '';
   return (
     <header
       className={'border-outline-variant flex flex-col items-start justify-start gap-[6px] border-b-[1px] pb-[36px]'}
@@ -18,7 +21,7 @@ export default function RetrospectiveHeader({ title, tag, mergedAt, status }: Re
         <div className={'text-body-small text-on-surface-low font-regular flex gap-[8px]'}>
           <span>{status === '전' ? '회고 전' : status === '중' ? '회고 중' : '회고 완료'}</span>
           <span>{'·'}</span>
-          <span>{`Merged on ${mergedAt}`}</span>
+          <span>{`Merged on ${formattedMergedAt}`}</span>
           <span>{'·'}</span>
           <span>{'PR 보러가기'}</span>
         </div>
