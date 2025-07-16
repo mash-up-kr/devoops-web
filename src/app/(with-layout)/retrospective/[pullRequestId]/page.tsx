@@ -22,6 +22,10 @@ export default function RetrospectivePage() {
   const [selectedQuestionIds, setSelectedQuestionIds] = useState<number[]>([]);
   const [isRetrospectiveDone, setIsRetrospectiveDone] = useState(false);
 
+  const handleDeleteAnswer = (questionId: number) => {
+    setSelectedQuestionIds((prev) => prev.filter((id) => id !== questionId));
+  };
+
   const handleSelectQuestion = (questionId: number) => {
     setSelectedQuestionIds((prev) =>
       prev.includes(questionId) ? prev.filter((id) => id !== questionId) : [...prev, questionId],
@@ -110,7 +114,12 @@ export default function RetrospectivePage() {
           selectedQuestionIds={selectedQuestionIds}
           onSelectQuestion={handleSelectQuestion}
         />
-        <RetrospectiveAnswers answers={selectedQuestions} writtenAnswers={answers} setWrittenAnswers={setAnswers} />
+        <RetrospectiveAnswers
+          answers={selectedQuestions}
+          writtenAnswers={answers}
+          setWrittenAnswers={setAnswers}
+          onDeleteAnswer={handleDeleteAnswer}
+        />
       </main>
 
       <FixedFooter

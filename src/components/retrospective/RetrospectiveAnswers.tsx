@@ -19,12 +19,14 @@ interface RetrospectiveAnswersProps {
   answers: Question[];
   writtenAnswers: WrittenAnswer[];
   setWrittenAnswers: React.Dispatch<React.SetStateAction<WrittenAnswer[]>>;
+  onDeleteAnswer?: (questionId: number) => void;
 }
 
 export default function RetrospectiveAnswers({
   answers,
   writtenAnswers,
   setWrittenAnswers,
+  onDeleteAnswer,
 }: RetrospectiveAnswersProps) {
   const hasAnswers = answers.length > 0;
 
@@ -64,9 +66,20 @@ export default function RetrospectiveAnswers({
           {answers.map((answer) => (
             <li
               key={answer.questionId}
-              className={'bg-dark-grey-50 flex flex-col gap-[8px] rounded-[8px] px-[24px] py-[20px]'}
+              className={'bg-dark-grey-50 relative flex flex-col gap-[8px] rounded-[8px] px-[24px] py-[20px]'}
             >
-              <p className={'text-body-medium font-semibold'}>{answer.content}</p>
+              <div className={'flex items-center justify-between'}>
+                <p className={'text-body-medium font-semibold'}>{answer.content}</p>
+                {onDeleteAnswer && (
+                  <button
+                    type={'button'}
+                    className={'text-on-surface-low ml-2 hover:text-red-500'}
+                    onClick={() => onDeleteAnswer(answer.questionId)}
+                  >
+                    <span>{'휴지통 아이콘'}</span>
+                  </button>
+                )}
+              </div>
               <textarea
                 value={getAnswerContent(answer.questionId)}
                 onChange={(e) => handleChange(answer.questionId, e.target.value)}
