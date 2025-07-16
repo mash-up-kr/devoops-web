@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
 // import { apiApi } from '@/__generated__/Api/Api.api';
-import { deleteTokenAction, getTokenAction } from '@/actions/token.action';
+import { deleteTokenAction } from '@/actions/token.action';
 import { useRepositoriesMeQuery } from '@/apis/repositories/repositories.query';
 import { useGetMyInfoQuery } from '@/apis/user/user.query';
 import Avatar from '@/assets/images/avatar.png';
@@ -21,12 +21,9 @@ export default function ProfileContent() {
   const repoCount = userRepositoriesData?.data.repositories?.length || 0;
 
   const handleLogout = async () => {
-    const tokenObj = await getTokenAction();
-
-    if (!userData || !tokenObj) {
-      return router.push('/landing?error=unauthorized');
-    }
     // TODO:(정우) 로그아웃 api 연결 필요
+
+    // const tokenObj = await getTokenAction();
     // await apiApi.logout();
 
     await deleteTokenAction();
