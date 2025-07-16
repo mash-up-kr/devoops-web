@@ -1,6 +1,6 @@
 'use client';
 
-import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import React from 'react';
 
 import { QuestionBriefResponseType } from '@/__generated__/@types';
@@ -15,6 +15,14 @@ interface QuestionContentProps {
 }
 
 export default function QuestionContent({ pullRequestId, questions, activeCategory }: QuestionContentProps) {
+  const router = useRouter();
+
+  const handleClick = (prId: number | undefined) => {
+    if (prId) {
+      router.push(`/retrospective/${prId}`);
+    }
+  };
+
   const matchedQuestionByCategory = filterBy(questions, 'category', activeCategory);
 
   return (
@@ -28,8 +36,12 @@ export default function QuestionContent({ pullRequestId, questions, activeCatego
       )}
 
       <div className={'mt-7 flex justify-end'}>
-        <Button className={'text-body-large cursor-pointer font-semibold'} disabled={!pullRequestId}>
-          <Link href={`/retrospective/${pullRequestId}`}>{'자세히보기'}</Link>
+        <Button
+          className={'text-body-large cursor-pointer font-semibold'}
+          disabled={!pullRequestId}
+          onClick={() => handleClick(pullRequestId)}
+        >
+          {'자세히보기'}
         </Button>
       </div>
     </div>
