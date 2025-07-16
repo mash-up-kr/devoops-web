@@ -3,13 +3,17 @@ import { useEffect, useState, useCallback } from 'react';
 import type { UserType } from '@/__generated__/@types';
 import { useUpdateAnswerMutation } from '@/hooks/api/retrospective/useUpdateAnswerMutation';
 
+const AUTOSAVE_DEBOUNCE_MS = 2000;
+const SHOW_SAVED_STATUS_MS = 2000;
+const SAVED_STATUS_DURATION_MS = 1000;
+
 interface UseAutoSaveProps {
   user: UserType | null;
   answers: { answerId: number; content: string }[];
   debounceMs?: number;
 }
 
-export const useAutoSave = ({ user, answers, debounceMs = 3000 }: UseAutoSaveProps) => {
+export const useAutoSave = ({ user, answers, debounceMs = AUTOSAVE_DEBOUNCE_MS }: UseAutoSaveProps) => {
   const [autoSaveStatus, setAutoSaveStatus] = useState<'idle' | 'saving' | 'saved'>('idle');
   const [lastSavedAnswers, setLastSavedAnswers] = useState<{ answerId: number; content: string }[]>([]);
 
@@ -44,8 +48,8 @@ export const useAutoSave = ({ user, answers, debounceMs = 3000 }: UseAutoSavePro
         setAutoSaveStatus('saved');
         setTimeout(() => {
           setAutoSaveStatus('idle');
-        }, 3000);
-      }, 2000);
+        }, SAVED_STATUS_DURATION_MS);
+      }, SHOW_SAVED_STATUS_MS);
     } catch (error) {
       console.error('자동저장 실패:', error);
       setAutoSaveStatus('idle');
