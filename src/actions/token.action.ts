@@ -27,7 +27,6 @@ export async function setTokenAction({ accessToken, refreshToken }: TokenType) {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
     sameSite: 'lax',
-    path: '/',
   });
 }
 
@@ -35,7 +34,6 @@ export async function deleteTokenAction() {
   const cookieStore = await cookies();
   cookieStore.delete({
     name: TOKEN_KEY,
-    path: '/',
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
     sameSite: 'lax',
