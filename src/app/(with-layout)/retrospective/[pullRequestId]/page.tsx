@@ -3,6 +3,7 @@
 import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
+import type { PullRequestDetailReadResponseType, QuestionAnswerResponseType } from '@/__generated__/@types';
 import TopIcon from '@/components/common/icons/TopIcon';
 import TopButton from '@/components/common/TopButton';
 import FixedFooter from '@/components/retrospective/FixedFooter';
@@ -42,21 +43,23 @@ export default function RetrospectivePage() {
     setUser(userString ? JSON.parse(userString) : null);
   }, []);
 
-  const { data, isLoading, error } = usePullRequestDetail(Number(pullRequestId), user);
+  // Assume usePullRequestDetail returns PullRequestDetailReadResponseType
+  const { data: rawData, isLoading, error } = usePullRequestDetail(Number(pullRequestId), user);
+  const data = rawData as PullRequestDetailReadResponseType | undefined;
 
   // 자동저장 훅을 조건부 렌더링 이전에 호출
   const { autoSaveStatus } = useAutoSave({
     user,
     answers: data
       ? selectedQuestionIds.map((questionId) => {
-          const backend = data.questions.find((dq) => dq.questionId === questionId);
+          const backend = data.questions.find((dq: QuestionAnswerResponseType) => dq.questionId === questionId);
           return {
             answerId: backend?.answerId ?? questionId,
             content: answers.find((a) => a.answerId === questionId)?.content ?? '',
           };
         })
       : [],
-    debounceMs: 3000, // 3초 디바운스
+    debounceMs: 3000,
   });
 
   if (user === null) return <div>{'로그인이 필요합니다.'}</div>;
@@ -70,29 +73,32 @@ export default function RetrospectivePage() {
     },
   ];
 
-  const groupedQuestions: CategoryWithQuestions[] = data.questions.reduce<CategoryWithQuestions[]>((acc, question) => {
-    if (question.questionId === undefined || question.content === undefined || question.category === undefined) {
+  const groupedQuestions: CategoryWithQuestions[] = data.questions.reduce<CategoryWithQuestions[]>(
+    (acc, question: QuestionAnswerResponseType) => {
+      if (question.questionId === undefined || question.content === undefined || question.category === undefined) {
+        return acc;
+      }
+
+      const existing = acc.find((item) => item.category === question.category);
+
+      const mappedQuestion = {
+        questionId: question.questionId,
+        question: question.content,
+      };
+
+      if (existing) {
+        existing.questions.push(mappedQuestion);
+      } else {
+        acc.push({
+          category: question.category,
+          questions: [mappedQuestion],
+        });
+      }
+
       return acc;
-    }
-
-    const existing = acc.find((item) => item.category === question.category);
-
-    const mappedQuestion = {
-      questionId: question.questionId,
-      question: question.content,
-    };
-
-    if (existing) {
-      existing.questions.push(mappedQuestion);
-    } else {
-      acc.push({
-        category: question.category,
-        questions: [mappedQuestion],
-      });
-    }
-
-    return acc;
-  }, []);
+    },
+    [],
+  );
 
   const selectedQuestions = groupedQuestions
     .flatMap((categoryItem) => categoryItem.questions)
@@ -109,7 +115,7 @@ export default function RetrospectivePage() {
 
   const handleRetrospectiveComplete = () => {
     setIsRetrospectiveDone(true);
-    setErrorIds([]); // 에러 상태 초기화
+    setErrorIds([]);
   };
 
   return (
@@ -136,14 +142,14 @@ export default function RetrospectivePage() {
         pullRequestId={pullRequestId}
         user={user}
         answers={selectedQuestions.map((q) => {
-          const backend = data.questions.find((dq) => dq.questionId === q.questionId);
+          const backend = data.questions.find((dq: QuestionAnswerResponseType) => dq.questionId === q.questionId);
           return {
             answerId: backend?.answerId ?? q.questionId,
             content: answers.find((a) => a.answerId === q.questionId)?.content ?? '',
           };
         })}
         questions={selectedQuestions.map((q) => {
-          const backend = data.questions.find((dq) => dq.questionId === q.questionId);
+          const backend = data.questions.find((dq: QuestionAnswerResponseType) => dq.questionId === q.questionId);
           return {
             answerId: backend?.answerId ?? q.questionId,
             questionId: q.questionId,
