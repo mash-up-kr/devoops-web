@@ -9,7 +9,6 @@
  * ---------------------------------------------------------------
  */
 
-
 /**
  * 회고 최신화 요청 목록
  */
@@ -365,7 +364,7 @@ export interface PullRequestDetailReadResponseType {
    */
   recordStatus: 'PENDING' | 'PROGRESS' | 'DONE';
   /**
-   * 풀 리퀘스트 url
+   * PR URL
    * @example "https://github.com/aaa/bbb/pull/4"
    */
   pullRequestUrl: string;

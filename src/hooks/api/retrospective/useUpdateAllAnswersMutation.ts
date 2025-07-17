@@ -1,10 +1,14 @@
 import { useMutation } from '@tanstack/react-query';
 
-import { apiApi } from '@/__generated__/Api/Api.api';
-import { UseMutationParams } from '@/types/tanstack-query/use-mutation-params';
+import type { UserType } from '@/__generated__/@types';
+import { submitRetrospectiveAnswers } from '@/apis/pull-requests/retrospective.mutate';
+import { getAccessToken } from '@/utils/getAccessToken';
 
-export const useUpdateAllAnswersMutation = (params?: UseMutationParams<typeof apiApi.updateAllAnswer>) =>
+export const useUpdateAllAnswersMutation = () =>
   useMutation({
-    mutationFn: apiApi.updateAllAnswer,
-    ...(params?.options ?? {}),
+    mutationFn: ({ user, answers }: { user: UserType; answers: { answerId: number; content: string }[] }) => {
+      const accessToken = getAccessToken(user);
+      if (!accessToken) throw new Error('토큰 없음');
+      return submitRetrospectiveAnswers(accessToken, answers);
+    },
   });

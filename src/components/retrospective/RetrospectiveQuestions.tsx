@@ -1,16 +1,22 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../common/Tabs';
 
-import Button from '@/components/common/Button';
+import CheckIcon from '@/components/common/icons/CheckIcon';
+import PlusIcon from '@/components/common/icons/PlusIcon';
+import PrQuestionIcon from '@/components/common/icons/PrQuestionIcon';
 import SectionHeader from '@/components/retrospective/SectionHeader';
 import type { RetrospectiveQuestionsProps } from '@/types/retrospective';
 
-export default function RetrospectiveQuestions({ questions }: RetrospectiveQuestionsProps) {
+export default function RetrospectiveQuestions({
+  questions,
+  selectedQuestionIds,
+  onSelectQuestion,
+}: RetrospectiveQuestionsProps) {
   return (
     <section className={'flex flex-col gap-[20px]'}>
       <SectionHeader
         title={'AI 생성 회고 질문'}
         description={'이번 작업에서 회고하고 싶은 질문을 골라보세요.'}
-        icon={<span>{'회고 아이콘'}</span>}
+        icon={<PrQuestionIcon />}
       />
 
       <Tabs defaultValue={questions[0]?.category}>
@@ -33,14 +39,12 @@ export default function RetrospectiveQuestions({ questions }: RetrospectiveQuest
                   key={questionId}
                 >
                   <p className={'grow-1'}>{question}</p>
-                  <span>{'+'}</span>
+                  <button onClick={() => onSelectQuestion(questionId)}>
+                    {selectedQuestionIds.includes(questionId) ? <CheckIcon /> : <PlusIcon />}
+                  </button>
                 </div>
               ))}
             </ul>
-
-            <Button size={'tiny'} variant={'outlineGrey'}>
-              {'질문 생성하기'}
-            </Button>
           </TabsContent>
         ))}
       </Tabs>

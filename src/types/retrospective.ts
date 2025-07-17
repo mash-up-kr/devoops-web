@@ -28,6 +28,8 @@ export interface CategoryWithQuestions {
 
 export interface RetrospectiveQuestionsProps {
   questions: CategoryWithQuestions[];
+  selectedQuestionIds: number[];
+  onSelectQuestion: (questionId: number) => void;
 }
 
 export interface SummaryItem {
