@@ -7,9 +7,16 @@ interface RetrospectiveHeaderProps {
   tag: string;
   mergedAt: string;
   status: '전' | '중' | '완료';
+  pullRequestUrl: string;
 }
 
-export default function RetrospectiveHeader({ title, tag, mergedAt, status }: RetrospectiveHeaderProps) {
+export default function RetrospectiveHeader({
+  title,
+  tag,
+  mergedAt,
+  status,
+  pullRequestUrl,
+}: RetrospectiveHeaderProps) {
   const formattedMergedAt = mergedAt ? format(new Date(mergedAt), 'MMM dd, yyyy') : '';
   return (
     <header
@@ -23,7 +30,14 @@ export default function RetrospectiveHeader({ title, tag, mergedAt, status }: Re
           <span>{'·'}</span>
           <span>{`Merged on ${formattedMergedAt}`}</span>
           <span>{'·'}</span>
-          <span>{'PR 보러가기'}</span>
+          <a
+            href={pullRequestUrl}
+            target={'_blank'}
+            rel={'noopener noreferrer'}
+            className={'text-primary underline hover:opacity-80'}
+          >
+            {'PR 보러가기'}
+          </a>
         </div>
       </div>
     </header>

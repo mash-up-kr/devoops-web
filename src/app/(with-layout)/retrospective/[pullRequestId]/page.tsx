@@ -43,11 +43,9 @@ export default function RetrospectivePage() {
     setUser(userString ? JSON.parse(userString) : null);
   }, []);
 
-  // Assume usePullRequestDetail returns PullRequestDetailReadResponseType
   const { data: rawData, isLoading, error } = usePullRequestDetail(Number(pullRequestId), user);
   const data = rawData as PullRequestDetailReadResponseType | undefined;
 
-  // 자동저장 훅을 조건부 렌더링 이전에 호출
   const { autoSaveStatus } = useAutoSave({
     user,
     answers: data
@@ -120,7 +118,13 @@ export default function RetrospectivePage() {
 
   return (
     <>
-      <RetrospectiveHeader title={data.title} tag={data.tag} mergedAt={data.mergedAt} status={status} />
+      <RetrospectiveHeader
+        title={data.title}
+        tag={data.tag}
+        mergedAt={data.mergedAt}
+        status={status}
+        pullRequestUrl={data.pullRequestUrl}
+      />
 
       <main className={'flex flex-col gap-[68px]'}>
         <PullRequestSummary summary={formattedSummary} />
