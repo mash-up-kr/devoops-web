@@ -3,9 +3,9 @@ import { githubApi } from '@/apis/github/github.api';
 import GithubCallback from '@/components/auth/GithubCallback';
 
 type Props = {
-  searchParams: {
+  searchParams: Promise<{
     code?: string;
-  };
+  }>;
 };
 
 async function GithubAuthCallbackPage({ searchParams }: Props) {
