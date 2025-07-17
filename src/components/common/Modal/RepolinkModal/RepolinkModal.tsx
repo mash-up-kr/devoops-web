@@ -24,9 +24,7 @@ function RepolinkModal({ children, defaultOpen = false, isOutsideClickClose = fa
   const [input, setInput] = useState('');
 
   const { data: userData, isLoading: isUserLoading } = useGetMyInfoQuery({});
-  const { data: repositoriesData, isLoading: isRepositoriesLoading } = useRepositoriesMeQuery({
-    variables: { data: { url: '' } },
-  });
+  const { data: repositoriesData, isLoading: isRepositoriesLoading } = useRepositoriesMeQuery({});
   const { mutate } = useSaveRepositoryMutation({
     options: {
       onSuccess: () => {

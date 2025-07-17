@@ -6,7 +6,7 @@ export default async function Home() {
   let initialRepositoryList: RepositorySummaryType[] = [];
 
   try {
-    const { data: myReposRes } = await apiApi.getMyRepositories({ data: { url: '' } });
+    const { data: myReposRes } = await apiApi.getMyRepositories();
     const repos = myReposRes.repositories ?? [];
 
     const totalCount = repos.reduce((sum, r) => sum + (r.pullRequestCount || 0), 0);
