@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "prepare": "husky"
+    "prepare": "husky",
+    "gen": "node ./node_modules/.bin/mash-up-web"
   },
   "lint-staged": {
     "**/*.{js,jsx,ts,tsx}": [
@@ -15,12 +16,23 @@
     ]
   },
   "dependencies": {
+    "@radix-ui/react-slot": "^1.2.3",
+    "@tanstack/react-query": "^5.79.0",
     "axios": "^1.9.0",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "date-fns": "^4.1.0",
+    "lottie-react": "^2.4.1",
+    "lucide-react": "^0.525.0",
     "next": "15.3.1",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "shadcn": "^2.8.0",
+    "tailwind-merge": "^3.3.1"
   },
   "devDependencies": {
+    "@mash-up-web-toolkit/command": "^0.0.15",
+    "@svgr/webpack": "^8.1.0",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
@@ -33,7 +45,8 @@
     "eslint": "^8.57.1",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-next": "15.3.1",
-    "eslint-config-prettier": "^10.0.2",
+    "eslint-config-prettier": "^10.1.5",
+    "eslint-plugin-better-tailwindcss": "^3.4.0",
     "eslint-plugin-import": "^2.31.0",
     "eslint-plugin-jsx-a11y": "^6.10.2",
     "eslint-plugin-prettier": "^5.2.6",
@@ -43,6 +56,7 @@
     "lint-staged": "^15.5.2",
     "prettier": "^3.5.3",
     "tailwindcss": "^4",
+    "tw-animate-css": "^1.3.5",
     "typescript": "^5"
   },
   "config": {

@@ -1,0 +1,17 @@
+@import './colors.css';
+
+@theme {
+  --inset-shadow-tabs-active: inset 0 -1px 0 var(--color-primary);
+  --inset-shadow-tabs-hover: inset 0 -1px 0 var(--color-dark-grey-700);
+  --inset-shadow-tabs-enabled: inset 0 -1px 0 var(--color-dark-grey-100);
+  --inset-shadow-tabs-list: inset 0 -1px 0 var(--color-dark-grey-100);
+}
+
+.custom-tabs-scrollbar::-webkit-scrollbar {
+  height: 0px;
+}
+
+.custom-tabs-scrollbar::-webkit-scrollbar-thumb {
+  background: transparent;
+  border-radius: 99px;
+}

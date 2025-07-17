@@ -1,4 +1,6 @@
-import axios, { AxiosInstance, AxiosResponse, InternalAxiosRequestConfig, AxiosError } from 'axios';
+import axios, { AxiosInstance, AxiosResponse, InternalAxiosRequestConfig, AxiosError, AxiosHeaders } from 'axios';
+
+import { getTokenAction } from '@/actions/token.action';
 
 interface IErrorResponse {
   code: string;
@@ -6,18 +8,25 @@ interface IErrorResponse {
   message: string;
 }
 
-const { API_BASE_URL } = process.env;
-
 const instance = axios.create({
-  baseURL: API_BASE_URL,
+  baseURL: process.env.API_BASE_URL || process.env.NEXT_PUBLIC_API_BASE_URL,
   timeout: 30000,
   headers: {
     'Content-Type': 'application/json',
   },
 });
 
-const onRequest = (config: InternalAxiosRequestConfig) => {
-  return Promise.resolve(config);
+const onRequest = async (config: InternalAxiosRequestConfig) => {
+  const token = await getTokenAction();
+  if (token) {
+    const headers = new AxiosHeaders(config.headers);
+    headers.set('Authorization', `Bearer ${token.accessToken}`);
+    return {
+      ...config,
+      headers,
+    };
+  }
+  return config;
 };
 
 const onResponse = (response: AxiosResponse) => {
