@@ -59,15 +59,13 @@ export default function RetrospectivePage() {
 
   const { autoSaveStatus } = useAutoSave({
     user,
-    answers: data
-      ? selectedQuestionIds.map((questionId) => {
-          const backend = data.questions.find((dq: QuestionAnswerResponseType) => dq.questionId === questionId);
-          return {
-            answerId: backend?.answerId ?? questionId,
-            content: answers.find((a) => a.answerId === questionId)?.content ?? '',
-          };
-        })
-      : [],
+    answers: selectedQuestionIds.map((questionId) => {
+      const answerObj = answers.find((a) => a.questionId === questionId);
+      return {
+        answerId: answerObj?.answerId ?? questionId,
+        content: answerObj?.content ?? '',
+      };
+    }),
     debounceMs: 3000,
   });
 
