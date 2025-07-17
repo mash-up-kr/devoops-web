@@ -1,10 +1,10 @@
-export const getTagColor = (tag: string) => {
-  if (tag.includes('feat')) return 'skyblue';
-  if (tag.includes('refactor')) return 'violet';
-  if (tag.includes('bug')) return 'red';
-  if (tag.includes('chore')) return 'olive';
-  if (tag.includes('style')) return 'orange';
-  if (tag.includes('test')) return 'blue';
-  if (tag.includes('pref')) return 'yellow';
+export const getTagColor = (tagName: string) => {
+  if (tagName.includes('feat')) return 'skyblue';
+  if (tagName.includes('refactor')) return 'violet';
+  if (tagName.includes('bug')) return 'red';
+  if (tagName.includes('chore')) return 'olive';
+  if (tagName.includes('style')) return 'orange';
+  if (tagName.includes('test')) return 'blue';
+  if (tagName.includes('pref')) return 'yellow';
   return 'gray';
 };

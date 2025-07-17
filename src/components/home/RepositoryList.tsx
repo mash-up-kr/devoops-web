@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { Suspense, useEffect, useMemo, useState } from 'react';
 
 import { RepositoryPullRequestResponseType, RepositorySummaryType } from '@/__generated__/@types';
 import { useGetEntirePullRequestsQuery, useGetPullRequestsQuery } from '@/apis/repositories/repositories.query';
@@ -124,7 +124,7 @@ export default function RepositoryList({ repository }: RepositoryListProps) {
           </PaginationContent>
         </Pagination>
       </div>
-      <Preview pullRequestId={pullRequestId} />
+      <Suspense fallback={<PreviewSkeleton />}>{pullRequestId && <Preview pullRequestId={pullRequestId} />}</Suspense>
     </div>
   );
 }
