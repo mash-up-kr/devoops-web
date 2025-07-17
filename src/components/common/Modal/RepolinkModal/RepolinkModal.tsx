@@ -2,24 +2,31 @@
 
 import { useQueryClient } from '@tanstack/react-query';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import React, { useState, ReactNode } from 'react';
 
-import { useSaveRepositoryMutation } from '@/apis/repositories/repositories.mutate';
+import { useDeleteRepositoryMutation, useSaveRepositoryMutation } from '@/apis/repositories/repositories.mutate';
 import { REPOSITORIES_API_QUERY_KEY, useRepositoriesMeQuery } from '@/apis/repositories/repositories.query';
 import { useGetMyInfoQuery } from '@/apis/user/user.query';
 import Avatar from '@/assets/images/avatar.webp';
 import MonoXIcon from '@/assets/svg/mono_x.svg';
+import RepoEmpty from '@/assets/svg/repo-empty.svg';
 import Button from '@/components/common/Button';
 import { Modal as ModalComponent } from '@/components/common/Modal';
 
 interface RepolinkModalProps {
-  children?: ReactNode;
   defaultOpen: boolean;
   isOutsideClickClose: boolean;
+  button?: ReactNode;
 }
 
-function RepolinkModal({ children, defaultOpen = false, isOutsideClickClose = false }: RepolinkModalProps) {
+function RepolinkModal({ defaultOpen = false, isOutsideClickClose = false, button }: RepolinkModalProps) {
   const queryClient = useQueryClient();
+  const router = useRouter();
+
+  const handleStart = () => {
+    router.replace('/');
+  };
 
   const [input, setInput] = useState('');
 
@@ -40,6 +47,14 @@ function RepolinkModal({ children, defaultOpen = false, isOutsideClickClose = fa
     },
   });
 
+  const { mutate: deleteRepositoryMutate } = useDeleteRepositoryMutation({
+    options: {
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: REPOSITORIES_API_QUERY_KEY.GET_REPOSITORIES_ME() });
+      },
+    },
+  });
+
   const { nickname, profileImageUrl } = userData?.data || {};
 
   const repositories = (() => {
@@ -55,6 +70,12 @@ function RepolinkModal({ children, defaultOpen = false, isOutsideClickClose = fa
     mutate({
       data: { url: input },
     });
+  };
+
+  const deleteRepository = (repositoryId?: number) => {
+    if (repositoryId) {
+      deleteRepositoryMutate({ repositoryId });
+    }
   };
 
   return (
@@ -86,29 +107,6 @@ function RepolinkModal({ children, defaultOpen = false, isOutsideClickClose = fa
             )}
           </section>
 
-          <section className={'flex w-[380px] flex-col items-center justify-center gap-[8px]'}>
-            <h3 className={'text-h3 pt-4.5'}>{'회고할 레포지토리를 추가해 주세요!'}</h3>
-            <p className={'text-body-small text-dark-grey-600'}>{'레포지토리는 5개까지 추가할 수 있어요'}</p>
-          </section>
-
-          <form className={'mt-[40px] flex w-full flex-col'}>
-            <p className={'text-caption text-dark-grey-800 mb-[8px]'}>{'레포지토리 주소'}</p>
-            <div className={'flex w-full justify-between'}>
-              <input
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                className={
-                  'text-body-medium text-dark-grey-900 border-dark-grey-200 h-[48px] w-[300px] rounded-[8px] border-[1px] px-[14px] py-[12px] placeholder:text-dark-grey-900'
-                }
-                type={'text'}
-                placeholder={'레포지토리 주소를 입력해 주세요'}
-              />
-              <Button type={'button'} variant={'weakPrimary'} size={'medium'} onClick={saveRepository}>
-                {'추가'}
-              </Button>
-            </div>
-          </form>
-
           <div
             className={
               'border-dark-grey-25 custom-scrollbar mt-[24px] flex h-[188px] w-full flex-col overflow-y-scroll rounded-[8px] border-[1px] px-[20px] py-[16px]'
@@ -116,7 +114,7 @@ function RepolinkModal({ children, defaultOpen = false, isOutsideClickClose = fa
           >
             {isRepositoriesLoading ? (
               <RepositoriesListSkeleton />
-            ) : (
+            ) : repositories.length > 0 ? (
               repositories.map((repository) => (
                 <div
                   key={`repository-${repository.id}`}
@@ -128,15 +126,31 @@ function RepolinkModal({ children, defaultOpen = false, isOutsideClickClose = fa
                     <div className={'bg-dark-blue-500 h-[8px] w-[8px] rounded-full'} />
                     <p className={'text-body-small text-white'}>{repository.name}</p>
                   </div>
-                  {/* TODO: 삭제 기능 구현 */}
-                  <button type={'button'} className={'mr-[8px] cursor-pointer'}>
+
+                  <button
+                    type={'button'}
+                    className={'mr-[8px] cursor-pointer'}
+                    onClick={() => {
+                      deleteRepository(repository.id);
+                    }}
+                  >
                     <MonoXIcon />
                   </button>
                 </div>
               ))
+            ) : (
+              <div className={'flex flex-col items-center justify-center gap-[4px] rounded-[8px]'}>
+                <RepoEmpty />
+                <p className={'text-body-small text-dark-grey-300'}>{'추가된 레포지토리가 없어요.'}</p>
+              </div>
             )}
           </div>
-          {children}
+
+          {button || (
+            <Button className={'mt-[24px] w-full'} onClick={handleStart} disabled={repositories.length === 0}>
+              {'시작하기'}
+            </Button>
+          )}
         </div>
       </ModalComponent.Content>
     </ModalComponent.Root>
