@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useSuspenseQuery } from '@tanstack/react-query';
 
 import { apiApi } from '@/__generated__/Api/Api.api';
 import { UseQueryParams } from '@/types/tanstack-query/use-query-params';
@@ -18,7 +18,7 @@ export const useRepositoriesMeQuery = (params: UseQueryParams<typeof apiApi.getM
   const queryKey = REPOSITORIES_API_QUERY_KEY.GET_REPOSITORIES_ME();
   return useQuery({
     queryKey,
-    queryFn: () => apiApi.getMyRepositories({}),
+    queryFn: () => apiApi.getMyRepositories(),
     ...params?.options,
   });
 };
@@ -48,7 +48,7 @@ export const useGetPullRequestsQuery = (params: UseQueryParams<typeof apiApi.get
 export const useGetPullRequestQuery = (params: UseQueryParams<typeof apiApi.getPullRequest>) => {
   const queryKey = REPOSITORIES_API_QUERY_KEY.GET_PULL_REQUEST(params?.variables);
 
-  return useQuery({
+  return useSuspenseQuery({
     queryKey,
     queryFn: () => apiApi.getPullRequest(params?.variables),
     ...params?.options,

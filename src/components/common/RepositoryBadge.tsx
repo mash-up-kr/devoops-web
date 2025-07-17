@@ -17,7 +17,7 @@ const RepositoryBadgeVariants = cva(
     variants: {
       as: {
         span: `gap-1 px-3 py-1.5`,
-        button: [`gap-1.5 px-4 py-[7px]`],
+        button: [`cursor-pointer gap-1.5 px-4 py-[7px]`],
       },
     },
     defaultVariants: {

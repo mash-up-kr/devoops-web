@@ -46,6 +46,7 @@
   --color-sub-olive: #ddf34f;
   --color-sub-yellow: #debd6a;
   --color-sub-skyblue: #00ceff;
+  --color-sub-red: #f04452;
 
   /* Primary System Colors */
   --color-primary: var(--color-dark-blue-500);
