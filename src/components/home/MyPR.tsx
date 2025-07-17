@@ -107,17 +107,21 @@ export default function MyPR({ initialRepositoryList }: MyPRProps) {
             <Modal.Toggle action={'OPEN'} type={'button'} className={'h-full cursor-pointer hover:brightness-150'}>
               <AddIcon />
             </Modal.Toggle>
-            <RepolinkModal defaultOpen={false} isOutsideClickClose>
-              <Modal.Toggle
-                action={'CLOSE'}
-                type={'button'}
-                className={
-                  'text-body-large mt-[24px] inline-flex w-full cursor-pointer items-center justify-center gap-1.5 rounded-lg px-5 py-3 font-semibold whitespace-nowrap enabled:bg-primary enabled:text-on-primary enabled:hover:bg-dark-blue-400 enabled:hover:text-on-primary disabled:text-dark-grey-300 disabled:bg-dark-grey-100 disabled:pointer-events-none'
-                }
-              >
-                {'완료'}
-              </Modal.Toggle>
-            </RepolinkModal>
+            <RepolinkModal
+              defaultOpen={false}
+              isOutsideClickClose
+              button={
+                <Modal.Toggle
+                  action={'CLOSE'}
+                  type={'button'}
+                  className={
+                    'text-body-large mt-[24px] inline-flex w-full cursor-pointer items-center justify-center gap-1.5 rounded-lg px-5 py-3 font-semibold whitespace-nowrap enabled:bg-primary enabled:text-on-primary enabled:hover:bg-dark-blue-400 enabled:hover:text-on-primary disabled:text-dark-grey-300 disabled:bg-dark-grey-100 disabled:pointer-events-none'
+                  }
+                >
+                  {'완료'}
+                </Modal.Toggle>
+              }
+            />
           </ModalProvider>
         </TabsList>
         {repositoryList.map((repository) => (
