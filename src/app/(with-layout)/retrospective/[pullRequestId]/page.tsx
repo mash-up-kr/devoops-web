@@ -29,8 +29,16 @@ export default function RetrospectivePage() {
   const [selectedQuestionIds, setSelectedQuestionIds] = useState<number[]>([]);
   const [isRetrospectiveDone, setIsRetrospectiveDone] = useState(false);
 
-  const handleDeleteAnswer = (questionId: number) => {
-    setSelectedQuestionIds((prev) => prev.filter((id) => id !== questionId));
+  const handleDeleteAnswer = async (questionId: number) => {
+    const answerObj = answers.find((a) => a.questionId === questionId);
+    if (!answerObj) return;
+    try {
+      await apiApi.deleteAnswer({ answerId: answerObj.answerId, data: { content: answerObj.content } });
+      setAnswers((prev) => prev.filter((a) => a.questionId !== questionId));
+      setSelectedQuestionIds((prev) => prev.filter((id) => id !== questionId));
+    } catch {
+      alert('회고 답변 삭제에 실패했습니다.');
+    }
   };
 
   const handleSelectQuestion = async (questionId: number) => {
@@ -59,13 +67,16 @@ export default function RetrospectivePage() {
 
   const { autoSaveStatus } = useAutoSave({
     user,
-    answers: selectedQuestionIds.map((questionId) => {
-      const answerObj = answers.find((a) => a.questionId === questionId);
-      return {
-        answerId: answerObj?.answerId ?? questionId,
-        content: answerObj?.content ?? '',
-      };
-    }),
+    answers: selectedQuestionIds
+      .map((questionId) => {
+        const answerObj = answers.find((a) => a.questionId === questionId);
+        if (!answerObj) return undefined;
+        return {
+          answerId: answerObj.answerId,
+          content: answerObj.content,
+        };
+      })
+      .filter((a): a is { answerId: number; content: string } => !!a),
     debounceMs: 3000,
   });
 
@@ -178,20 +189,26 @@ export default function RetrospectivePage() {
       <FixedFooter
         pullRequestId={pullRequestId}
         user={user}
-        answers={selectedQuestions.map((q) => {
-          const backend = data.questions.find((dq: QuestionAnswerResponseType) => dq.questionId === q.questionId);
-          return {
-            answerId: backend?.answerId ?? answers.find((a) => a.questionId === q.questionId)?.answerId ?? q.questionId,
-            content: answers.find((a) => a.questionId === q.questionId)?.content ?? '',
-          };
-        })}
-        questions={selectedQuestions.map((q) => {
-          const backend = data.questions.find((dq: QuestionAnswerResponseType) => dq.questionId === q.questionId);
-          return {
-            answerId: backend?.answerId ?? answers.find((a) => a.questionId === q.questionId)?.answerId ?? q.questionId,
-            questionId: q.questionId,
-          };
-        })}
+        answers={selectedQuestions
+          .map((q) => {
+            const answerObj = answers.find((a) => a.questionId === q.questionId);
+            if (!answerObj) return undefined;
+            return {
+              answerId: answerObj.answerId,
+              content: answerObj.content,
+            };
+          })
+          .filter((a): a is { answerId: number; content: string } => !!a)}
+        questions={selectedQuestions
+          .map((q) => {
+            const answerObj = answers.find((a) => a.questionId === q.questionId);
+            if (!answerObj) return undefined;
+            return {
+              answerId: answerObj.answerId,
+              questionId: q.questionId,
+            };
+          })
+          .filter((a): a is { answerId: number; questionId: number } => !!a)}
         lastSubmittedAnswers={lastSubmittedAnswers}
         setLastSubmittedAnswers={setLastSubmittedAnswers}
         onComplete={handleRetrospectiveComplete}
