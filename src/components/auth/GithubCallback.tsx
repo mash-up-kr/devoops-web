@@ -12,7 +12,7 @@ function GithubCallback({ accessToken, refreshToken }: { accessToken: string; re
   const router = useRouter();
   const checkHasRepositories = async (): Promise<boolean> => {
     try {
-      const { data } = (await apiApi.getMyRepositories({ data: { url: '' } })) || {};
+      const { data } = (await apiApi.getMyRepositories({})) || {};
       return data?.repositories?.length !== 0;
     } catch {
       return false;

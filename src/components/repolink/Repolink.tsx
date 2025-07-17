@@ -2,10 +2,10 @@
 
 import React from 'react';
 
-import RepolinkModal from '../common/Modal/RepolinkModal/RepolinkModal';
+import RepolinkModal from '@/components/common/Modal/RepolinkModal/RepolinkModal';
 
 function Repolink() {
-  return <RepolinkModal />;
+  return <RepolinkModal defaultOpen isOutsideClickClose={false} />;
 }
 
 export default Repolink;

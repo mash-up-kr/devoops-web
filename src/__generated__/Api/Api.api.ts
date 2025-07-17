@@ -17,10 +17,12 @@ import type {
   AnswerSaveResponseType,
   AnswerUpdateRequestType,
   AnswerUpdateResponseType,
+  LogoutV1RequestType,
   MyRepositoriesResponseType,
   PullRequestDetailReadResponseType,
   PullRequestRankingResponsesType,
   PullRequestReadResponseType,
+  RefreshTokenV1RequestType,
   RepositoryPullRequestResponsesType,
   RepositorySaveRequestType,
   RepositorySaveResponseType,
@@ -74,6 +76,43 @@ export class ApiApi<SecurityDataType = unknown> extends HttpClient<SecurityDataT
   /**
    * No description
    *
+   * @tags Auth API
+   * @name LogoutV1
+   * @summary 로그아웃 V1 API
+   * @request POST:/api/v1/auth/logout
+   * @secure
+   */
+  logoutV1 = (variables: { data: LogoutV1RequestType; params?: RequestParams }) =>
+    this.request<void, any>({
+      path: `/api/v1/auth/logout`,
+      method: 'POST',
+      body: variables.data,
+      secure: true,
+      type: ContentType.Json,
+      ...variables.params,
+    });
+  /**
+   * No description
+   *
+   * @tags Auth API
+   * @name ReIssueTokenV1
+   * @summary 토큰 재발급 V1 API
+   * @request POST:/api/v1/auth/github/refresh
+   * @secure
+   */
+  reIssueTokenV1 = (variables: { data: RefreshTokenV1RequestType; params?: RequestParams }) =>
+    this.request<UserTokenRefreshResponseType, any>({
+      path: `/api/v1/auth/github/refresh`,
+      method: 'POST',
+      body: variables.data,
+      secure: true,
+      type: ContentType.Json,
+      format: 'json',
+      ...variables.params,
+    });
+  /**
+   * No description
+   *
    * @tags Repository API
    * @name SaveRepository
    * @summary 신규 레포지토리 저장
@@ -112,21 +151,16 @@ export class ApiApi<SecurityDataType = unknown> extends HttpClient<SecurityDataT
    *
    * @tags Auth API
    * @name Logout
+   * @summary 로그 아웃
    * @request POST:/api/auth/logout
    * @secure
    */
-  logout = (variables: {
-    query: {
-      user: UserType;
-    };
-    params?: RequestParams;
-  }) =>
+  logout = (variables?: { params?: RequestParams }) =>
     this.request<void, any>({
       path: `/api/auth/logout`,
       method: 'POST',
-      query: variables.query,
       secure: true,
-      ...variables.params,
+      ...variables?.params,
     });
   /**
    * No description
@@ -327,15 +361,13 @@ export class ApiApi<SecurityDataType = unknown> extends HttpClient<SecurityDataT
    * @request GET:/api/repositories/me
    * @secure
    */
-  getMyRepositories = (variables: { data: RepositorySaveRequestType; params?: RequestParams }) =>
+  getMyRepositories = (variables?: { params?: RequestParams }) =>
     this.request<MyRepositoriesResponseType, any>({
       path: `/api/repositories/me`,
       method: 'GET',
-      body: variables.data,
       secure: true,
-      type: ContentType.Json,
       format: 'json',
-      ...variables.params,
+      ...variables?.params,
     });
   /**
    * No description
@@ -384,6 +416,22 @@ export class ApiApi<SecurityDataType = unknown> extends HttpClient<SecurityDataT
       method: 'GET',
       format: 'json',
       ...variables?.params,
+    });
+  /**
+   * No description
+   *
+   * @tags Repository API
+   * @name DeleteRepositories
+   * @summary 레포지토리 삭제
+   * @request DELETE:/api/repositories/{repositoryId}
+   * @secure
+   */
+  deleteRepositories = (variables: { repositoryId: number; params?: RequestParams }) =>
+    this.request<void, any>({
+      path: `/api/repositories/${variables.repositoryId}`,
+      method: 'DELETE',
+      secure: true,
+      ...variables.params,
     });
 }
 

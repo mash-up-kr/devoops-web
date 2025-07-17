@@ -1,17 +1,42 @@
 'use client';
 
 import Image from 'next/image';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
+import { apiApi } from '@/__generated__/Api/Api.api';
+import { deleteTokenAction, getTokenAction } from '@/actions/token.action';
+import { useRepositoriesMeQuery } from '@/apis/repositories/repositories.query';
 import { useGetMyInfoQuery } from '@/apis/user/user.query';
-import Avatar from '@/assets/images/avatar.png';
+import Avatar from '@/assets/images/avatar.webp';
 import RepositoryBadge from '@/components/common/RepositoryBadge';
 
 export default function ProfileContent() {
+  const router = useRouter();
+
   const { data: userData } = useGetMyInfoQuery({});
   const { nickname, profileImageUrl } = userData?.data || {};
 
-  const handleLogout = () => {
-    // TODO: 로그아웃 기능 구현
+  const { data: userRepositoriesData } = useRepositoriesMeQuery({});
+  const repoCount = userRepositoriesData?.data.repositories?.length || 0;
+
+  const handleLogout = async () => {
+    const tokenObj = await getTokenAction();
+    const accessToken = tokenObj?.accessToken || '';
+    const refreshToken = tokenObj?.refreshToken || '';
+
+    try {
+      await apiApi.logoutV1({
+        data: {
+          accessToken,
+          refreshToken,
+        },
+      });
+    } finally {
+      await deleteTokenAction();
+    }
+
+    return router.push('/landing');
   };
 
   return (
@@ -22,7 +47,14 @@ export default function ProfileContent() {
         </div>
         <div className={'border-outline-variant flex w-full flex-col items-center gap-4 border-b pb-4'}>
           <h4 className={'text-h4 font-semibold'}>{nickname}</h4>
-          <RepositoryBadge as={'button'} label={'레포지토리 관리'} count={3} />
+          <Link href={'/repolink'}>
+            <RepositoryBadge
+              as={'button'}
+              label={'레포지토리 관리'}
+              count={repoCount}
+              className={`hover:text-dark-grey-600`}
+            />
+          </Link>
         </div>
       </div>
 
