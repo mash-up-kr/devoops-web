@@ -2,6 +2,7 @@
 
 import { useQueryClient } from '@tanstack/react-query';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import React, { useState, ReactNode } from 'react';
 
 import { useDeleteRepositoryMutation, useSaveRepositoryMutation } from '@/apis/repositories/repositories.mutate';
@@ -9,17 +10,23 @@ import { REPOSITORIES_API_QUERY_KEY, useRepositoriesMeQuery } from '@/apis/repos
 import { useGetMyInfoQuery } from '@/apis/user/user.query';
 import Avatar from '@/assets/images/avatar.png';
 import MonoXIcon from '@/assets/svg/mono_x.svg';
+import RepoEmpty from '@/assets/svg/repo-empty.svg';
 import Button from '@/components/common/Button';
 import { Modal as ModalComponent } from '@/components/common/Modal';
 
 interface RepolinkModalProps {
-  children?: ReactNode;
   defaultOpen: boolean;
   isOutsideClickClose: boolean;
+  button?: ReactNode;
 }
 
-function RepolinkModal({ children, defaultOpen = false, isOutsideClickClose = false }: RepolinkModalProps) {
+function RepolinkModal({ defaultOpen = false, isOutsideClickClose = false, button }: RepolinkModalProps) {
   const queryClient = useQueryClient();
+  const router = useRouter();
+
+  const handleStart = () => {
+    router.replace('/');
+  };
 
   const [input, setInput] = useState('');
 
@@ -135,7 +142,7 @@ function RepolinkModal({ children, defaultOpen = false, isOutsideClickClose = fa
             >
               {isRepositoriesLoading ? (
                 <RepositoriesListSkeleton />
-              ) : (
+              ) : repositories.length > 0 ? (
                 repositories.map((repository) => (
                   <div
                     key={`repository-${repository.id}`}
@@ -159,9 +166,19 @@ function RepolinkModal({ children, defaultOpen = false, isOutsideClickClose = fa
                     </button>
                   </div>
                 ))
+              ) : (
+                <div className={'flex flex-col items-center justify-center gap-[4px] rounded-[8px]'}>
+                  <RepoEmpty />
+                  <p className={'text-body-small text-dark-grey-300'}>{'추가된 레포지토리가 없어요.'}</p>
+                </div>
               )}
             </div>
-            {children}
+
+            {button || (
+              <Button className={'mt-[24px] w-full'} onClick={handleStart} disabled={repositories.length === 0}>
+                {'시작하기'}
+              </Button>
+            )}
           </div>
         </ModalComponent.RepoLinkContainer>
       </ModalComponent.Content>
