@@ -54,6 +54,45 @@ export interface UserType {
   githubToken?: GithubTokenType;
 }
 
+export interface LogoutV1RequestType {
+  /**
+   * 로그아웃 시도 회원 엑세스 토큰
+   * @example "accessToken"
+   */
+  accessToken: string;
+  /**
+   * 로그아웃 시도 회원 리프레시 토큰
+   * @example "oldRefreshToken"
+   */
+  refreshToken: string;
+}
+
+export interface RefreshTokenV1RequestType {
+  /**
+   * 재발급 대상 엑세스 토큰
+   * @example "oldAccessToken"
+   */
+  accessToken: string;
+  /**
+   * 재발급 대상 리프레시 토큰
+   * @example "oldRefreshToken"
+   */
+  refreshToken: string;
+}
+
+export interface UserTokenRefreshResponseType {
+  /**
+   * 깃허브 회원 아이디
+   * @example "refershAccessToken"
+   */
+  accessToken?: string;
+  /**
+   * 재발급한 리프레시 토큰
+   * @example "refreshRefreshToken"
+   */
+  refreshToken?: string;
+}
+
 export interface RepositorySaveRequestType {
   /**
    * 레포지토리 URL
@@ -120,19 +159,6 @@ export interface UserSaveResponseType {
   /**
    * 리프레시 토큰
    * @example "refreshTokenValue.."
-   */
-  refreshToken?: string;
-}
-
-export interface UserTokenRefreshResponseType {
-  /**
-   * 깃허브 회원 아이디
-   * @example "refershAccessToken"
-   */
-  accessToken?: string;
-  /**
-   * 재발급한 리프레시 토큰
-   * @example "refreshRefreshToken"
    */
   refreshToken?: string;
 }
@@ -243,6 +269,11 @@ export interface PullRequestReadResponseType {
    */
   recordStatus: 'PENDING' | 'PROGRESS' | 'DONE';
   /**
+   * 풀 리퀘스트 url
+   * @example "https://github.com/aaa/bbb/pull/4"
+   */
+  pullRequestUrl: string;
+  /**
    * 머지 시각
    * @format date-time
    */
@@ -333,6 +364,11 @@ export interface PullRequestDetailReadResponseType {
    * @example "PROGRESS"
    */
   recordStatus: 'PENDING' | 'PROGRESS' | 'DONE';
+  /**
+   * 풀 리퀘스트 url
+   * @example "https://github.com/aaa/bbb/pull/4"
+   */
+  pullRequestUrl: string;
   /**
    * 머지 시각
    * @format date-time
