@@ -18,7 +18,7 @@ export const useRepositoriesMeQuery = (params: UseQueryParams<typeof apiApi.getM
   const queryKey = REPOSITORIES_API_QUERY_KEY.GET_REPOSITORIES_ME();
   return useQuery({
     queryKey,
-    queryFn: () => apiApi.getMyRepositories({ data: { url: '' } }),
+    queryFn: () => apiApi.getMyRepositories({}),
     ...params?.options,
   });
 };

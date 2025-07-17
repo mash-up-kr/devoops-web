@@ -16,3 +16,10 @@ export const useSaveRepositoryMutation = (params: UseMutationParams<typeof apiAp
     ...params?.options,
   });
 };
+
+export const useDeleteRepositoryMutation = (params: UseMutationParams<typeof apiApi.deleteRepositories>) => {
+  return useMutation({
+    mutationFn: (variables) => apiApi.deleteRepositories(variables),
+    ...params?.options,
+  });
+};

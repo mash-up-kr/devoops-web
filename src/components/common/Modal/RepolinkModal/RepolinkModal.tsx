@@ -4,7 +4,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import Image from 'next/image';
 import React, { useState, ReactNode } from 'react';
 
-import { useSaveRepositoryMutation } from '@/apis/repositories/repositories.mutate';
+import { useDeleteRepositoryMutation, useSaveRepositoryMutation } from '@/apis/repositories/repositories.mutate';
 import { REPOSITORIES_API_QUERY_KEY, useRepositoriesMeQuery } from '@/apis/repositories/repositories.query';
 import { useGetMyInfoQuery } from '@/apis/user/user.query';
 import Avatar from '@/assets/images/avatar.png';
@@ -24,9 +24,7 @@ function RepolinkModal({ children, defaultOpen = false, isOutsideClickClose = fa
   const [input, setInput] = useState('');
 
   const { data: userData, isLoading: isUserLoading } = useGetMyInfoQuery({});
-  const { data: repositoriesData, isLoading: isRepositoriesLoading } = useRepositoriesMeQuery({
-    variables: { data: { url: '' } },
-  });
+  const { data: repositoriesData, isLoading: isRepositoriesLoading } = useRepositoriesMeQuery({});
   const { mutate } = useSaveRepositoryMutation({
     options: {
       onSuccess: () => {
@@ -38,6 +36,14 @@ function RepolinkModal({ children, defaultOpen = false, isOutsideClickClose = fa
           return alert('잘못된 형식의 레포지토리 url입니다');
         }
         return alert('레포지토리 추가에 실패했습니다.');
+      },
+    },
+  });
+
+  const { mutate: deleteRepositoryMutate } = useDeleteRepositoryMutation({
+    options: {
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: REPOSITORIES_API_QUERY_KEY.GET_REPOSITORIES_ME() });
       },
     },
   });
@@ -57,6 +63,12 @@ function RepolinkModal({ children, defaultOpen = false, isOutsideClickClose = fa
     mutate({
       data: { url: input },
     });
+  };
+
+  const deleteRepository = (repositoryId?: number) => {
+    if (repositoryId) {
+      deleteRepositoryMutate({ repositoryId });
+    }
   };
 
   return (
@@ -135,8 +147,14 @@ function RepolinkModal({ children, defaultOpen = false, isOutsideClickClose = fa
                       <div className={'bg-dark-blue-500 h-[8px] w-[8px] rounded-full'} />
                       <p className={'text-body-small text-white'}>{repository.name}</p>
                     </div>
-                    {/* TODO: 삭제 기능 구현 */}
-                    <button type={'button'} className={'mr-[8px] cursor-pointer'}>
+
+                    <button
+                      type={'button'}
+                      className={'mr-[8px] cursor-pointer'}
+                      onClick={() => {
+                        deleteRepository(repository.id);
+                      }}
+                    >
                       <MonoXIcon />
                     </button>
                   </div>
