@@ -13,6 +13,7 @@ const dotVariants = cva('inline-block h-1.5 w-1.5 rounded-full', {
       yellow: 'bg-sub-yellow',
       skyblue: 'bg-sub-skyblue',
       gray: 'bg-dark-grey-300',
+      red: 'bg-sub-red',
     },
   },
 });
