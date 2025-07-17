@@ -1,183 +1,34 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
-
-import { RepositoryPullRequestResponseType, RepositorySummaryType } from '@/__generated__/@types';
-import { useGetEntirePullRequestsQuery, useGetPullRequestsQuery } from '@/apis/repositories/repositories.query';
-import AddIcon from '@/assets/svg/add.svg';
-import { Modal } from '@/components/common/Modal';
-import RepolinkModal from '@/components/common/Modal/RepolinkModal/RepolinkModal';
-import {
-  Pagination,
-  PaginationContent,
-  PaginationItem,
-  PaginationLink,
-  PaginationPrevious,
-  PaginationNext,
-  PaginationEllipsis,
-} from '@/components/common/Pagination';
-import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/common/Tabs';
-import Preview from '@/components/home/Preview';
-import { PRItem, PRStatus, PRContent } from '@/components/home/PRItem';
-import PRPreview from '@/components/home/PRPreview';
-import PRListSkeleton from '@/components/home/Skeleton/PRListSkeleton';
-import { usePagination } from '@/hooks/usePagination';
-import ModalProvider from '@/providers/ModalContext';
+import { RepositorySummaryType } from '@/__generated__/@types';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/common/Tabs';
+import RepositoryList from '@/components/home/RepositoryList';
 
 interface MyPRProps {
   initialRepositoryList: RepositorySummaryType[];
 }
 
 export default function MyPR({ initialRepositoryList }: MyPRProps) {
-  const repositoryList = initialRepositoryList;
-  const [repositoryId, setRepositoryId] = useState<number>(repositoryList[0]?.id || 0);
-  const [pullRequestId, setPullRequestId] = useState<number | undefined>(undefined);
-  const [page, setPage] = useState(1);
-  const pageSize = 5;
-
-  const { data: PRData, isLoading: isPRDataLoading } = useGetPullRequestsQuery({
-    variables: {
-      repositoryId,
-      query: {
-        size: pageSize,
-        page,
-      },
-    },
-    options: {
-      enabled: repositoryId !== 0,
-    },
-  });
-
-  const { data: entirePRData, isLoading: isEntirePRDataLoading } = useGetEntirePullRequestsQuery({
-    variables: {
-      query: {
-        size: pageSize,
-        page,
-      },
-    },
-    options: {
-      enabled: repositoryId === 0,
-    },
-  });
-
-  const PRList = useMemo(
-    () => (repositoryId === 0 ? entirePRData?.data.pullRequests : PRData?.data.pullRequests) || [],
-    [repositoryId, entirePRData, PRData],
-  );
-
-  useEffect(() => {
-    if (PRList.length > 0 && PRList[0]?.id) {
-      setPullRequestId(PRList[0].id);
-    } else {
-      setPullRequestId(undefined);
-    }
-  }, [PRList]);
-
-  const handleTabChange = (repository: RepositorySummaryType) => {
-    if (repository.id !== undefined) {
-      setRepositoryId(repository.id);
-      setPage(1);
-    }
-  };
-
-  const handlePRItemOver = (pr: RepositoryPullRequestResponseType) => {
-    if (pr.id) {
-      setPullRequestId(pr.id);
-    }
-  };
-
-  const totalPullRequestCount = repositoryList.find((repo) => repo.id === repositoryId)?.pullRequestCount;
-
-  const totalPage = Math.ceil((totalPullRequestCount || 0) / pageSize);
-  const { pagesToShow } = usePagination({ totalPage, currentPage: page });
-
-  const isLoading = repositoryId === 0 ? isEntirePRDataLoading : isPRDataLoading;
-
   return (
     <div>
       <h1 className={'text-h1 blue-tiny-left inline-block pt-2.5 pb-6 font-semibold'}>{'내 PR'}</h1>
-      <Tabs defaultValue={repositoryList[0]?.name || '전체'} className={'w-full'}>
-        <TabsList>
-          {repositoryList.map((repository) => (
-            <TabsTrigger key={repository.id} value={repository.name || ''} onClick={() => handleTabChange(repository)}>
-              {repository.name}
-            </TabsTrigger>
+      <Tabs defaultValue={initialRepositoryList[0]?.name || ''}>
+        <div className={'border-dark-grey-100 border-b-1'}>
+          <TabsList aria-label={'내 PR 목록'}>
+            {initialRepositoryList.map((repository) => (
+              <TabsTrigger key={repository.id} value={repository.name || ''}>
+                {repository.name}
+              </TabsTrigger>
+            ))}
+          </TabsList>
+        </div>
+        <div>
+          {initialRepositoryList.map((repository) => (
+            <TabsContent key={repository.id} value={repository.name || ''}>
+              <RepositoryList repository={repository} />
+            </TabsContent>
           ))}
-          <ModalProvider>
-            <Modal.Toggle action={'OPEN'} type={'button'} className={'h-full cursor-pointer hover:brightness-150'}>
-              <AddIcon />
-            </Modal.Toggle>
-            <RepolinkModal defaultOpen={false} isOutsideClickClose>
-              <Modal.Toggle
-                action={'CLOSE'}
-                type={'button'}
-                className={
-                  'text-body-large mt-[24px] inline-flex w-full cursor-pointer items-center justify-center gap-1.5 rounded-lg px-5 py-3 font-semibold whitespace-nowrap enabled:bg-primary enabled:text-on-primary enabled:hover:bg-dark-blue-400 enabled:hover:text-on-primary disabled:text-dark-grey-300 disabled:bg-dark-grey-100 disabled:pointer-events-none'
-                }
-              >
-                {'완료'}
-              </Modal.Toggle>
-            </RepolinkModal>
-          </ModalProvider>
-        </TabsList>
-        {repositoryList.map((repository) => (
-          <TabsContent key={repository.id} value={repository.name || ''} className={'flex'}>
-            <div className={`border-dark-grey-100 flex flex-1 flex-col gap-5 border-e-1 py-4 pe-8`}>
-              {isLoading ? (
-                <PRListSkeleton />
-              ) : (
-                PRList.map((pr) => (
-                  <PRItem key={pr.id} onMouseOver={() => handlePRItemOver(pr)}>
-                    <PRStatus status={pr.recordStatus} />
-                    <PRContent content={pr.title} label={pr.tag || ''} />
-                  </PRItem>
-                ))
-              )}
-
-              <Pagination>
-                <PaginationContent>
-                  <PaginationItem>
-                    <PaginationPrevious
-                      className={'flex size-10 items-center justify-center rounded-full'}
-                      onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
-                    />
-                  </PaginationItem>
-
-                  {pagesToShow.map((p, idx) => {
-                    if (p === 'ellipsis') {
-                      const key = idx === 0 ? 'ellipsis-left' : 'ellipsis-right';
-                      return (
-                        <PaginationItem key={key}>
-                          <PaginationEllipsis />
-                        </PaginationItem>
-                      );
-                    }
-
-                    return (
-                      <PaginationItem key={`page-${p}`}>
-                        <PaginationLink
-                          isActive={page === p}
-                          onClick={() => setPage(p)}
-                          className={`text-body-medium flex size-10 cursor-pointer items-center justify-center rounded-full transition-colors duration-100 ease-out ${page === p ? 'bg-dark-grey-50 font-medium' : 'font-regular'}`}
-                        >
-                          {p}
-                        </PaginationLink>
-                      </PaginationItem>
-                    );
-                  })}
-
-                  <PaginationItem>
-                    <PaginationNext
-                      className={'flex size-10 items-center justify-center rounded-full'}
-                      onClick={() => setPage((prev) => Math.min(prev + 1, totalPage))}
-                    />
-                  </PaginationItem>
-                </PaginationContent>
-              </Pagination>
-            </div>
-            {pullRequestId ? <PRPreview pullRequestId={pullRequestId} /> : <Preview />}
-          </TabsContent>
-        ))}
+        </div>
       </Tabs>
     </div>
   );
