@@ -8,7 +8,7 @@ import React, { useState, ReactNode } from 'react';
 import { useDeleteRepositoryMutation, useSaveRepositoryMutation } from '@/apis/repositories/repositories.mutate';
 import { REPOSITORIES_API_QUERY_KEY, useRepositoriesMeQuery } from '@/apis/repositories/repositories.query';
 import { useGetMyInfoQuery } from '@/apis/user/user.query';
-import Avatar from '@/assets/images/avatar.png';
+import Avatar from '@/assets/images/avatar.webp';
 import MonoXIcon from '@/assets/svg/mono_x.svg';
 import RepoEmpty from '@/assets/svg/repo-empty.svg';
 import Button from '@/components/common/Button';
