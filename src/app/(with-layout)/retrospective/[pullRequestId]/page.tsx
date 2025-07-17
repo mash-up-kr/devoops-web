@@ -4,6 +4,7 @@ import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 import type { PullRequestDetailReadResponseType, QuestionAnswerResponseType } from '@/__generated__/@types';
+import { apiApi } from '@/__generated__/Api/Api.api';
 import TopIcon from '@/components/common/icons/TopIcon';
 import TopButton from '@/components/common/TopButton';
 import FixedFooter from '@/components/retrospective/FixedFooter';
@@ -21,7 +22,7 @@ export default function RetrospectivePage() {
 
   const [errorIds, setErrorIds] = useState<number[]>([]);
 
-  const [answers, setAnswers] = useState<{ answerId: number; content: string }[]>([]);
+  const [answers, setAnswers] = useState<{ answerId: number; questionId: number; content: string }[]>([]);
   const [lastSubmittedAnswers, setLastSubmittedAnswers] = useState<{ answerId: number; content: string }[]>([]);
   const [user, setUser] = useState(null);
 
@@ -32,10 +33,20 @@ export default function RetrospectivePage() {
     setSelectedQuestionIds((prev) => prev.filter((id) => id !== questionId));
   };
 
-  const handleSelectQuestion = (questionId: number) => {
-    setSelectedQuestionIds((prev) =>
-      prev.includes(questionId) ? prev.filter((id) => id !== questionId) : [...prev, questionId],
-    );
+  const handleSelectQuestion = async (questionId: number) => {
+    try {
+      const res = await apiApi.createAnswer({ questionId });
+      const answerId = res.data.id;
+      if (typeof answerId === 'number') {
+        const alreadyAnswered = answers.some((a) => a.questionId === questionId);
+        if (!alreadyAnswered) {
+          setAnswers((prev) => [...prev, { answerId, questionId, content: '' }]);
+        }
+        setSelectedQuestionIds((prev) => (prev.includes(questionId) ? prev : [...prev, questionId]));
+      }
+    } catch {
+      alert('회고 답변 생성에 실패했습니다.');
+    }
   };
 
   useEffect(() => {
@@ -116,6 +127,29 @@ export default function RetrospectivePage() {
     setErrorIds([]);
   };
 
+  const getAnswerContent = (questionId: number) => {
+    return answers.find((a) => a.questionId === questionId)?.content ?? '';
+  };
+
+  const handleChange = (questionId: number, newContent: string) => {
+    setAnswers((prev) => {
+      const exists = prev.some((a) => a.questionId === questionId);
+      if (exists) {
+        return prev.map((a) => (a.questionId === questionId ? { ...a, content: newContent } : a));
+      }
+
+      const answerObj = answers.find((ans) => ans.questionId === questionId);
+      return [
+        ...prev,
+        {
+          answerId: answerObj?.answerId ?? questionId,
+          questionId,
+          content: newContent,
+        },
+      ];
+    });
+  };
+
   return (
     <>
       <RetrospectiveHeader
@@ -134,9 +168,10 @@ export default function RetrospectivePage() {
           onSelectQuestion={handleSelectQuestion}
         />
         <RetrospectiveAnswers
-          answers={selectedQuestions}
-          writtenAnswers={answers}
-          setWrittenAnswers={setAnswers}
+          selectedQuestions={selectedQuestions}
+          answers={answers}
+          getAnswerContent={getAnswerContent}
+          handleChange={handleChange}
           onDeleteAnswer={handleDeleteAnswer}
           errorIds={errorIds}
         />
@@ -148,14 +183,14 @@ export default function RetrospectivePage() {
         answers={selectedQuestions.map((q) => {
           const backend = data.questions.find((dq: QuestionAnswerResponseType) => dq.questionId === q.questionId);
           return {
-            answerId: backend?.answerId ?? q.questionId,
-            content: answers.find((a) => a.answerId === q.questionId)?.content ?? '',
+            answerId: backend?.answerId ?? answers.find((a) => a.questionId === q.questionId)?.answerId ?? q.questionId,
+            content: answers.find((a) => a.questionId === q.questionId)?.content ?? '',
           };
         })}
         questions={selectedQuestions.map((q) => {
           const backend = data.questions.find((dq: QuestionAnswerResponseType) => dq.questionId === q.questionId);
           return {
-            answerId: backend?.answerId ?? q.questionId,
+            answerId: backend?.answerId ?? answers.find((a) => a.questionId === q.questionId)?.answerId ?? q.questionId,
             questionId: q.questionId,
           };
         })}

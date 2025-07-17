@@ -35,6 +35,13 @@ export default function FixedFooter({
   const markPRAsDoneMutation = useMarkPRAsDoneMutation();
 
   const handleComplete = async () => {
+    // answerId가 없는 값이 있으면 요청을 보내지 않음
+    const invalidAnswers = answers.filter((a) => typeof a.answerId !== 'number' || Number.isNaN(a.answerId));
+    if (invalidAnswers.length > 0) {
+      console.error('answerId가 없는 답변이 있습니다:', invalidAnswers);
+      alert('답변 저장 중 오류가 발생했습니다. 새로고침 후 다시 시도해 주세요.');
+      return;
+    }
     const emptyQuestionIds = answers
       .filter((a) => a.content.trim() === '')
       .map((a) => {

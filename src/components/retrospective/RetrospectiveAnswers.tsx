@@ -7,47 +7,24 @@ import PenIcon from '@/components/common/icons/PenIcon';
 import WarningIcon from '@/components/common/icons/WarningIcon';
 import SectionHeader from '@/components/retrospective/SectionHeader';
 
-interface Question {
-  questionId: number;
-  content: string;
-  answer: string | null;
-}
-
-interface WrittenAnswer {
-  answerId: number;
-  content: string;
-}
-
 interface RetrospectiveAnswersProps {
-  answers: Question[];
-  writtenAnswers: WrittenAnswer[];
-  setWrittenAnswers: React.Dispatch<React.SetStateAction<WrittenAnswer[]>>;
+  selectedQuestions: { questionId: number; content: string }[];
+  // eslint-disable-next-line react/no-unused-prop-types
+  answers: { answerId: number; questionId: number; content: string }[];
+  getAnswerContent: (questionId: number) => string;
+  handleChange: (questionId: number, newContent: string) => void;
   onDeleteAnswer?: (questionId: number) => void;
   errorIds: number[];
 }
 
 export default function RetrospectiveAnswers({
-  answers,
-  writtenAnswers,
-  setWrittenAnswers,
+  selectedQuestions,
+  getAnswerContent,
+  handleChange,
   onDeleteAnswer,
   errorIds,
 }: RetrospectiveAnswersProps) {
-  const hasAnswers = answers.length > 0;
-
-  const getAnswerContent = (questionId: number) => {
-    return writtenAnswers.find((a) => a.answerId === questionId)?.content ?? '';
-  };
-
-  const handleChange = (questionId: number, newContent: string) => {
-    setWrittenAnswers((prev) => {
-      const exists = prev.some((a) => a.answerId === questionId);
-      if (exists) {
-        return prev.map((a) => (a.answerId === questionId ? { ...a, content: newContent } : a));
-      }
-      return [...prev, { answerId: questionId, content: newContent }];
-    });
-  };
+  const hasAnswers = selectedQuestions.length > 0;
 
   const itemRefs = useRef<{ [key: number]: HTMLLIElement | null }>({});
 
@@ -62,7 +39,7 @@ export default function RetrospectiveAnswers({
   return (
     <section className={'flex flex-col gap-[20px]'}>
       <SectionHeader
-        title={`PR 회고${hasAnswers ? ` (${answers.length})` : ''}`}
+        title={`PR 회고${hasAnswers ? ` (${selectedQuestions.length})` : ''}`}
         description={'선택한 질문을 바탕으로 이번 작업을 회고해보세요.'}
         icon={<PenIcon />}
       />
@@ -78,31 +55,31 @@ export default function RetrospectiveAnswers({
         </div>
       ) : (
         <ul className={'flex flex-col gap-[20px]'}>
-          {answers.map((answer) => {
-            const isError = errorIds.includes(answer.questionId);
+          {selectedQuestions.map((question) => {
+            const isError = errorIds.includes(question.questionId);
             return (
               <li
-                key={answer.questionId}
+                key={question.questionId}
                 ref={(el) => {
-                  itemRefs.current[answer.questionId] = el;
+                  itemRefs.current[question.questionId] = el;
                 }}
                 className={'bg-dark-grey-50 relative flex flex-col gap-[8px] rounded-[8px] px-[24px] py-[20px]'}
               >
                 <div className={'flex items-center justify-between'}>
-                  <p className={'text-body-medium font-semibold'}>{answer.content}</p>
+                  <p className={'text-body-medium font-semibold'}>{question.content}</p>
                   {onDeleteAnswer && (
                     <button
                       type={'button'}
                       className={'text-on-surface-low ml-2 hover:text-red-500'}
-                      onClick={() => onDeleteAnswer(answer.questionId)}
+                      onClick={() => onDeleteAnswer(question.questionId)}
                     >
                       <span>{<EditButtonIcon />}</span>
                     </button>
                   )}
                 </div>
                 <textarea
-                  value={getAnswerContent(answer.questionId)}
-                  onChange={(e) => handleChange(answer.questionId, e.target.value)}
+                  value={getAnswerContent(question.questionId)}
+                  onChange={(e) => handleChange(question.questionId, e.target.value)}
                   placeholder={'어떻게 문제를 해결했는지 어떤 고민을 했었는지 생각하며 기록해보세요.'}
                   className={`text-body-small border-dark-grey-100 resize-none rounded-md border bg-transparent px-4 py-2 text-white focus:ring-primary focus:ring-1 focus:outline-none ${isError ? 'border-red-500' : ''}`}
                   rows={4}
