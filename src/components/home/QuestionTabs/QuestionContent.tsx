@@ -32,7 +32,7 @@ export default function QuestionContent({ pullRequestId, questions, activeCatego
       ))}
 
       {matchedQuestionByCategory.length === 0 && (
-        <div className={'text-dark-grey-500 py-8 text-center'}>{'이 카테고리에는 아직 질문이 없습니다.'}</div>
+        <div className={'text-dark-grey-500 py-8 text-center'}>{'카테고리를 선택해주세요.'}</div>
       )}
 
       <div className={'mt-7 flex justify-end'}>
