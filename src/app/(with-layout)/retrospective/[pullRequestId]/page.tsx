@@ -1,10 +1,12 @@
 'use client';
 
 import { useParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
-import type { PullRequestDetailReadResponseType, QuestionAnswerResponseType } from '@/__generated__/@types';
+import type { QuestionAnswerResponseType } from '@/__generated__/@types';
 import { apiApi } from '@/__generated__/Api/Api.api';
+import { useGetDetailPullRequestQuery } from '@/apis/pull-requests/retrpspective.query';
+import { useGetMyInfoQuery } from '@/apis/user/user.query';
 import TopIcon from '@/components/common/icons/TopIcon';
 import TopButton from '@/components/common/TopButton';
 import FixedFooter from '@/components/retrospective/FixedFooter';
@@ -12,8 +14,8 @@ import PullRequestSummary from '@/components/retrospective/PullRequestSummary';
 import RetrospectiveAnswers from '@/components/retrospective/RetrospectiveAnswers';
 import RetrospectiveHeader from '@/components/retrospective/RetrospectiveHeader';
 import RetrospectiveQuestions from '@/components/retrospective/RetrospectiveQuestions';
+import RetrospectivePageSkeleton from '@/components/retrospective/Skeleton/RetrospectivePageSkeleton';
 import { useAutoSave } from '@/hooks/api/retrospective/useAutoSave';
-import { usePullRequestDetail } from '@/hooks/api/retrospective/usePullRequestDetail';
 import type { CategoryWithQuestions } from '@/types/retrospective';
 
 export default function RetrospectivePage() {
@@ -24,11 +26,127 @@ export default function RetrospectivePage() {
 
   const [answers, setAnswers] = useState<{ answerId: number; questionId: number; content: string }[]>([]);
   const [lastSubmittedAnswers, setLastSubmittedAnswers] = useState<{ answerId: number; content: string }[]>([]);
-  const [user, setUser] = useState(null);
-
   const [selectedQuestionIds, setSelectedQuestionIds] = useState<number[]>([]);
   const [isRetrospectiveDone, setIsRetrospectiveDone] = useState(false);
 
+  // 쿠키 기반 user 정보 가져오기
+  const { data: userData, isLoading: userLoading } = useGetMyInfoQuery({});
+  const user = userData?.data || null;
+
+  // user가 null이 아닌 시점에만 아래 훅을 호출!
+  // const { data: rawData, isLoading, error } = usePullRequestDetail(Number(pullRequestId), user);
+
+  const {
+    data: rawData,
+    isLoading,
+    error,
+  } = useGetDetailPullRequestQuery({
+    variables: {
+      pullRequestId: Number(pullRequestId),
+    },
+    options: {
+      enabled: !!pullRequestId && !!user,
+    },
+  });
+
+  // const data = rawData as PullRequestDetailReadResponseType | undefined;
+
+  const { autoSaveStatus } = useAutoSave({
+    user,
+    answers: selectedQuestionIds
+      .map((questionId) => {
+        const answerObj = answers.find((a) => a.questionId === questionId);
+        if (!answerObj) return undefined;
+        return {
+          answerId: answerObj.answerId,
+          content: answerObj.content,
+        };
+      })
+      .filter((a): a is { answerId: number; content: string } => !!a),
+    debounceMs: 3000,
+  });
+
+  // 모든 훅 호출 후에 조건부 렌더링
+  if (userLoading || isLoading) return <RetrospectivePageSkeleton />;
+  if (!user) return <div>{'로그인이 필요합니다.'}</div>;
+  if (error || !rawData?.data) return <div>{'데이터를 불러오지 못했습니다.'}</div>;
+
+  const formattedSummary = [
+    {
+      title: 'AI 회고 요약',
+      content: rawData?.data?.summary?.split('\n').filter((line) => line.trim() !== '') ?? [],
+    },
+  ];
+
+  const groupedQuestions: CategoryWithQuestions[] = rawData?.data?.questions?.reduce<CategoryWithQuestions[]>(
+    (acc, question: QuestionAnswerResponseType) => {
+      if (question.questionId === undefined || question.content === undefined || question.category === undefined) {
+        return acc;
+      }
+
+      const existing = acc.find((item) => item.category === question.category);
+
+      const mappedQuestion = {
+        questionId: question.questionId,
+        question: question.content,
+      };
+
+      if (existing) {
+        existing.questions.push(mappedQuestion);
+      } else {
+        acc.push({
+          category: question.category,
+          questions: [mappedQuestion],
+        });
+      }
+
+      return acc;
+    },
+    [],
+  );
+
+  const selectedQuestions = groupedQuestions
+    ?.flatMap((categoryItem) => categoryItem.questions)
+    ?.filter((q) => selectedQuestionIds.includes(q.questionId))
+    ?.map((q) => ({
+      questionId: q.questionId,
+      content: q.question,
+      answer: null,
+    }));
+
+  let status: '전' | '중' | '완료' = '전';
+  if (selectedQuestionIds.length > 0) status = '중';
+  if (isRetrospectiveDone) status = '완료';
+
+  const handleRetrospectiveComplete = () => {
+    setIsRetrospectiveDone(true);
+    setErrorIds([]);
+  };
+
+  const getAnswerContent = (questionId: number) => {
+    return answers.find((a) => a.questionId === questionId)?.content ?? '';
+  };
+
+  const handleChange = (questionId: number, newContent: string) => {
+    setAnswers((prev) => {
+      const exists = prev.some((a) => a.questionId === questionId);
+      if (exists) {
+        return prev?.map((a) => (a.questionId === questionId ? { ...a, content: newContent } : a));
+      }
+
+      const answerObj = answers.find((ans) => ans.questionId === questionId);
+      return [
+        ...prev,
+        {
+          answerId: answerObj?.answerId ?? questionId,
+          questionId,
+          content: newContent,
+        },
+      ];
+    });
+  };
+
+  // Add back handleDeleteAnswer and handleSelectQuestion
   const handleDeleteAnswer = async (questionId: number) => {
     const answerObj = answers.find((a) => a.questionId === questionId);
     if (!answerObj) return;
@@ -57,116 +175,14 @@ export default function RetrospectivePage() {
     }
   };
 
-  useEffect(() => {
-    const userString = localStorage.getItem('user');
-    setUser(userString ? JSON.parse(userString) : null);
-  }, []);
-
-  const { data: rawData, isLoading, error } = usePullRequestDetail(Number(pullRequestId), user);
-  const data = rawData as PullRequestDetailReadResponseType | undefined;
-
-  const { autoSaveStatus } = useAutoSave({
-    user,
-    answers: selectedQuestionIds
-      .map((questionId) => {
-        const answerObj = answers.find((a) => a.questionId === questionId);
-        if (!answerObj) return undefined;
-        return {
-          answerId: answerObj.answerId,
-          content: answerObj.content,
-        };
-      })
-      .filter((a): a is { answerId: number; content: string } => !!a),
-    debounceMs: 3000,
-  });
-
-  if (user === null) return <div>{'로그인이 필요합니다.'}</div>;
-  if (isLoading) return <div>{'Loading...'}</div>;
-  if (error || !data) return <div>{'데이터를 불러오지 못했습니다.'}</div>;
-
-  const formattedSummary = [
-    {
-      title: 'AI 회고 요약',
-      content: data.summary.split('\n').filter((line) => line.trim() !== ''),
-    },
-  ];
-
-  const groupedQuestions: CategoryWithQuestions[] = data.questions.reduce<CategoryWithQuestions[]>(
-    (acc, question: QuestionAnswerResponseType) => {
-      if (question.questionId === undefined || question.content === undefined || question.category === undefined) {
-        return acc;
-      }
-
-      const existing = acc.find((item) => item.category === question.category);
-
-      const mappedQuestion = {
-        questionId: question.questionId,
-        question: question.content,
-      };
-
-      if (existing) {
-        existing.questions.push(mappedQuestion);
-      } else {
-        acc.push({
-          category: question.category,
-          questions: [mappedQuestion],
-        });
-      }
-
-      return acc;
-    },
-    [],
-  );
-
-  const selectedQuestions = groupedQuestions
-    .flatMap((categoryItem) => categoryItem.questions)
-    .filter((q) => selectedQuestionIds.includes(q.questionId))
-    .map((q) => ({
-      questionId: q.questionId,
-      content: q.question,
-      answer: null,
-    }));
-
-  let status: '전' | '중' | '완료' = '전';
-  if (selectedQuestionIds.length > 0) status = '중';
-  if (isRetrospectiveDone) status = '완료';
-
-  const handleRetrospectiveComplete = () => {
-    setIsRetrospectiveDone(true);
-    setErrorIds([]);
-  };
-
-  const getAnswerContent = (questionId: number) => {
-    return answers.find((a) => a.questionId === questionId)?.content ?? '';
-  };
-
-  const handleChange = (questionId: number, newContent: string) => {
-    setAnswers((prev) => {
-      const exists = prev.some((a) => a.questionId === questionId);
-      if (exists) {
-        return prev.map((a) => (a.questionId === questionId ? { ...a, content: newContent } : a));
-      }
-
-      const answerObj = answers.find((ans) => ans.questionId === questionId);
-      return [
-        ...prev,
-        {
-          answerId: answerObj?.answerId ?? questionId,
-          questionId,
-          content: newContent,
-        },
-      ];
-    });
-  };
-
   return (
     <>
       <RetrospectiveHeader
-        title={data.title}
-        tag={data.tag}
-        mergedAt={data.mergedAt}
+        title={rawData?.data?.title}
+        tag={rawData?.data?.tag}
+        mergedAt={rawData?.data?.mergedAt}
         status={status}
-        pullRequestUrl={data.pullRequestUrl}
+        pullRequestUrl={rawData?.data?.pullRequestUrl}
       />
 
       <main className={'flex flex-col gap-[68px]'}>
@@ -190,7 +206,7 @@ export default function RetrospectivePage() {
         pullRequestId={pullRequestId}
         user={user}
         answers={selectedQuestions
-          .map((q) => {
+          ?.map((q) => {
             const answerObj = answers.find((a) => a.questionId === q.questionId);
             if (!answerObj) return undefined;
             return {
@@ -198,9 +214,9 @@ export default function RetrospectivePage() {
               content: answerObj.content,
             };
           })
-          .filter((a): a is { answerId: number; content: string } => !!a)}
+          ?.filter((a): a is { answerId: number; content: string } => !!a)}
         questions={selectedQuestions
-          .map((q) => {
+          ?.map((q) => {
             const answerObj = answers.find((a) => a.questionId === q.questionId);
             if (!answerObj) return undefined;
             return {
@@ -208,7 +224,7 @@ export default function RetrospectivePage() {
               questionId: q.questionId,
             };
           })
-          .filter((a): a is { answerId: number; questionId: number } => !!a)}
+          ?.filter((a): a is { answerId: number; questionId: number } => !!a)}
         lastSubmittedAnswers={lastSubmittedAnswers}
         setLastSubmittedAnswers={setLastSubmittedAnswers}
         onComplete={handleRetrospectiveComplete}
