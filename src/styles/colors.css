@@ -87,6 +87,9 @@
   /* Modal Colors */
   --color-modal: #0d0e12;
   --color-modal-dimmed: rgba(10, 10, 10, 0.64);
+
+  /* GNB Colors */
+  --color-gnb: #0d0e12;
 }
 
 @utility blue-tiny-left {
