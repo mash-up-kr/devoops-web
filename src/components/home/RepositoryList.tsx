@@ -28,7 +28,7 @@ const PAGE_SIZE = 5;
 
 export default function RepositoryList({ repository }: RepositoryListProps) {
   const [pullRequestId, setPullRequestId] = useState<number>();
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(0);
 
   const { data: PRData, isLoading: isPRDataLoading } = useGetPullRequestsQuery({
     variables: {
@@ -50,7 +50,7 @@ export default function RepositoryList({ repository }: RepositoryListProps) {
   );
 
   const totalPage = Math.ceil((repository.pullRequestCount || 0) / PAGE_SIZE);
-  const { pagesToShow } = usePagination({ totalPage, currentPage });
+  const { pagesToShow } = usePagination({ totalPage, currentPage: currentPage + 1 });
 
   const handlePRItemOver = (pr: RepositoryPullRequestResponseType) => {
     setPullRequestId(pr.id);
@@ -93,7 +93,7 @@ export default function RepositoryList({ repository }: RepositoryListProps) {
             <PaginationItem>
               <PaginationPrevious
                 className={'flex size-10 items-center justify-center rounded-full'}
-                onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 0))}
               />
             </PaginationItem>
 
@@ -105,9 +105,9 @@ export default function RepositoryList({ repository }: RepositoryListProps) {
               ) : (
                 <PaginationItem key={`page-${page}`}>
                   <PaginationLink
-                    isActive={currentPage === page}
-                    onClick={() => setCurrentPage(Number(page))}
-                    className={`text-body-medium flex size-10 cursor-pointer items-center justify-center rounded-full transition-colors duration-100 ease-out ${currentPage === page ? 'bg-dark-grey-50 font-medium' : 'font-regular'}`}
+                    isActive={currentPage === page - 1}
+                    onClick={() => setCurrentPage(Number(page) - 1)}
+                    className={`text-body-medium flex size-10 cursor-pointer items-center justify-center rounded-full transition-colors duration-100 ease-out ${currentPage === page - 1 ? 'bg-dark-grey-50 font-medium' : 'font-regular'}`}
                   >
                     {page}
                   </PaginationLink>
@@ -118,7 +118,7 @@ export default function RepositoryList({ repository }: RepositoryListProps) {
             <PaginationItem>
               <PaginationNext
                 className={'flex size-10 items-center justify-center rounded-full'}
-                onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPage))}
+                onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPage - 1))}
               />
             </PaginationItem>
           </PaginationContent>
