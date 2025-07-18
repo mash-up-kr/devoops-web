@@ -3,6 +3,30 @@ import { ReactNode } from 'react';
 
 import { cn } from '@/utils/cn';
 
+const tagVariants = cva('border-dark-grey-200 inline-flex items-center gap-1.5 rounded-full border-1 text-nowrap', {
+  variants: {
+    padding: {
+      small: 'px-2.5 py-[5px]',
+      medium: 'px-3 py-[8px]',
+    },
+  },
+  defaultVariants: {
+    padding: 'small',
+  },
+});
+
+const textVariants = cva('text-dark-grey-800', {
+  variants: {
+    size: {
+      small: 'text-caption font-medium',
+      medium: 'text-body-medium font-medium',
+    },
+  },
+  defaultVariants: {
+    size: 'small',
+  },
+});
+
 const dotVariants = cva('inline-block h-1.5 w-1.5 rounded-full', {
   variants: {
     dotColor: {
@@ -14,6 +38,7 @@ const dotVariants = cva('inline-block h-1.5 w-1.5 rounded-full', {
       skyblue: 'bg-sub-skyblue',
       gray: 'bg-dark-grey-300',
       red: 'bg-sub-red',
+      primary: 'bg-primary',
     },
   },
 });
@@ -21,18 +46,15 @@ const dotVariants = cva('inline-block h-1.5 w-1.5 rounded-full', {
 interface TagProps {
   dotColor: VariantProps<typeof dotVariants>['dotColor'];
   children: ReactNode;
+  size?: VariantProps<typeof textVariants>['size'];
+  padding?: VariantProps<typeof tagVariants>['padding'];
 }
 
-export default function Tag({ dotColor, children }: TagProps) {
+export default function Tag({ dotColor, children, size, padding }: TagProps) {
   return (
-    <span
-      className={`
-        border-dark-grey-200 inline-flex items-center gap-1.5 rounded-full
-        border-1 px-2.5 py-[5px] text-nowrap
-      `}
-    >
+    <span className={cn(tagVariants({ padding }))}>
       <span className={cn(dotVariants({ dotColor }))} />
-      <p className={'text-caption text-dark-grey-800 font-medium'}>{children}</p>
+      <p className={cn(textVariants({ size }))}>{children}</p>
     </span>
   );
 }
