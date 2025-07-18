@@ -19,15 +19,13 @@ async function GithubAuthCallbackPage({ searchParams }: Props) {
     );
   }
 
-  const response = await githubApi.login({
-    code,
-    clientId: process.env.GITHUB_CLIENT_ID ?? '',
-    clientSecret: process.env.GITHUB_CLIENT_SECRET ?? '',
-  });
-
-  const data = await response.json();
-
   try {
+    const response = await githubApi.login({
+      code,
+      clientId: process.env.GITHUB_CLIENT_ID ?? '',
+      clientSecret: process.env.GITHUB_CLIENT_SECRET ?? '',
+    });
+    const data = await response.json();
     const { data: userData } = await apiApi.issueToken({ data: { githubAccessToken: data.access_token } });
     return (
       <div>
