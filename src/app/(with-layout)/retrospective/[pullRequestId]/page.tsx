@@ -142,9 +142,13 @@ export default function RetrospectivePage() {
       answer: null,
     }));
 
+  // 상태 결정 로직 개선: recordStatus가 DONE이거나 isRetrospectiveDone이 true면 무조건 '완료'
   let status: '전' | '중' | '완료' = '전';
-  if (selectedQuestionIds.length > 0) status = '중';
-  if (isRetrospectiveDone) status = '완료';
+  if (rawData?.data?.recordStatus === 'DONE' || isRetrospectiveDone) {
+    status = '완료';
+  } else if (selectedQuestionIds.length > 0) {
+    status = '중';
+  }
 
   const handleRetrospectiveComplete = () => {
     setIsRetrospectiveDone(true);
