@@ -37,7 +37,6 @@ export const useAutoSave = ({ user, answers, debounceMs = AUTOSAVE_DEBOUNCE_MS }
       await Promise.all(
         changedAnswers.map((answer) =>
           updateAnswerMutation.mutateAsync({
-            user,
             answerId: answer.answerId,
             content: answer.content,
           }),

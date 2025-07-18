@@ -204,7 +204,6 @@ export default function RetrospectivePage() {
 
       <FixedFooter
         pullRequestId={pullRequestId}
-        user={user}
         answers={selectedQuestions
           ?.map((q) => {
             const answerObj = answers.find((a) => a.questionId === q.questionId);
