@@ -37,6 +37,7 @@ export default function FixedFooter({
   const [isRefreshing, setIsRefreshing] = useState(false);
 
   const handleComplete = async () => {
+    if (isRefreshing) return;
     // answerId가 없는 값이 있으면 요청을 보내지 않음
     const invalidAnswers = answers.filter((a) => typeof a.answerId !== 'number' || Number.isNaN(a.answerId));
     if (invalidAnswers.length > 0) {
@@ -103,7 +104,7 @@ export default function FixedFooter({
             updateAllAnswersMutation.isPending ||
             updateAnswerMutation.isPending ||
             markPRAsDoneMutation.isPending ||
-            isRefreshing
+            isRefreshing // 이 값이 true면 버튼 비활성화
           }
         >
           {isRefreshing ? '새로고침 중...' : '회고완료'}
