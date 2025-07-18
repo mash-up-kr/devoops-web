@@ -1,6 +1,5 @@
 'use client';
 
-import type { UserType } from '@/__generated__/@types';
 import Button from '@/components/common/Button';
 import AutoSaveStatus from '@/components/retrospective/AutoSaveStatus';
 import { useMarkPRAsDoneMutation } from '@/hooks/api/retrospective/useMarkPRAsDoneMutation';
@@ -9,7 +8,6 @@ import { useUpdateAnswerMutation } from '@/hooks/api/retrospective/useUpdateAnsw
 
 interface FixedFooterProps {
   pullRequestId: string;
-  user: UserType;
   answers: { answerId: number; content: string }[];
   questions: { answerId: number; questionId: number }[];
   lastSubmittedAnswers: { answerId: number; content: string }[];
@@ -21,7 +19,6 @@ interface FixedFooterProps {
 
 export default function FixedFooter({
   pullRequestId,
-  user,
   answers,
   questions,
   lastSubmittedAnswers,
@@ -57,7 +54,7 @@ export default function FixedFooter({
     try {
       if (lastSubmittedAnswers.length === 0) {
         // First submit 처리
-        await updateAllAnswersMutation.mutateAsync({ user, answers });
+        await updateAllAnswersMutation.mutateAsync({ answers });
         setLastSubmittedAnswers([...answers]);
       } else {
         // Subsequent submit 처리
@@ -67,14 +64,12 @@ export default function FixedFooter({
         });
         if (changed.length > 0) {
           await Promise.all(
-            changed.map((ans) =>
-              updateAnswerMutation.mutateAsync({ user, answerId: ans.answerId, content: ans.content }),
-            ),
+            changed.map((ans) => updateAnswerMutation.mutateAsync({ answerId: ans.answerId, content: ans.content })),
           );
           setLastSubmittedAnswers([...answers]);
         }
       }
-      await markPRAsDoneMutation.mutateAsync({ user, pullRequestId: Number(pullRequestId) });
+      await markPRAsDoneMutation.mutateAsync({ pullRequestId: Number(pullRequestId) });
     } catch (error) {
       console.error('회고 완료 실패', error);
     }
