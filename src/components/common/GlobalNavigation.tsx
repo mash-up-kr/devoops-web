@@ -8,8 +8,8 @@ export default function GlobalNavigation() {
     <>
       <nav
         className={`
-        fixed top-[0px] left-[50%] flex w-full max-w-[1200px] -translate-x-1/2
-        items-center justify-between px-[40px]
+        bg-gnb fixed top-[0px] left-[50%] flex w-full max-w-[1200px]
+        -translate-x-1/2 items-center justify-between px-[40px]
       `}
       >
         <Link href={'/'} className={'text-h4 font-bold'}>

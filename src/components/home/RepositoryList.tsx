@@ -35,12 +35,12 @@ export default function RepositoryList({ repository }: RepositoryListProps) {
       repositoryId: repository.id || 0,
       query: { page: currentPage, size: PAGE_SIZE },
     },
-    options: { enabled: repository.id !== 0 },
+    options: { enabled: repository.id !== 0, staleTime: 0, refetchOnMount: 'always' },
   });
 
   const { data: entirePRData, isLoading: isEntirePRDataLoading } = useGetEntirePullRequestsQuery({
     variables: { query: { page: currentPage, size: PAGE_SIZE } },
-    options: { enabled: repository.id === 0 },
+    options: { enabled: repository.id === 0, staleTime: 0, refetchOnMount: 'always' },
   });
 
   const isLoading = repository.id !== 0 ? isPRDataLoading : isEntirePRDataLoading;
