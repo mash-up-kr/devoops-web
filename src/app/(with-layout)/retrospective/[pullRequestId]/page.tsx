@@ -14,6 +14,7 @@ import PullRequestSummary from '@/components/retrospective/PullRequestSummary';
 import RetrospectiveAnswers from '@/components/retrospective/RetrospectiveAnswers';
 import RetrospectiveHeader from '@/components/retrospective/RetrospectiveHeader';
 import RetrospectiveQuestions from '@/components/retrospective/RetrospectiveQuestions';
+import RetrospectivePageSkeleton from '@/components/retrospective/Skeleton/RetrospectivePageSkeleton';
 import { useAutoSave } from '@/hooks/api/retrospective/useAutoSave';
 import type { CategoryWithQuestions } from '@/types/retrospective';
 
@@ -66,9 +67,8 @@ export default function RetrospectivePage() {
   });
 
   // 모든 훅 호출 후에 조건부 렌더링
-  if (userLoading) return <div>{'Loading...'}</div>;
+  if (userLoading || isLoading) return <RetrospectivePageSkeleton />;
   if (!user) return <div>{'로그인이 필요합니다.'}</div>;
-  if (isLoading) return <div>{'Loading...'}</div>;
   if (error || !rawData?.data) return <div>{'데이터를 불러오지 못했습니다.'}</div>;
 
   const formattedSummary = [
