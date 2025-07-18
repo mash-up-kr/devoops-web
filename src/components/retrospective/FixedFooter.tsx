@@ -1,5 +1,8 @@
 'use client';
 
+import { useQueryClient } from '@tanstack/react-query';
+import { useState } from 'react';
+
 import Button from '@/components/common/Button';
 import AutoSaveStatus from '@/components/retrospective/AutoSaveStatus';
 import { useMarkPRAsDoneMutation } from '@/hooks/api/retrospective/useMarkPRAsDoneMutation';
@@ -30,6 +33,8 @@ export default function FixedFooter({
   const updateAllAnswersMutation = useUpdateAllAnswersMutation();
   const updateAnswerMutation = useUpdateAnswerMutation();
   const markPRAsDoneMutation = useMarkPRAsDoneMutation();
+  const queryClient = useQueryClient();
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
   const handleComplete = async () => {
     // answerId가 없는 값이 있으면 요청을 보내지 않음
@@ -70,10 +75,15 @@ export default function FixedFooter({
         }
       }
       await markPRAsDoneMutation.mutateAsync({ pullRequestId: Number(pullRequestId) });
+      setIsRefreshing(true);
+      // refetch 서버 데이터
+      await queryClient.refetchQueries({ queryKey: ['pullRequestDetail', Number(pullRequestId)] });
+      setIsRefreshing(false);
+      if (onComplete) onComplete();
     } catch (error) {
       console.error('회고 완료 실패', error);
+      setIsRefreshing(false);
     }
-    if (onComplete) onComplete();
   };
 
   return (
@@ -92,10 +102,11 @@ export default function FixedFooter({
             answers.length === 0 ||
             updateAllAnswersMutation.isPending ||
             updateAnswerMutation.isPending ||
-            markPRAsDoneMutation.isPending
+            markPRAsDoneMutation.isPending ||
+            isRefreshing
           }
         >
-          {'회고완료'}
+          {isRefreshing ? '새로고침 중...' : '회고완료'}
         </Button>
       </div>
     </footer>

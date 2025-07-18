@@ -1,7 +1,8 @@
 'use client';
 
+import { useQueryClient } from '@tanstack/react-query';
 import { useParams } from 'next/navigation';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import type { QuestionAnswerResponseType } from '@/__generated__/@types';
 import { apiApi } from '@/__generated__/Api/Api.api';
@@ -29,11 +30,19 @@ export default function RetrospectivePage() {
   const [selectedQuestionIds, setSelectedQuestionIds] = useState<number[]>([]);
   const [isRetrospectiveDone, setIsRetrospectiveDone] = useState(false);
 
+  const queryClient = useQueryClient();
+
+  // 페이지 진입 시 항상 refetch
+  useEffect(() => {
+    if (!pullRequestId) return;
+    queryClient.invalidateQueries({ queryKey: ['pullRequestDetail', Number(pullRequestId)] });
+  }, [pullRequestId, queryClient]);
+
   // 쿠키 기반 user 정보 가져오기
   const { data: userData, isLoading: userLoading } = useGetMyInfoQuery({});
   const user = userData?.data || null;
 
-  // user가 null이 아닌 시점에만 아래 훅을 호출!
+  // user가 null이 아닌 시점에만 아래 훅을 호출
   // const { data: rawData, isLoading, error } = usePullRequestDetail(Number(pullRequestId), user);
 
   const {
@@ -65,6 +74,25 @@ export default function RetrospectivePage() {
       .filter((a): a is { answerId: number; content: string } => !!a),
     debounceMs: 3000,
   });
+
+  // --- [추가] rawData가 로드되면 answerId가 있는 질문을 자동 선택 및 답변 세팅 ---
+  useEffect(() => {
+    if (!rawData?.data?.questions) return;
+    // answerId가 있는 질문만
+    const preSelected = rawData.data.questions.filter((q) => q.answerId != null);
+    // 이미 선택된 질문이 없을 때만 초기화
+    setSelectedQuestionIds((prev) =>
+      prev.length === 0 ? preSelected.map((q) => q.questionId!).filter((id): id is number => id !== undefined) : prev,
+    );
+    setAnswers((prev) => {
+      if (prev.length > 0) return prev;
+      return preSelected.map((q) => ({
+        answerId: q.answerId!,
+        questionId: q.questionId!,
+        content: q.answer ?? '',
+      }));
+    });
+  }, [rawData?.data?.questions]);
 
   // 모든 훅 호출 후에 조건부 렌더링
   if (userLoading || isLoading) return <RetrospectivePageSkeleton />;
@@ -121,6 +149,8 @@ export default function RetrospectivePage() {
   const handleRetrospectiveComplete = () => {
     setIsRetrospectiveDone(true);
     setErrorIds([]);
+    setAnswers([]);
+    setSelectedQuestionIds([]);
   };
 
   const getAnswerContent = (questionId: number) => {
