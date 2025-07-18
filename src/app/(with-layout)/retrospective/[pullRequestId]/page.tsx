@@ -1,10 +1,11 @@
 'use client';
 
 import { useParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import type { PullRequestDetailReadResponseType, QuestionAnswerResponseType } from '@/__generated__/@types';
 import { apiApi } from '@/__generated__/Api/Api.api';
+import { useGetMyInfoQuery } from '@/apis/user/user.query';
 import TopIcon from '@/components/common/icons/TopIcon';
 import TopButton from '@/components/common/TopButton';
 import FixedFooter from '@/components/retrospective/FixedFooter';
@@ -24,44 +25,14 @@ export default function RetrospectivePage() {
 
   const [answers, setAnswers] = useState<{ answerId: number; questionId: number; content: string }[]>([]);
   const [lastSubmittedAnswers, setLastSubmittedAnswers] = useState<{ answerId: number; content: string }[]>([]);
-  const [user, setUser] = useState(null);
-
   const [selectedQuestionIds, setSelectedQuestionIds] = useState<number[]>([]);
   const [isRetrospectiveDone, setIsRetrospectiveDone] = useState(false);
 
-  const handleDeleteAnswer = async (questionId: number) => {
-    const answerObj = answers.find((a) => a.questionId === questionId);
-    if (!answerObj) return;
-    try {
-      await apiApi.deleteAnswer({ answerId: answerObj.answerId, data: { content: answerObj.content } });
-      setAnswers((prev) => prev.filter((a) => a.questionId !== questionId));
-      setSelectedQuestionIds((prev) => prev.filter((id) => id !== questionId));
-    } catch {
-      alert('회고 답변 삭제에 실패했습니다.');
-    }
-  };
+  // 쿠키 기반 user 정보 가져오기
+  const { data: userData, isLoading: userLoading } = useGetMyInfoQuery({});
+  const user = userData?.data || null;
 
-  const handleSelectQuestion = async (questionId: number) => {
-    try {
-      const res = await apiApi.createAnswer({ questionId });
-      const answerId = res.data.id;
-      if (typeof answerId === 'number') {
-        const alreadyAnswered = answers.some((a) => a.questionId === questionId);
-        if (!alreadyAnswered) {
-          setAnswers((prev) => [...prev, { answerId, questionId, content: '' }]);
-        }
-        setSelectedQuestionIds((prev) => (prev.includes(questionId) ? prev : [...prev, questionId]));
-      }
-    } catch {
-      alert('회고 답변 생성에 실패했습니다.');
-    }
-  };
-
-  useEffect(() => {
-    const userString = localStorage.getItem('user');
-    setUser(userString ? JSON.parse(userString) : null);
-  }, []);
-
+  // user가 null이 아닌 시점에만 아래 훅을 호출!
   const { data: rawData, isLoading, error } = usePullRequestDetail(Number(pullRequestId), user);
   const data = rawData as PullRequestDetailReadResponseType | undefined;
 
@@ -80,7 +51,9 @@ export default function RetrospectivePage() {
     debounceMs: 3000,
   });
 
-  if (user === null) return <div>{'로그인이 필요합니다.'}</div>;
+  // 모든 훅 호출 후에 조건부 렌더링
+  if (userLoading) return <div>{'Loading...'}</div>;
+  if (!user) return <div>{'로그인이 필요합니다.'}</div>;
   if (isLoading) return <div>{'Loading...'}</div>;
   if (error || !data) return <div>{'데이터를 불러오지 못했습니다.'}</div>;
 
@@ -157,6 +130,35 @@ export default function RetrospectivePage() {
         },
       ];
     });
+  };
+
+  // Add back handleDeleteAnswer and handleSelectQuestion
+  const handleDeleteAnswer = async (questionId: number) => {
+    const answerObj = answers.find((a) => a.questionId === questionId);
+    if (!answerObj) return;
+    try {
+      await apiApi.deleteAnswer({ answerId: answerObj.answerId, data: { content: answerObj.content } });
+      setAnswers((prev) => prev.filter((a) => a.questionId !== questionId));
+      setSelectedQuestionIds((prev) => prev.filter((id) => id !== questionId));
+    } catch {
+      alert('회고 답변 삭제에 실패했습니다.');
+    }
+  };
+
+  const handleSelectQuestion = async (questionId: number) => {
+    try {
+      const res = await apiApi.createAnswer({ questionId });
+      const answerId = res.data.id;
+      if (typeof answerId === 'number') {
+        const alreadyAnswered = answers.some((a) => a.questionId === questionId);
+        if (!alreadyAnswered) {
+          setAnswers((prev) => [...prev, { answerId, questionId, content: '' }]);
+        }
+        setSelectedQuestionIds((prev) => (prev.includes(questionId) ? prev : [...prev, questionId]));
+      }
+    } catch {
+      alert('회고 답변 생성에 실패했습니다.');
+    }
   };
 
   return (
