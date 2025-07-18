@@ -1,8 +1,10 @@
 import Landing from '@/components/landing/Landing';
+import LandingNavigation from '@/components/landing/LandingNavigation';
 
 function LandingPage() {
   return (
-    <div className={'mx-auto max-w-[1200px]'}>
+    <div>
+      <LandingNavigation className={'z-gnb'} />
       <Landing />
     </div>
   );

@@ -1,44 +1,24 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
-
-import Button from '../common/Button';
-
-import { apiApi } from '@/__generated__/Api/Api.api';
-import { getTokenAction } from '@/actions/token.action';
+import FeatureSection from '@/components/landing/Section/FeatureSection';
+import FooterCTA from '@/components/landing/Section/FooterCTA';
+import HeroSection from '@/components/landing/Section/HeroSection';
+import RepolinkSection from '@/components/landing/Section/RepolinkSection';
+import StartSection from '@/components/landing/Section/StartSection';
+import { useLoginRedirect } from '@/hooks/useLoginRedirect';
 
 function Landing() {
-  const router = useRouter();
+  const { handleLogin } = useLoginRedirect();
 
-  const checkHasRepositories = async (): Promise<boolean> => {
-    try {
-      const { data } = (await apiApi.getMyRepositories()) || {};
-      return data?.repositories?.length !== 0;
-    } catch {
-      return false;
-    }
-  };
-
-  const checkHasToken = async (): Promise<boolean> => {
-    const token = await getTokenAction();
-    return !!token;
-  };
-
-  const handleLogin = async () => {
-    const hasToken = await checkHasToken();
-    if (!hasToken) return router.push(`/auth/github`);
-    const hasRepositories = await checkHasRepositories();
-    if (hasRepositories) return router.replace(`/`);
-
-    return router.push('/repolink');
-  };
   return (
-    <main className={'flex h-screen flex-col items-center justify-center overflow-hidden'}>
-      <Button variant={'filledPrimary'} className={'w-[380px]'} onClick={handleLogin}>
-        {'시작하기'}
-      </Button>
-
-      <p className={'mt-[39px] text-white'}>{`디자인 작업필요`}</p>
+    <main className={'h-screen w-full'}>
+      <div className={'flex flex-col gap-12'}>
+        <HeroSection action={handleLogin} />
+        <FeatureSection />
+        <StartSection />
+        <RepolinkSection />
+        <FooterCTA action={handleLogin} />
+      </div>
     </main>
   );
 }
