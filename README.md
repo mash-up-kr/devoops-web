@@ -1,36 +1,66 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+![Devoops](https://github.com/user-attachments/assets/20c322d5-4a75-40ec-a9cb-8bc3f3cf69f1)
 
-## Getting Started
+## 🧑🏻‍💻 나만의 개발 회고 저장소, Devoops
 
-First, run the development server:
+Devoops는 개발 중 망각되는 고민들을 자동으로 수집하여 회고를 할 수 있도록 도와주는 웹 기반 AI 회고 서비스 입니다!<br />
+다시 코드를 봤을 때 "왜 이렇게 짰었지..? 🤔" 라는 생각이 든적이 있다면, Devoops를 통해 고민들을 아카이빙해 보세요! 👋
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+#### <a href="https://dev-oops.kr/">👉Devoops 바로가기</a>
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+<br />
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## ✨ 주요 기능
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| 1. 한 눈에 쉽게 파악할 수 있어요 | 2. PR에서 핵심만 뽑아 정리해 드려요 |
+|:--:|:--:|
+|![Devoops1](https://github.com/user-attachments/assets/e77c286e-a8ee-4f84-b3d4-48e8bd9a248c)|![Devoops2](https://github.com/user-attachments/assets/546773e7-a5ea-417c-af3d-0c162dac5324)|
 
-## Learn More
+| 3. 자연스럽게 작업의 맥락을 떠올릴 수 있게 도와줘요 | 4. 원하는 질문부터 가볍게 작성해보세요 |
+|:--:|:--:|
+|![Devoops3](https://github.com/user-attachments/assets/7ffbd7bf-55fe-49e4-a60e-40afeead2cd1)|![Devoops4](https://github.com/user-attachments/assets/1117b03e-bc5e-4a14-a9d3-275c2247e830)|
 
-To learn more about Next.js, take a look at the following resources:
+| 5. 레포 주소만 입력하면 끝이에요  | |
+|:--:|:--:|
+|![Devoops5](https://github.com/user-attachments/assets/e15e9605-d120-4355-af62-98e11a778f74)| ![og](https://github.com/user-attachments/assets/b68718df-03c1-46a6-898b-0fefb5836336)|
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+<br />
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 🛠️Tech Stack
 
-## Deploy on Vercel
+|<img width="633" height="563" alt="스크린샷 2025-07-24 오후 4 55 16" src="https://github.com/user-attachments/assets/dbcf19b6-547f-4ded-a3f6-1857004818a3" />|
+|:--:|
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 🧑🏻‍💻Developers
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+<table>
+  <tbody>
+      <tr>
+         <td align="center">
+              <a href="https://github.com/jeongwoo903">                 
+                  <img alt="jeongwoo903" src="https://avatars.githubusercontent.com/u/58330276?v=4" width="200" />            
+              </a>
+          </td>
+          <td align="center">
+              <a href="https://github.com/xxj15">                 
+                  <img alt="xxj15" src="https://avatars.githubusercontent.com/u/63233128?v=4" width="200" />            
+              </a>
+          </td>
+          <td align="center">
+              <a href="https://github.com/brightbong92">                 
+                  <img alt="brightbong92" src="https://avatars.githubusercontent.com/u/51194127?v=4" width="200" />            
+              </a>
+          </td> 
+      </tr>
+      <tr>
+          <td align="center">
+              <a href="https://github.com/jeongwoo903">장정우</a>
+          </td>
+          <td align="center">
+              <a href="https://github.com/xxj15">안서진</a>
+          </td>
+          <td align="center">
+              <a href="https://github.com/brightbong92">장현봉</a>
+          </td>
+      </tr>
+  </tbody>
+</table>
