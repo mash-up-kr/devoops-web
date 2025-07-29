@@ -30,6 +30,8 @@ Devoops는 개발 중 망각되는 고민들을 자동으로 수집하여 회고
 |<img width="633" height="563" alt="스크린샷 2025-07-24 오후 4 55 16" src="https://github.com/user-attachments/assets/dbcf19b6-547f-4ded-a3f6-1857004818a3" />|
 |:--:|
 
+<br />
+
 ## 🧑🏻‍💻Developers
 
 <table>

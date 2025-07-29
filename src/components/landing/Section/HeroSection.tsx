@@ -46,7 +46,7 @@ export default function HeroSection({ action }: HeroSectionProps) {
           'border-dark-grey-200 shadow-landing-image mx-auto mt-[67px] max-w-[1000px] overflow-hidden rounded-tl-[28px] rounded-tr-[28px] border-1'
         }
       >
-        <Image src={LandingHero} alt={'Landing Hero'} />
+        <Image src={LandingHero} alt={'Landing Hero'} priority />
       </div>
       <GradientBottomLayer />
     </section>
