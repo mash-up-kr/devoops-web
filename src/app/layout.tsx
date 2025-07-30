@@ -7,8 +7,17 @@ import QueryProvider from '@/providers/QueryProvider';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'DevOops',
-  description: 'GitHub PR 요약과 회고 질문을 통해 개발자의 작업 맥락과 고민을 자연스럽게 기록하도록 돕는 서비스',
+  title: 'Devoops',
+  description: '개발 중 망각되는 고민들을 자동 수집해 회고를 돕는 AI 회고 서비스',
+  openGraph: {
+    title: 'Devoops',
+    description: '개발 중 망각되는 고민들을 자동 수집해 회고를 돕는 AI 회고 서비스',
+    url: 'https://dev-oops.kr',
+    siteName: 'Devoops',
+    images: [{ url: '/public/assets/images/opengraph-image.png' }],
+    locale: 'ko_KR',
+    type: 'website',
+  },
 };
 
 export default function RootLayout({
