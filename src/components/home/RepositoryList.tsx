@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { Suspense, useEffect, useMemo, useState } from 'react';
 
 import { RepositoryPullRequestResponseType, RepositorySummaryType } from '@/__generated__/@types';
@@ -18,6 +19,7 @@ import Preview from '@/components/home/Preview';
 import { PRContent, PRItem, PRStatus } from '@/components/home/PRItem';
 import PreviewSkeleton from '@/components/home/Skeleton/PreviewSkeleton';
 import PRListSkeleton from '@/components/home/Skeleton/PRListSkeleton';
+import { ROUTES } from '@/constants/routes';
 import { usePagination } from '@/hooks/usePagination';
 
 interface RepositoryListProps {
@@ -83,10 +85,12 @@ export default function RepositoryList({ repository }: RepositoryListProps) {
     <div className={'flex'}>
       <div className={'border-dark-grey-100 flex flex-1 flex-col gap-5 border-e-1 py-4 pe-8'}>
         {PRList.map((pr) => (
-          <PRItem key={pr.id} onMouseOver={() => handlePRItemOver(pr)}>
-            <PRStatus status={pr.recordStatus} />
-            <PRContent content={pr.title} label={pr.tag || ''} />
-          </PRItem>
+          <Link href={ROUTES.PAGE.RETROSPECTIVE(pr.id)} key={pr.id}>
+            <PRItem onMouseOver={() => handlePRItemOver(pr)}>
+              <PRStatus status={pr.recordStatus} />
+              <PRContent content={pr.title} label={pr.tag || 'NONE'} />
+            </PRItem>
+          </Link>
         ))}
         <Pagination>
           <PaginationContent>

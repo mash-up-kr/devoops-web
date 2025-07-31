@@ -1,10 +1,8 @@
-import { ButtonHTMLAttributes, PropsWithChildren } from 'react';
+import { PropsWithChildren, HTMLProps } from 'react';
 
-export default function PRItem({ children, ...props }: PropsWithChildren<ButtonHTMLAttributes<HTMLButtonElement>>) {
+export default function PRItem({ children, ...props }: PropsWithChildren<HTMLProps<HTMLDivElement>>) {
   return (
-    <button
-      type={'button'}
-      aria-label={'PR Item'}
+    <div
       className={`
         text-dark-grey-600 flex w-full cursor-pointer flex-col items-start gap-2
         rounded-xl bg-transparent px-2.5
@@ -13,6 +11,6 @@ export default function PRItem({ children, ...props }: PropsWithChildren<ButtonH
       {...props}
     >
       {children}
-    </button>
+    </div>
   );
 }

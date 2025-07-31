@@ -6,6 +6,7 @@ import React from 'react';
 import { QuestionBriefResponseType } from '@/__generated__/@types';
 import Button from '@/components/common/Button';
 import QuestionItem from '@/components/home/QuestionTabs/QuestionItem';
+import { ROUTES } from '@/constants/routes';
 import { filterBy } from '@/utils/filter';
 
 interface QuestionContentProps {
@@ -17,9 +18,9 @@ interface QuestionContentProps {
 export default function QuestionContent({ pullRequestId, questions, activeCategory }: QuestionContentProps) {
   const router = useRouter();
 
-  const handleClick = (prId: number | undefined) => {
+  const navigateToRetrospective = (prId: number | undefined) => {
     if (prId) {
-      router.push(`/retrospective/${prId}`);
+      router.push(ROUTES.PAGE.RETROSPECTIVE(prId));
     }
   };
 
@@ -39,7 +40,7 @@ export default function QuestionContent({ pullRequestId, questions, activeCatego
         <Button
           className={'text-body-large cursor-pointer font-semibold'}
           disabled={!pullRequestId}
-          onClick={() => handleClick(pullRequestId)}
+          onClick={() => navigateToRetrospective(pullRequestId)}
         >
           {'자세히보기'}
         </Button>
