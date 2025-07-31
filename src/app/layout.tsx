@@ -15,7 +15,7 @@ export const metadata: Metadata = {
     description: '개발 중 망각되는 고민들을 자동 수집해 회고를 돕는 AI 회고 서비스',
     url: 'https://dev-oops.kr',
     siteName: 'Devoops',
-    images: [{ url: '/public/assets/images/opengraph-image.png' }],
+    images: [{ url: '/assets/images/opengraph-image.webp' }],
     locale: 'ko_KR',
     type: 'website',
   },
