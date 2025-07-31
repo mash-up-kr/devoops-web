@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { ReactNode } from 'react';
 
+import GoogleAnalytics from '@/components/common/GoogleAnalytics';
 import ModalProvider from '@/providers/ModalContext';
 import QueryProvider from '@/providers/QueryProvider';
 
@@ -31,6 +32,7 @@ export default function RootLayout({
         <body>
           <ModalProvider>{children}</ModalProvider>
           <div id={'portal'} />
+          <GoogleAnalytics />
         </body>
       </QueryProvider>
     </html>
