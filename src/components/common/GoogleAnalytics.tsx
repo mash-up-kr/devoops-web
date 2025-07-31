@@ -7,6 +7,10 @@ import { useEffect } from 'react';
 export const GA_ID = process.env.NEXT_PUBLIC_GA_ID ?? '';
 
 export const gtagPageView = (url: string) => {
+  if (GA_ID === '' || typeof window.gtag !== 'function') {
+    return;
+  }
+
   const debugMode = process.env.NODE_ENV !== 'production' ? { debug_mode: true } : {};
   window.gtag('config', GA_ID, {
     page_path: url,
