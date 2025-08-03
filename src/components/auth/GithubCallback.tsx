@@ -3,10 +3,9 @@
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 
-import RepoLoadingModal from '../common/Modal/RepoLoadingModal/RepoLoadingModal';
-
 import { apiApi } from '@/__generated__/Api/Api.api';
 import { getTokenAction, setTokenAction } from '@/actions/token.action';
+import RepoLoadingModal from '@/components/common/Modal/RepoLoadingModal/RepoLoadingModal';
 
 function GithubCallback({ accessToken, refreshToken }: { accessToken: string; refreshToken: string }) {
   const router = useRouter();

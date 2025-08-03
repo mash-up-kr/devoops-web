@@ -12,11 +12,7 @@ async function GithubAuthCallbackPage({ searchParams }: Props) {
   const { code } = await searchParams;
 
   if (!code) {
-    return (
-      <div>
-        <h1>{'code가 없습니다.'}</h1>
-      </div>
-    );
+    throw new Error('코드가 없습니다.');
   }
 
   try {
