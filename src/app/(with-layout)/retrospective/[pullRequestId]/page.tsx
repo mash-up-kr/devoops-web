@@ -32,18 +32,14 @@ export default function RetrospectivePage() {
 
   const queryClient = useQueryClient();
 
-  // 페이지 진입 시 항상 refetch
   useEffect(() => {
     if (!pullRequestId) return;
     queryClient.invalidateQueries({ queryKey: ['pullRequestDetail', Number(pullRequestId)] });
+    queryClient.removeQueries({ queryKey: ['pullRequestDetail', Number(pullRequestId)] });
   }, [pullRequestId, queryClient]);
 
-  // 쿠키 기반 user 정보 가져오기
   const { data: userData, isLoading: userLoading } = useGetMyInfoQuery({});
   const user = userData?.data || null;
-
-  // user가 null이 아닌 시점에만 아래 훅을 호출
-  // const { data: rawData, isLoading, error } = usePullRequestDetail(Number(pullRequestId), user);
 
   const {
     data: rawData,
@@ -55,10 +51,11 @@ export default function RetrospectivePage() {
     },
     options: {
       enabled: !!pullRequestId && !!user,
+      refetchOnMount: true,
+      refetchOnWindowFocus: false,
+      staleTime: 0,
     },
   });
-
-  // const data = rawData as PullRequestDetailReadResponseType | undefined;
 
   const { autoSaveStatus } = useAutoSave({
     user,
@@ -75,39 +72,30 @@ export default function RetrospectivePage() {
     debounceMs: 3000,
   });
 
-  // --- [추가] rawData가 로드되면 answerId가 있는 질문을 자동 선택 및 답변 세팅 ---
+  // 서버 데이터 기반으로 최신 상태 렌더링
   useEffect(() => {
     if (!rawData?.data?.questions) return;
 
-    // recordStatus가 DONE이면 회고 완료 상태로 설정
     if (rawData.data.recordStatus === 'DONE') {
       setIsRetrospectiveDone(true);
     }
 
-    // answerId가 있는 질문만
     const preSelected = rawData.data.questions.filter((q) => q.answerId != null);
-    // 이미 선택된 질문이 없을 때만 초기화
-    setSelectedQuestionIds((prev) =>
-      prev.length === 0 ? preSelected.map((q) => q.questionId!).filter((id): id is number => id !== undefined) : prev,
-    );
+    setSelectedQuestionIds(preSelected.map((q) => q.questionId!).filter((id): id is number => id !== undefined));
+
     const newAnswers = preSelected.map((q) => ({
       answerId: q.answerId!,
       questionId: q.questionId!,
       content: q.answer ?? '',
     }));
 
-    setAnswers((prev) => {
-      if (prev.length > 0) return prev;
-      return newAnswers;
-    });
+    setAnswers(newAnswers);
 
-    // recordStatus가 DONE이면 lastSubmittedAnswers도 설정
     if (rawData.data.recordStatus === 'DONE') {
       setLastSubmittedAnswers(newAnswers.map(({ answerId, content }) => ({ answerId, content })));
     }
   }, [rawData?.data?.questions, rawData?.data?.recordStatus]);
 
-  // 모든 훅 호출 후에 조건부 렌더링
   if (userLoading || isLoading) return <RetrospectivePageSkeleton />;
   if (!user) return <div>{'로그인이 필요합니다.'}</div>;
   if (error || !rawData?.data) return <div>{'데이터를 불러오지 못했습니다.'}</div>;
@@ -196,17 +184,14 @@ export default function RetrospectivePage() {
     });
   };
 
-  // Add back handleDeleteAnswer and handleSelectQuestion
   const handleDeleteAnswer = async (questionId: number) => {
     const answerObj = answers.find((a) => a.questionId === questionId);
     if (!answerObj) return;
-    try {
-      await apiApi.deleteAnswer({ answerId: answerObj.answerId, data: { content: answerObj.content } });
-      setAnswers((prev) => prev.filter((a) => a.questionId !== questionId));
-      setSelectedQuestionIds((prev) => prev.filter((id) => id !== questionId));
-    } catch {
-      alert('회고 답변 삭제에 실패했습니다.');
-    }
+
+    await apiApi.deleteAnswer({ answerId: answerObj.answerId, data: { content: '' } });
+    setAnswers((prev) => prev.filter((a) => a.questionId !== questionId));
+    setSelectedQuestionIds((prev) => prev.filter((id) => id !== questionId));
+    setLastSubmittedAnswers((prev) => prev.filter((a) => a.answerId !== answerObj.answerId));
   };
 
   const handleSelectQuestion = async (questionId: number) => {

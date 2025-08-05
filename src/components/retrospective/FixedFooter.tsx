@@ -38,20 +38,8 @@ export default function FixedFooter({
   const queryClient = useQueryClient();
   const [isRefreshing, setIsRefreshing] = useState(false);
 
-  const hasChanges = () => {
-    return answers.some((a) => {
-      const prev = lastSubmittedAnswers.find((p) => p.answerId === a.answerId);
-      return !prev || prev.content !== a.content;
-    });
-  };
-
   const handleComplete = async () => {
     if (isRefreshing) return;
-
-    // 완료된 상태에서 수정사항이 없으면 처리하지 않음
-    if (isCompleted && !hasChanges()) {
-      return;
-    }
     // answerId가 없는 값이 있으면 요청을 보내지 않음
     const invalidAnswers = answers.filter((a) => typeof a.answerId !== 'number' || Number.isNaN(a.answerId));
     if (invalidAnswers.length > 0) {
@@ -123,8 +111,7 @@ export default function FixedFooter({
             updateAllAnswersMutation.isPending ||
             updateAnswerMutation.isPending ||
             markPRAsDoneMutation.isPending ||
-            isRefreshing ||
-            (isCompleted && !hasChanges()) // 완료된 상태에서 수정사항이 없을 때만 비활성화
+            isRefreshing
           }
         >
           {isRefreshing ? '새로고침 중...' : '회고완료'}
