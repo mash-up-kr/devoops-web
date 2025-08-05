@@ -78,21 +78,34 @@ export default function RetrospectivePage() {
   // --- [추가] rawData가 로드되면 answerId가 있는 질문을 자동 선택 및 답변 세팅 ---
   useEffect(() => {
     if (!rawData?.data?.questions) return;
+
+    // recordStatus가 DONE이면 회고 완료 상태로 설정
+    if (rawData.data.recordStatus === 'DONE') {
+      setIsRetrospectiveDone(true);
+    }
+
     // answerId가 있는 질문만
     const preSelected = rawData.data.questions.filter((q) => q.answerId != null);
     // 이미 선택된 질문이 없을 때만 초기화
     setSelectedQuestionIds((prev) =>
       prev.length === 0 ? preSelected.map((q) => q.questionId!).filter((id): id is number => id !== undefined) : prev,
     );
+    const newAnswers = preSelected.map((q) => ({
+      answerId: q.answerId!,
+      questionId: q.questionId!,
+      content: q.answer ?? '',
+    }));
+
     setAnswers((prev) => {
       if (prev.length > 0) return prev;
-      return preSelected.map((q) => ({
-        answerId: q.answerId!,
-        questionId: q.questionId!,
-        content: q.answer ?? '',
-      }));
+      return newAnswers;
     });
-  }, [rawData?.data?.questions]);
+
+    // recordStatus가 DONE이면 lastSubmittedAnswers도 설정
+    if (rawData.data.recordStatus === 'DONE') {
+      setLastSubmittedAnswers(newAnswers.map(({ answerId, content }) => ({ answerId, content })));
+    }
+  }, [rawData?.data?.questions, rawData?.data?.recordStatus]);
 
   // 모든 훅 호출 후에 조건부 렌더링
   if (userLoading || isLoading) return <RetrospectivePageSkeleton />;
@@ -153,8 +166,11 @@ export default function RetrospectivePage() {
   const handleRetrospectiveComplete = () => {
     setIsRetrospectiveDone(true);
     setErrorIds([]);
-    setAnswers([]);
-    setSelectedQuestionIds([]);
+    // 이미 완료된 상태라면 답변과 선택된 질문을 초기화하지 않음
+    if (!isRetrospectiveDone) {
+      setAnswers([]);
+      setSelectedQuestionIds([]);
+    }
   };
 
   const getAnswerContent = (questionId: number) => {
@@ -263,6 +279,7 @@ export default function RetrospectivePage() {
         onComplete={handleRetrospectiveComplete}
         onErrorIds={setErrorIds}
         autoSaveStatus={autoSaveStatus}
+        isCompleted={isRetrospectiveDone}
       />
       <TopButton icon={<TopIcon />} />
     </>
