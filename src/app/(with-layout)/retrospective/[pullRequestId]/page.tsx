@@ -206,7 +206,7 @@ export default function RetrospectivePage() {
         setSelectedQuestionIds((prev) => (prev.includes(questionId) ? prev : [...prev, questionId]));
       }
     } catch {
-      alert('회고 답변 생성에 실패했습니다.');
+      // 에러 무시
     }
   };
 

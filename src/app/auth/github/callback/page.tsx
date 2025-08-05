@@ -28,9 +28,8 @@ async function GithubAuthCallbackPage({ searchParams }: Props) {
         <GithubCallback accessToken={userData.accessToken ?? ''} refreshToken={userData.refreshToken ?? ''} />
       </div>
     );
-  } catch (error) {
-    // eslint-disable-next-line no-console
-    console.log('토큰 설정 실패', error);
+  } catch {
+    // 토큰 설정 실패
   }
 }
 

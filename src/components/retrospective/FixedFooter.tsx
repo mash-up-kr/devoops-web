@@ -38,13 +38,30 @@ export default function FixedFooter({
   const queryClient = useQueryClient();
   const [isRefreshing, setIsRefreshing] = useState(false);
 
+  const hasChanges = () => {
+    // 답변 개수가 다르면 변경사항이 있음 (삭제된 경우)
+    if (answers.length !== lastSubmittedAnswers.length) {
+      return true;
+    }
+
+    // 답변 내용이 다르면 변경사항이 있음
+    return answers.some((a) => {
+      const prev = lastSubmittedAnswers.find((p) => p.answerId === a.answerId);
+      return !prev || prev.content !== a.content;
+    });
+  };
+
   const handleComplete = async () => {
     if (isRefreshing) return;
+
+    // 변경사항이 없으면 fetch 보내지 않음
+    if (isCompleted && !hasChanges()) {
+      return;
+    }
+
     // answerId가 없는 값이 있으면 요청을 보내지 않음
     const invalidAnswers = answers.filter((a) => typeof a.answerId !== 'number' || Number.isNaN(a.answerId));
     if (invalidAnswers.length > 0) {
-      console.error('answerId가 없는 답변이 있습니다:', invalidAnswers);
-      alert('답변 저장 중 오류가 발생했습니다. 새로고침 후 다시 시도해 주세요.');
       return;
     }
     const emptyQuestionIds = answers
