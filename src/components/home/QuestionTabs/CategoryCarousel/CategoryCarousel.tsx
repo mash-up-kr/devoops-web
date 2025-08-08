@@ -1,29 +1,26 @@
-'use client';
-
 import CategoryCarouselContent from '@/components/home/QuestionTabs/CategoryCarousel/CategoryCarouselContent';
 import CategoryCarouselItem from '@/components/home/QuestionTabs/CategoryCarousel/CategoryCarouselItem';
 import CategoryCarouselNavigator from '@/components/home/QuestionTabs/CategoryCarousel/CategoryCarouselNavigator';
 
 interface CategoryCarouselProps {
   categories: string[];
-  activeCategory: string;
-  setActiveCategory: (category: string) => void;
+  activeIndex: number;
+  setActiveIndex: (index: number) => void;
 }
 
-export default function CategoryCarousel({ categories, activeCategory, setActiveCategory }: CategoryCarouselProps) {
-  const currentCategoryIndex = categories.findIndex((category) => category === activeCategory);
-  const canGoPrev = currentCategoryIndex > 0;
-  const canGoNext = currentCategoryIndex < categories.length - 1;
+export default function CategoryCarousel({ categories, activeIndex, setActiveIndex }: CategoryCarouselProps) {
+  const canGoPrev = activeIndex > 0;
+  const canGoNext = activeIndex < categories.length - 1;
 
   const goToPrev = () => {
     if (canGoPrev) {
-      setActiveCategory(categories[currentCategoryIndex - 1]);
+      setActiveIndex(activeIndex - 1);
     }
   };
 
   const goToNext = () => {
     if (canGoNext) {
-      setActiveCategory(categories[currentCategoryIndex + 1]);
+      setActiveIndex(activeIndex + 1);
     }
   };
 
@@ -31,13 +28,13 @@ export default function CategoryCarousel({ categories, activeCategory, setActive
     <div className={'mb-6 flex w-full items-center gap-2'}>
       <CategoryCarouselNavigator direction={'prev'} onClick={goToPrev} disabled={!canGoPrev} />
 
-      <CategoryCarouselContent currentIndex={currentCategoryIndex}>
+      <CategoryCarouselContent currentIndex={activeIndex}>
         {categories.map((category, index) => (
           <CategoryCarouselItem
-            key={index}
+            key={`${category}-${index}`}
             category={category}
-            isActive={category === activeCategory}
-            onClick={() => setActiveCategory(category)}
+            isActive={index === activeIndex}
+            onClick={() => setActiveIndex(index)}
           />
         ))}
       </CategoryCarouselContent>
