@@ -63,9 +63,7 @@ function RepolinkModal({ defaultOpen = false, isOutsideClickClose = false, butto
     const _repositories = repositoriesData?.data?.repositories;
     if (!_repositories?.length) return [];
 
-    return [..._repositories].sort((a, b) => {
-      return Number(b.isTracking) - Number(a.isTracking);
-    });
+    return [..._repositories].sort((a, b) => Number(Boolean(b.isTracking)) - Number(Boolean(a.isTracking)));
   })();
 
   const saveRepository = () => {
