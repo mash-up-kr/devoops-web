@@ -153,6 +153,7 @@ function RepolinkModal({ defaultOpen = false, isOutsideClickClose = false, butto
                   >
                     <div className={'flex items-center gap-[8px]'}>
                       <div
+                        aria-label={repository.isTracking ? '추적 중인 레포지토리' : '미추적 레포지토리'}
                         className={cn(
                           `h-[8px] w-[8px] rounded-full ${repository.isTracking ? 'bg-dark-blue-500' : 'bg-dark-grey-200'}`,
                         )}
