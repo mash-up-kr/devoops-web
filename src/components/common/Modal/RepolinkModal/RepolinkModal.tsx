@@ -61,9 +61,11 @@ function RepolinkModal({ defaultOpen = false, isOutsideClickClose = false, butto
   const repositories = (() => {
     // eslint-disable-next-line no-underscore-dangle
     const _repositories = repositoriesData?.data?.repositories;
-    if (!_repositories) return [];
-    if (_repositories.length === 0) return [];
-    return _repositories;
+    if (!_repositories?.length) return [];
+
+    return [..._repositories].sort((a, b) => {
+      return Number(b.isTracking) - Number(a.isTracking);
+    });
   })();
 
   const saveRepository = () => {
