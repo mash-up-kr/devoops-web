@@ -13,6 +13,7 @@ import MonoXIcon from '@/assets/svg/mono_x.svg';
 import RepoEmpty from '@/assets/svg/repo-empty.svg';
 import Button from '@/components/common/Button';
 import { Modal as ModalComponent } from '@/components/common/Modal';
+import { cn } from '@/utils/cn';
 
 interface RepolinkModalProps {
   defaultOpen: boolean;
@@ -151,7 +152,11 @@ function RepolinkModal({ defaultOpen = false, isOutsideClickClose = false, butto
                     }
                   >
                     <div className={'flex items-center gap-[8px]'}>
-                      <div className={'bg-dark-blue-500 h-[8px] w-[8px] rounded-full'} />
+                      <div
+                        className={cn(
+                          `h-[8px] w-[8px] rounded-full ${repository.isTracking ? 'bg-dark-blue-500' : 'bg-dark-grey-200'}`,
+                        )}
+                      />
                       <p className={'text-body-small text-white'}>{repository.name}</p>
                     </div>
 
