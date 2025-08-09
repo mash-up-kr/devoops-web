@@ -13,6 +13,7 @@ import MonoXIcon from '@/assets/svg/mono_x.svg';
 import RepoEmpty from '@/assets/svg/repo-empty.svg';
 import Button from '@/components/common/Button';
 import { Modal as ModalComponent } from '@/components/common/Modal';
+import { cn } from '@/utils/cn';
 
 interface RepolinkModalProps {
   defaultOpen: boolean;
@@ -60,9 +61,9 @@ function RepolinkModal({ defaultOpen = false, isOutsideClickClose = false, butto
   const repositories = (() => {
     // eslint-disable-next-line no-underscore-dangle
     const _repositories = repositoriesData?.data?.repositories;
-    if (!_repositories) return [];
-    if (_repositories.length === 0) return [];
-    return _repositories;
+    if (!_repositories?.length) return [];
+
+    return [..._repositories].sort((a, b) => Number(Boolean(b.isTracking)) - Number(Boolean(a.isTracking)));
   })();
 
   const saveRepository = () => {
@@ -151,7 +152,12 @@ function RepolinkModal({ defaultOpen = false, isOutsideClickClose = false, butto
                     }
                   >
                     <div className={'flex items-center gap-[8px]'}>
-                      <div className={'bg-dark-blue-500 h-[8px] w-[8px] rounded-full'} />
+                      <div
+                        aria-label={repository.isTracking ? '추적 중인 레포지토리' : '미추적 레포지토리'}
+                        className={cn(
+                          `h-[8px] w-[8px] rounded-full ${repository.isTracking ? 'bg-dark-blue-500' : 'bg-dark-grey-200'}`,
+                        )}
+                      />
                       <p className={'text-body-small text-white'}>{repository.name}</p>
                     </div>
 

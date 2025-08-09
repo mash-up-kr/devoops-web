@@ -9,6 +9,7 @@
  * ---------------------------------------------------------------
  */
 
+
 /**
  * 회고 최신화 요청 목록
  */
@@ -333,11 +334,31 @@ export interface MyRepositoriesResponseType {
   repositories?: RepositorySummaryType[];
 }
 
+/**
+ * 레포지토리 내역
+ */
 export interface RepositorySummaryType {
-  /** @format int64 */
+  /**
+   * 레포지토리 아이디
+   * @format int64
+   * @example 1
+   */
   id?: number;
+  /**
+   * 레포지토리 이름
+   * @example "my-repo"
+   */
   name?: string;
-  /** @format int32 */
+  /**
+   * 레포지토리 추적 여부
+   * @example true
+   */
+  isTracking?: boolean;
+  /**
+   * 레포지토리 풀 리퀘스트 개수
+   * @format int32
+   * @example 10
+   */
   pullRequestCount?: number;
 }
 
@@ -364,7 +385,7 @@ export interface PullRequestDetailReadResponseType {
    */
   recordStatus: 'PENDING' | 'PROGRESS' | 'DONE';
   /**
-   * PR URL
+   * 풀 리퀘스트 url
    * @example "https://github.com/aaa/bbb/pull/4"
    */
   pullRequestUrl: string;
