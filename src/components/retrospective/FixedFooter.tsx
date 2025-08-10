@@ -1,6 +1,7 @@
 'use client';
 
 import { useQueryClient } from '@tanstack/react-query';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 import Button from '@/components/common/Button';
@@ -37,6 +38,7 @@ export default function FixedFooter({
   const markPRAsDoneMutation = useMarkPRAsDoneMutation();
   const queryClient = useQueryClient();
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const router = useRouter();
 
   const hasChanges = () => {
     // 답변 개수가 다르면 변경사항이 있음 (삭제된 경우)
@@ -111,6 +113,10 @@ export default function FixedFooter({
     }
   };
 
+  const handleGoHome = () => {
+    router.push('/');
+  };
+
   return (
     <footer
       className={
@@ -132,6 +138,9 @@ export default function FixedFooter({
           }
         >
           {isRefreshing ? '새로고침 중...' : '회고완료'}
+        </Button>
+        <Button variant={'filledPrimary'} size={'medium'} onClick={handleGoHome}>
+          {'홈으로'}
         </Button>
       </div>
     </footer>
