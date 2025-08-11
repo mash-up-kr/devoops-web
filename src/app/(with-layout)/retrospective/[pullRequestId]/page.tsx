@@ -5,7 +5,6 @@ import { useParams } from 'next/navigation';
 import { useState, useEffect } from 'react';
 
 import type { QuestionAnswerResponseType } from '@/__generated__/@types';
-import { apiApi } from '@/__generated__/Api/Api.api';
 import { useGetDetailPullRequestQuery } from '@/apis/pull-requests/retrpspective.query';
 import { useGetMyInfoQuery } from '@/apis/user/user.query';
 import TopIcon from '@/components/common/icons/TopIcon';
@@ -17,6 +16,8 @@ import RetrospectiveHeader from '@/components/retrospective/RetrospectiveHeader'
 import RetrospectiveQuestions from '@/components/retrospective/RetrospectiveQuestions';
 import RetrospectivePageSkeleton from '@/components/retrospective/Skeleton/RetrospectivePageSkeleton';
 import { useAutoSave } from '@/hooks/api/retrospective/useAutoSave';
+import { useCreateAnswerMutation } from '@/hooks/api/retrospective/useCreateAnswerMutation';
+import { useDeleteAnswerMutation } from '@/hooks/api/retrospective/useDeleteAnswerMutation';
 import type { CategoryWithQuestions } from '@/types/retrospective';
 
 export default function RetrospectivePage() {
@@ -31,6 +32,9 @@ export default function RetrospectivePage() {
   const [isRetrospectiveDone, setIsRetrospectiveDone] = useState(false);
 
   const queryClient = useQueryClient();
+
+  const createAnswerMutation = useCreateAnswerMutation();
+  const deleteAnswerMutation = useDeleteAnswerMutation();
 
   useEffect(() => {
     if (!pullRequestId) return;
@@ -188,7 +192,7 @@ export default function RetrospectivePage() {
     const answerObj = answers.find((a) => a.questionId === questionId);
     if (!answerObj) return;
 
-    await apiApi.deleteAnswer({ answerId: answerObj.answerId, data: { content: '' } });
+    await deleteAnswerMutation.mutateAsync({ answerId: answerObj.answerId, data: { content: '' } });
     setAnswers((prev) => prev.filter((a) => a.questionId !== questionId));
     setSelectedQuestionIds((prev) => prev.filter((id) => id !== questionId));
     setLastSubmittedAnswers((prev) => prev.filter((a) => a.answerId !== answerObj.answerId));
@@ -196,7 +200,7 @@ export default function RetrospectivePage() {
 
   const handleSelectQuestion = async (questionId: number) => {
     try {
-      const res = await apiApi.createAnswer({ questionId });
+      const res = await createAnswerMutation.mutateAsync({ questionId });
       const answerId = res.data.id;
       if (typeof answerId === 'number') {
         const alreadyAnswered = answers.some((a) => a.questionId === questionId);
