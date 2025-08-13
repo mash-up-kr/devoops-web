@@ -1,28 +1,24 @@
-'use client';
-
-import { useEffect, useState } from 'react';
-
 import { PullRequestReadResponseType } from '@/__generated__/@types';
 import { CategoryCarousel, QuestionContent } from '@/components/home/QuestionTabs';
 
 interface QuestionTabsProps {
   contents: PullRequestReadResponseType;
+  activeCategoryIndex: number;
+  setActiveCategoryIndex: (index: number) => void;
 }
 
-export default function QuestionTabs({ contents }: QuestionTabsProps) {
+export default function QuestionTabs({ contents, activeCategoryIndex, setActiveCategoryIndex }: QuestionTabsProps) {
   const { categories } = contents;
 
-  const [activeIndex, setActiveIndex] = useState(0);
-
-  useEffect(() => {
-    setActiveIndex(0);
-  }, [categories]);
-
-  const activeCategory = categories[activeIndex] ?? '';
+  const activeCategory = categories[activeCategoryIndex] ?? '';
 
   return (
     <>
-      <CategoryCarousel categories={categories} activeIndex={activeIndex} setActiveIndex={setActiveIndex} />
+      <CategoryCarousel
+        categories={categories}
+        activeIndex={activeCategoryIndex}
+        setActiveIndex={setActiveCategoryIndex}
+      />
       <QuestionContent pullRequestId={contents.id} questions={contents.questions} activeCategory={activeCategory} />
     </>
   );

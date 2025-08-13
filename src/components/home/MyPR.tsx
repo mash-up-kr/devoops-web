@@ -1,8 +1,6 @@
-'use client';
-
 import { RepositorySummaryType } from '@/__generated__/@types';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/common/Tabs';
-import RepositoryList from '@/components/home/RepositoryList';
+import Overview from '@/components/home/Overview';
 
 interface MyPRProps {
   initialRepositoryList: RepositorySummaryType[];
@@ -25,7 +23,7 @@ export default function MyPR({ initialRepositoryList }: MyPRProps) {
         <div>
           {initialRepositoryList.map((repository) => (
             <TabsContent key={repository.id} value={repository.name || ''}>
-              <RepositoryList repository={repository} />
+              <Overview repository={repository} />
             </TabsContent>
           ))}
         </div>
