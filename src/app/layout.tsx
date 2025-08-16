@@ -3,6 +3,7 @@ import { ReactNode } from 'react';
 
 import GASuspense from '@/components/common/GA/GASuspense';
 import ModalProvider from '@/providers/ModalContext';
+import MswProvider from '@/providers/MswProvider';
 import QueryProvider from '@/providers/QueryProvider';
 
 import './globals.css';
@@ -30,8 +31,10 @@ export default function RootLayout({
     <html lang={'ko-KR'}>
       <QueryProvider>
         <body>
-          <ModalProvider>{children}</ModalProvider>
-          <div id={'portal'} />
+          <MswProvider>
+            <ModalProvider>{children}</ModalProvider>
+            <div id={'portal'} />
+          </MswProvider>
           <GASuspense />
         </body>
       </QueryProvider>
