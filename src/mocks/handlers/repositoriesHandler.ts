@@ -1,5 +1,6 @@
 import { HttpResponse, http } from 'msw';
 
+import { NO_PR_IN_REPOSITORY_ID } from '@/constants/domain';
 import { ROUTES } from '@/constants/routes';
 import getEntirePullRequests from '@/mocks/responses/repositories/getEntirePullRequests.json';
 import getPullRequest from '@/mocks/responses/repositories/getPullRequest.json';
@@ -14,7 +15,7 @@ const repositoriesHandler = [
   http.get(`*${ROUTES.API.REPOSITORY_PULL_REQUESTS(':repositoryId')}`, ({ params }) => {
     const { repositoryId } = params;
 
-    if (Number(repositoryId) === 2) {
+    if (Number(repositoryId) === NO_PR_IN_REPOSITORY_ID) {
       return new HttpResponse(null, { status: 404 });
     }
 
