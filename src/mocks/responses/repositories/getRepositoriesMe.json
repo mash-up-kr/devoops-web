@@ -1,0 +1,14 @@
+{
+  "repositories": [
+    {
+      "id": 1,
+      "name": "첫번째 레포",
+      "pullRequestCount": 5
+    },
+    {
+      "id": 2,
+      "name": "두번째 레포",
+      "pullRequestCount": 3
+    }
+  ]
+}
