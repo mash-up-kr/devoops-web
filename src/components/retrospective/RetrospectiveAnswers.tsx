@@ -70,7 +70,7 @@ export default function RetrospectiveAnswers({
                   {onDeleteAnswer && (
                     <button
                       type={'button'}
-                      className={'text-on-surface-low ml-2 hover:text-red-500'}
+                      className={'text-on-surface-low ml-2 cursor-pointer hover:text-red-500'}
                       onClick={() => onDeleteAnswer(question.questionId)}
                     >
                       <span>{<EditButtonIcon />}</span>

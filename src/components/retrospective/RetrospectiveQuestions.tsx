@@ -39,7 +39,7 @@ export default function RetrospectiveQuestions({
                   key={questionId}
                 >
                   <p className={'grow-1'}>{question}</p>
-                  <button onClick={() => onSelectQuestion(questionId)}>
+                  <button onClick={() => onSelectQuestion(questionId)} className={'cursor-pointer'}>
                     {selectedQuestionIds.includes(questionId) ? <CheckIcon /> : <PlusIcon />}
                   </button>
                 </div>
