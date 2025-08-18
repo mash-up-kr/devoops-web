@@ -2,12 +2,12 @@ import type { Metadata } from 'next';
 import { ReactNode } from 'react';
 
 import GASuspense from '@/components/common/GA/GASuspense';
-import { initMSW } from '@/mocks';
 import ModalProvider from '@/providers/ModalContext';
 import MSWClientProvider from '@/providers/MSWClientProvider';
 import QueryProvider from '@/providers/QueryProvider';
 
 import './globals.css';
+import { initMSW } from '@/mocks';
 
 export const metadata: Metadata = {
   title: 'Devoops',
@@ -36,7 +36,7 @@ export default function RootLayout({
     <html lang={'ko-KR'}>
       <QueryProvider>
         <body>
-          <MSWClientProvider />
+          {process.env.NEXT_PUBLIC_MOCK_API === 'enabled' ? <MSWClientProvider /> : null}
           <ModalProvider>{children}</ModalProvider>
           <div id={'portal'} />
           <GASuspense />
