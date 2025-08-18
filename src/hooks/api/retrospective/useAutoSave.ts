@@ -1,7 +1,7 @@
 import { useEffect, useState, useCallback } from 'react';
 
 import type { UserType } from '@/__generated__/@types';
-import { useUpdateAnswerMutation } from '@/hooks/api/retrospective/useUpdateAnswerMutation';
+import { useUpdateAnswerMutation } from '@/apis/pull-requests/pullRequests.mutate';
 
 const AUTOSAVE_DEBOUNCE_MS = 2000;
 const SHOW_SAVED_STATUS_MS = 2000;
@@ -38,7 +38,7 @@ export const useAutoSave = ({ user, answers, debounceMs = AUTOSAVE_DEBOUNCE_MS }
         changedAnswers.map((answer) =>
           updateAnswerMutation.mutateAsync({
             answerId: answer.answerId,
-            content: answer.content,
+            data: { content: answer.content },
           }),
         ),
       );

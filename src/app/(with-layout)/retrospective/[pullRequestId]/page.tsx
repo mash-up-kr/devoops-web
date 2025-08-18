@@ -5,7 +5,8 @@ import { useParams } from 'next/navigation';
 import { useState, useEffect } from 'react';
 
 import type { QuestionAnswerResponseType } from '@/__generated__/@types';
-import { useGetDetailPullRequestQuery } from '@/apis/pull-requests/retrpspective.query';
+import { useCreateAnswerMutation, useDeleteAnswerMutation } from '@/apis/pull-requests/pullRequests.mutate';
+import { useGetDetailPullRequestQuery } from '@/apis/pull-requests/pullRequests.query';
 import { useGetMyInfoQuery } from '@/apis/user/user.query';
 import TopIcon from '@/components/common/icons/TopIcon';
 import TopButton from '@/components/common/TopButton';
@@ -16,8 +17,6 @@ import RetrospectiveHeader from '@/components/retrospective/RetrospectiveHeader'
 import RetrospectiveQuestions from '@/components/retrospective/RetrospectiveQuestions';
 import RetrospectivePageSkeleton from '@/components/retrospective/Skeleton/RetrospectivePageSkeleton';
 import { useAutoSave } from '@/hooks/api/retrospective/useAutoSave';
-import { useCreateAnswerMutation } from '@/hooks/api/retrospective/useCreateAnswerMutation';
-import { useDeleteAnswerMutation } from '@/hooks/api/retrospective/useDeleteAnswerMutation';
 import type { CategoryWithQuestions } from '@/types/retrospective';
 
 export default function RetrospectivePage() {
