@@ -4,11 +4,13 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
+import {
+  useMarkPRAsDoneMutation,
+  useUpdateAllAnswersMutation,
+  useUpdateAnswerMutation,
+} from '@/apis/pull-requests/pullRequests.mutate';
 import Button from '@/components/common/Button';
 import AutoSaveStatus from '@/components/retrospective/AutoSaveStatus';
-import { useMarkPRAsDoneMutation } from '@/hooks/api/retrospective/useMarkPRAsDoneMutation';
-import { useUpdateAllAnswersMutation } from '@/hooks/api/retrospective/useUpdateAllAnswersMutation';
-import { useUpdateAnswerMutation } from '@/hooks/api/retrospective/useUpdateAnswerMutation';
 
 interface FixedFooterProps {
   pullRequestId: string;
