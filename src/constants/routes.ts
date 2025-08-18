@@ -34,7 +34,7 @@ export const ROUTES = {
     UPDATE_PULL_REQUEST_TO_DONE: (pullRequestId: number | string) => `/api/pull-requests/${pullRequestId}/done`,
     GET_PULL_REQUEST: (pullRequestId: number | string) => `/api/repositories/pull-requests/${pullRequestId}`,
     GET_DETAIL_PULL_REQUEST: (pullRequestId: number | string) => `/api/pull-requests/${pullRequestId}`,
-    GET_PULL_REQUEST_RANKING: '/api/pull-requests/r| stringanking',
+    GET_PULL_REQUEST_RANKING: '/api/pull-requests/ranking',
 
     // User API
     GET_MY_INFO: '/api/users/me',
