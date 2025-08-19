@@ -68,12 +68,17 @@ export const useAutoSave = ({ answers, debounceMs = 3000 }: UseAutoSaveProps) =>
   }, [answers, getChangedAnswers, updateAnswerMutation]);
 
   useEffect(() => {
-    // 새로 추가된 답변이 있는지 확인
-    const hasNewAnswers = answers.some((answer) => !lastSavedRef.current.find((ls) => ls.answerId === answer.answerId));
-
-    // 초기화: 새 답변이 있거나 초기 상태면 lastSavedRef 업데이트
-    if (hasNewAnswers || (!lastSavedRef.current.length && answers.length > 0)) {
+    // 1) 최초 서버 데이터 수신 직후: 한 번만 전체 초기화
+    if (!lastSavedRef.current.length && answers.length > 0) {
       lastSavedRef.current = [...answers];
+    }
+
+    // 2) 새로 서버 id를 받은 항목만 부분 병합
+    const lastById = new Map(lastSavedRef.current.map((a) => [a.answerId, a]));
+    const newServerAnswers = answers.filter((a) => a.answerId && !lastById.has(a.answerId));
+
+    if (newServerAnswers.length > 0) {
+      lastSavedRef.current = [...lastSavedRef.current, ...newServerAnswers];
     }
 
     // 이전 타이머가 있으면 취소 후 새로운 타이머 설정
