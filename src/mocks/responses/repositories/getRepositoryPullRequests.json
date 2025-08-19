@@ -1,0 +1,44 @@
+{
+  "pullRequests": [
+    {
+      "id": 301,
+      "title": "[FEAT] 다크 모드 지원 추가",
+      "recordStatus": "DONE",
+      "mergedAt": "2025-06-10",
+      "summary": "사용자 경험 향상을 위해 애플리케이션 전체에 다크 모드 테마를 적용했습니다.",
+      "tag": "feat"
+    },
+    {
+      "id": 302,
+      "title": "[FIX] 로그인 시 간헐적 500 에러 수정",
+      "recordStatus": "PROGRESS",
+      "mergedAt": "2025-06-11",
+      "summary": "특정 조건에서 로그인 요청 시 발생하던 서버 내부 오류를 해결하고 있습니다.",
+      "tag": "fix"
+    },
+    {
+      "id": 303,
+      "title": "[CHORE] 의존성 라이브러리 버전 업데이트",
+      "recordStatus": "DONE",
+      "mergedAt": "2025-06-12",
+      "summary": "보안 및 성능 개선을 위해 주요 npm 패키지들을 최신 버전으로 업데이트했습니다.",
+      "tag": "chore"
+    },
+    {
+      "id": 304,
+      "title": "[REFACTOR] 전역 상태 관리 로직 개선",
+      "recordStatus": "PENDING",
+      "mergedAt": "2025-06-13",
+      "summary": "기존 Context API 기반 상태 관리를 Recoil로 마이그레이션하여 성능을 최적화합니다.",
+      "tag": "refactor"
+    },
+    {
+      "id": 305,
+      "title": "[TEST] E2E 테스트 케이스 추가",
+      "recordStatus": "DONE",
+      "mergedAt": "2025-06-14",
+      "summary": "주요 사용자 플로우에 대한 Cypress E2E 테스트 코드를 추가하여 안정성을 높였습니다.",
+      "tag": "test"
+    }
+  ]
+}

@@ -83,7 +83,7 @@ export default function FixedFooter({
     try {
       if (lastSubmittedAnswers.length === 0) {
         // First submit 처리
-        await updateAllAnswersMutation.mutateAsync({ answers });
+        await updateAllAnswersMutation.mutateAsync({ data: { answers } });
         setLastSubmittedAnswers([...answers]);
       } else {
         // Subsequent submit 처리
@@ -93,7 +93,12 @@ export default function FixedFooter({
         });
         if (changed.length > 0) {
           await Promise.all(
-            changed.map((ans) => updateAnswerMutation.mutateAsync({ answerId: ans.answerId, content: ans.content })),
+            changed.map((ans) =>
+              updateAnswerMutation.mutateAsync({
+                answerId: ans.answerId,
+                data: { content: ans.content },
+              }),
+            ),
           );
           setLastSubmittedAnswers([...answers]);
         }

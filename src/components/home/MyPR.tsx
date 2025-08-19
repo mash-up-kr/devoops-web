@@ -5,8 +5,8 @@ import { useEffect } from 'react';
 import { RepositorySummaryType } from '@/__generated__/@types';
 import { RepolinkButton, RepolinkModal } from '@/components/common/Modal/RepolinkModal';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/common/Tabs';
-import RepositoryList from '@/components/home/RepositoryList';
 import { useModalDispatch } from '@/providers/ModalContext';
+import Overview from '@/components/home/Overview';
 
 interface MyPRProps {
   initialRepositoryList: RepositorySummaryType[];
@@ -37,7 +37,7 @@ export default function MyPR({ initialRepositoryList }: MyPRProps) {
           <div>
             {initialRepositoryList.map((repository) => (
               <TabsContent key={repository.id} value={repository.name || ''}>
-                <RepositoryList repository={repository} />
+                <Overview repository={repository} />
               </TabsContent>
             ))}
           </div>

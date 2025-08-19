@@ -20,17 +20,18 @@ import { PRContent, PRItem, PRStatus } from '@/components/home/PRItem';
 import PreviewSkeleton from '@/components/home/Skeleton/PreviewSkeleton';
 import PRListSkeleton from '@/components/home/Skeleton/PRListSkeleton';
 import { ROUTES } from '@/constants/routes';
-import { usePagination } from '@/hooks/usePagination';
+import { usePagination } from '@/hooks/home/usePagination';
 
-interface RepositoryListProps {
+interface OverviewProps {
   repository: RepositorySummaryType;
 }
 
 const PAGE_SIZE = 5;
 
-export default function RepositoryList({ repository }: RepositoryListProps) {
+export default function Overview({ repository }: OverviewProps) {
   const [pullRequestId, setPullRequestId] = useState<number>();
   const [currentPage, setCurrentPage] = useState(0);
+  const [activeCategoryIndexes, setActiveCategoryIndexes] = useState<{ [key: number]: number }>({});
 
   const { data: PRData, isLoading: isPRDataLoading } = useGetPullRequestsQuery({
     variables: {
@@ -59,11 +60,23 @@ export default function RepositoryList({ repository }: RepositoryListProps) {
   };
 
   useEffect(() => {
-    if (PRList.length > 0) {
-      setPullRequestId(PRList[0].id);
-    } else {
+    if (PRList.length === 0) {
       setPullRequestId(undefined);
+      setActiveCategoryIndexes({});
+      return;
     }
+
+    setActiveCategoryIndexes((prevIndexes) => {
+      const newIndexes = { ...prevIndexes };
+      PRList.forEach((pr) => {
+        if (pr.id !== undefined && newIndexes[pr.id] === undefined) {
+          newIndexes[pr.id] = 0;
+        }
+      });
+      return newIndexes;
+    });
+
+    setPullRequestId(PRList[0].id);
   }, [PRList]);
 
   if (isLoading) {
@@ -128,7 +141,17 @@ export default function RepositoryList({ repository }: RepositoryListProps) {
           </PaginationContent>
         </Pagination>
       </div>
-      <Suspense fallback={<PreviewSkeleton />}>{pullRequestId && <Preview pullRequestId={pullRequestId} />}</Suspense>
+      <Suspense fallback={<PreviewSkeleton />}>
+        {pullRequestId && (
+          <Preview
+            pullRequestId={pullRequestId}
+            activeCategoryIndex={activeCategoryIndexes[pullRequestId]}
+            setActiveCategoryIndex={(index) =>
+              setActiveCategoryIndexes((prev) => ({ ...prev, [pullRequestId]: index }))
+            }
+          />
+        )}
+      </Suspense>
     </div>
   );
 }
