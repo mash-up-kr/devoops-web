@@ -19,16 +19,22 @@ export const useAutoSave = ({ answers, debounceMs = 3000 }: UseAutoSaveProps) =>
   // lastSaveRef : 마지막 저장된 상태 저장용 (내용이 바뀐 경우에만 API 호출하도록))
   const lastSavedRef = useRef<{ answerId: number; content: string }[]>([]);
 
-  // 변경된 답변 감지  (실제로 바뀐 답변만 필터링함))
+  // 변경된 답변 감지 (새로 추가된 답변 + 기존 변경된 답변)
   const getChangedAnswers = useCallback(() => {
-    if (!lastSavedRef.current.length) return [];
+    // 새로 추가된 답변들 (lastSavedRef에 없는 answerId)
+    const newAnswers = answers.filter(
+      (answer) => !lastSavedRef.current.find((ls) => ls.answerId === answer.answerId) && answer.content.trim() !== '', // 내용이 있는 새 답변만
+    );
 
-    return answers.filter((answer) => {
+    // 기존 변경된 답변들
+    const modifiedAnswers = answers.filter((answer) => {
       const lastSaved = lastSavedRef.current.find((ls) => ls.answerId === answer.answerId);
-      // 조건 3가지
-      // 1. 마지막 저장된 답변 존재 , 2. 마지막 저장된 내용과 현재 내용 다름 , 3. 현재 내용이 비어있지 않음
+      // 조건: 마지막 저장된 답변 존재 + 내용이 변경됨 + 내용이 비어있지 않음
       return lastSaved && lastSaved.content !== answer.content && answer.content.trim() !== '';
     });
+
+    // 새 답변 + 변경된 답변 합치기
+    return [...newAnswers, ...modifiedAnswers];
   }, [answers]);
 
   // 자동저장 실행
@@ -62,8 +68,11 @@ export const useAutoSave = ({ answers, debounceMs = 3000 }: UseAutoSaveProps) =>
   }, [answers, getChangedAnswers, updateAnswerMutation]);
 
   useEffect(() => {
-    // 초기화: 마지막 저장된 상태가 없고 답변이 있으면 초기화
-    if (!lastSavedRef.current.length && answers.length > 0) {
+    // 새로 추가된 답변이 있는지 확인
+    const hasNewAnswers = answers.some((answer) => !lastSavedRef.current.find((ls) => ls.answerId === answer.answerId));
+
+    // 초기화: 새 답변이 있거나 초기 상태면 lastSavedRef 업데이트
+    if (hasNewAnswers || (!lastSavedRef.current.length && answers.length > 0)) {
       lastSavedRef.current = [...answers];
     }
 
