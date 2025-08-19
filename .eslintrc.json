@@ -42,6 +42,14 @@
         "unnamedComponents": "arrow-function"
       }
     ],
+    "import/no-extraneous-dependencies": [
+      "error",
+      {
+        "devDependencies": [
+          "**/mocks/**"
+        ]
+      }
+    ],
     "react/jsx-curly-brace-presence": ["warn", { "props": "always", "children": "always" }],
     "react/jsx-props-no-spreading": "off",
     "arrow-body-style": "off",
@@ -62,7 +70,9 @@
     "better-tailwindcss/no-unregistered-classes": "off",
     "better-tailwindcss/enforce-consistent-line-wrapping": "off",
     "react/button-has-type": "off",
-    "@typescript-eslint/no-unused-vars": "error"
+    "@typescript-eslint/no-unused-vars": "error",
+    "class-methods-use-this": "warn",
+    "react/jsx-no-useless-fragment": "warn"
   },
   "ignorePatterns": ["node_modules/"]
 }

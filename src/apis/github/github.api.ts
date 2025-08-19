@@ -1,5 +1,3 @@
-/* eslint-disable class-methods-use-this */
-
 export const GITHUB_API_URL = 'https://github.com';
 
 class GithubApi {

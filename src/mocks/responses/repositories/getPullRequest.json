@@ -1,0 +1,60 @@
+{
+  "id": 100,
+  "title": "[FIX] 서버 장애 대응",
+  "recordStatus": "PENDING",
+  "mergedAt": "2025-05-01",
+  "summary": "이번 장애에서의 문제 상황과 대응 과정을 정리하였습니다.",
+  "tag": "feat",
+  "pullRequestUrl": "/",
+  "categories": ["성능", "가독성", "테스트"],
+  "questions": [
+    {
+      "id": 200,
+      "isSelected": true,
+      "category": "성능",
+      "content": "성능적으로 좋은 선택이라 생각하나요?",
+      "createdAt": "2025-06-24T15:29:45Z",
+      "updatedAt": "2025-06-24T15:29:45Z"
+    },
+    {
+      "id": 201,
+      "isSelected": false,
+      "category": "가독성",
+      "content": "이 코드는 다른 사람이 쉽게 이해할 수 있나요?",
+      "createdAt": "2025-06-25T10:00:00Z",
+      "updatedAt": "2025-06-25T10:00:00Z"
+    },
+    {
+      "id": 202,
+      "isSelected": false,
+      "category": "테스트",
+      "content": "작성한 테스트 코드가 충분한가요?",
+      "createdAt": "2025-06-26T11:30:00Z",
+      "updatedAt": "2025-06-26T11:30:00Z"
+    },
+    {
+      "id": 203,
+      "isSelected": true,
+      "category": "성능",
+      "content": "성능적으로 좋은 선택이라 생각하나요? 22",
+      "createdAt": "2025-06-24T15:29:45Z",
+      "updatedAt": "2025-06-24T15:29:45Z"
+    },
+    {
+      "id": 204,
+      "isSelected": false,
+      "category": "가독성",
+      "content": "이 코드는 다른 사람이 쉽게 이해할 수 있나요? 22",
+      "createdAt": "2025-06-25T10:00:00Z",
+      "updatedAt": "2025-06-25T10:00:00Z"
+    },
+    {
+      "id": 205,
+      "isSelected": false,
+      "category": "테스트",
+      "content": "작성한 테스트 코드가 충분한가요? 22",
+      "createdAt": "2025-06-26T11:30:00Z",
+      "updatedAt": "2025-06-26T11:30:00Z"
+    }
+  ]
+}
