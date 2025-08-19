@@ -194,8 +194,10 @@ function RepolinkModal({ defaultOpen = false, isOutsideClickClose = false, butto
 
 export default RepolinkModal;
 
+// 스켈레톤 애니메이션을 위한 공통 클래스
 const skeletonAnimation = 'animate-pulse bg-dark-grey-200';
 
+// 사용자 프로필 스켈레톤 컴포넌트
 function UserProfileSkeleton() {
   return (
     <div className={'flex items-center gap-[6px]'}>
@@ -205,6 +207,7 @@ function UserProfileSkeleton() {
   );
 }
 
+// 레포지토리 아이템 스켈레톤 컴포넌트
 function RepositoryItemSkeleton({ index }: { index: number }) {
   return (
     <div
@@ -222,6 +225,7 @@ function RepositoryItemSkeleton({ index }: { index: number }) {
   );
 }
 
+// 레포지토리 목록 스켈레톤 컴포넌트
 function RepositoriesListSkeleton() {
   return (
     <>
