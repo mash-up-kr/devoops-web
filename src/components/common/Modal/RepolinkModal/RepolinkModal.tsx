@@ -1,5 +1,4 @@
 /* eslint-disable no-alert */
-
 import { useQueryClient } from '@tanstack/react-query';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
@@ -13,6 +12,8 @@ import MonoXIcon from '@/assets/svg/mono_x.svg';
 import RepoEmpty from '@/assets/svg/repo-empty.svg';
 import Button from '@/components/common/Button';
 import { Modal as ModalComponent } from '@/components/common/Modal';
+import { RepolinkButton } from '@/components/common/Modal/RepolinkModal/index';
+import { MODAL_ID } from '@/constants/modal';
 import { cn } from '@/utils/cn';
 
 interface RepolinkModalProps {
@@ -62,15 +63,12 @@ function RepolinkModal({ defaultOpen = false, isOutsideClickClose = false, butto
     // eslint-disable-next-line no-underscore-dangle
     const _repositories = repositoriesData?.data?.repositories;
     if (!_repositories?.length) return [];
-
     return [..._repositories].sort((a, b) => Number(Boolean(b.isTracking)) - Number(Boolean(a.isTracking)));
   })();
 
   const saveRepository = () => {
     if (repositories.length === 5) return;
-    mutate({
-      data: { url: input },
-    });
+    mutate({ data: { url: input } });
   };
 
   const deleteRepository = (repositoryId?: number) => {
@@ -81,12 +79,14 @@ function RepolinkModal({ defaultOpen = false, isOutsideClickClose = false, butto
 
   return (
     <ModalComponent.Root
+      modalId={MODAL_ID.REPOLINK}
       defaultOpen={defaultOpen}
       isOutsideClickClose={isOutsideClickClose}
       className={'bg-modal-dimmed'}
     >
       <ModalComponent.Content>
         <ModalComponent.RepoLinkContainer>
+          {isOutsideClickClose && <RepolinkButton action={'CLOSE'} className={'absolute top-20 right-12'} />}
           <div
             className={
               'border-dark-grey-200 bg-modal flex flex-col items-center rounded-[12px] border-[1px] px-[32px] pt-[52px] pb-[28px]'
@@ -194,10 +194,8 @@ function RepolinkModal({ defaultOpen = false, isOutsideClickClose = false, butto
 
 export default RepolinkModal;
 
-// 스켈레톤 애니메이션을 위한 공통 클래스
 const skeletonAnimation = 'animate-pulse bg-dark-grey-200';
 
-// 사용자 프로필 스켈레톤 컴포넌트
 function UserProfileSkeleton() {
   return (
     <div className={'flex items-center gap-[6px]'}>
@@ -207,7 +205,6 @@ function UserProfileSkeleton() {
   );
 }
 
-// 레포지토리 아이템 스켈레톤 컴포넌트
 function RepositoryItemSkeleton({ index }: { index: number }) {
   return (
     <div
@@ -225,7 +222,6 @@ function RepositoryItemSkeleton({ index }: { index: number }) {
   );
 }
 
-// 레포지토리 목록 스켈레톤 컴포넌트
 function RepositoriesListSkeleton() {
   return (
     <>

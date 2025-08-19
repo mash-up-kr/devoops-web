@@ -3,12 +3,13 @@
 import { ReactNode, HTMLProps, useEffect } from 'react';
 
 import ModalPortal from '@/components/common/Modal/Portal';
-import { useModalState, useModalDispatch } from '@/providers/ModalContext';
+import { useIsModalOpen, useModalDispatch } from '@/providers/ModalContext';
 import { cn } from '@/utils/cn';
 import { onKeyDown } from '@/utils/onKeydown';
 
 interface ModalRootProps extends HTMLProps<HTMLDivElement> {
   children: ReactNode;
+  modalId: string;
   className?: string;
   defaultOpen?: boolean;
   isOutsideClickClose?: boolean;
@@ -16,21 +17,22 @@ interface ModalRootProps extends HTMLProps<HTMLDivElement> {
 
 export default function ModalRoot({
   children,
+  modalId,
   className = '',
   defaultOpen = false,
   isOutsideClickClose = true,
   ...props
 }: ModalRootProps) {
-  const { isOpen } = useModalState();
+  const isOpen = useIsModalOpen(modalId);
   const dispatch = useModalDispatch();
 
-  const handleClose = () => dispatch({ type: 'CLOSE' });
+  const handleClose = () => dispatch({ type: 'CLOSE', modalId });
 
   useEffect(() => {
     if (defaultOpen) {
-      dispatch({ type: 'OPEN' });
+      dispatch({ type: 'OPEN', modalId });
     }
-  }, [defaultOpen, dispatch]);
+  }, [defaultOpen, dispatch, modalId]);
 
   return (
     <ModalPortal>
