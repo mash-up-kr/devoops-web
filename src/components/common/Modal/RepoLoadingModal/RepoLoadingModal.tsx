@@ -5,10 +5,11 @@ import React from 'react';
 import { Modal } from '..';
 
 import Loading from '@/assets/lottie/loading.json';
+import { MODAL_ID } from '@/constants/modal';
 
 function RepoLoadingModal() {
   return (
-    <Modal.Root defaultOpen isOutsideClickClose={false}>
+    <Modal.Root modalId={MODAL_ID.REPO_LOADING} defaultOpen isOutsideClickClose={false}>
       <Modal.Content>
         <Modal.RepoLinkContainer>
           <div className={'size-[340px] p-[20px]'}>

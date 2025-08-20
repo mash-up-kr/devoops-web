@@ -5,8 +5,8 @@ import { useEffect } from 'react';
 import { RepositorySummaryType } from '@/__generated__/@types';
 import { RepolinkButton, RepolinkModal } from '@/components/common/Modal/RepolinkModal';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/common/Tabs';
-import { useModalDispatch } from '@/providers/ModalContext';
 import Overview from '@/components/home/Overview';
+import { useModalDispatch } from '@/providers/ModalContext';
 
 interface MyPRProps {
   initialRepositoryList: RepositorySummaryType[];

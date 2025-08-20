@@ -55,7 +55,7 @@
     "arrow-body-style": "off",
     "prefer-arrow-callback": "off",
     "react-hooks/rules-of-hooks": "error",
-    "react-hooks/exhaustive-deps": "warn",
+    "react-hooks/exhaustive-deps": "off",
     "import/prefer-default-export": "off",
     "import/extensions": "off",
     "import/no-unresolved": "off",
@@ -71,8 +71,8 @@
     "better-tailwindcss/enforce-consistent-line-wrapping": "off",
     "react/button-has-type": "off",
     "@typescript-eslint/no-unused-vars": "error",
-    "class-methods-use-this": "warn",
-    "react/jsx-no-useless-fragment": "warn"
+    "class-methods-use-this": "off",
+    "react/jsx-no-useless-fragment": "off"
   },
   "ignorePatterns": ["node_modules/"]
 }
