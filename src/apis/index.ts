@@ -1,10 +1,10 @@
 import axios, { AxiosInstance, AxiosResponse, InternalAxiosRequestConfig, AxiosError, AxiosHeaders } from 'axios';
 
-import { getTokenAction } from '@/actions/token.action';
+import { getTokenAction, deleteTokenAction } from '@/actions/token.action';
 
 interface IErrorResponse {
   code: string;
-  status: number;
+  status: string;
   message: string;
 }
 
@@ -33,8 +33,15 @@ const onResponse = (response: AxiosResponse) => {
   return response;
 };
 
-const onError = (error: AxiosError<IErrorResponse>) => {
+const onError = async (error: AxiosError<IErrorResponse>) => {
   if (error.response) {
+    // 토큰 만료에 대한 redirect 처리
+    if (error.response.data?.code === 'TOKEN_EXPIRED') {
+      await deleteTokenAction();
+      window.location.href = '/landing';
+      // eslint-disable-next-line @typescript-eslint/no-empty-function
+      return new Promise(() => {});
+    }
     return Promise.reject(error);
   }
 

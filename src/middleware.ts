@@ -19,7 +19,7 @@ export async function middleware(req: NextRequest) {
     return pathname === pattern || pathname.startsWith(pattern);
   });
 
-  if (isProtected) {
+  if (process.env.NEXT_PUBLIC_MOCK_API !== 'enabled' && isProtected) {
     const token = req.cookies.get(TOKEN_KEY)?.value;
 
     if (!token) {

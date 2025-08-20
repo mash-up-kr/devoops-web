@@ -7,14 +7,15 @@ import { type ModalActionType } from '@/types/modal';
 
 interface ModalToggleProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   action: ModalActionType;
+  modalId: string;
   children: ReactNode;
 }
 
-export default function ModalToggle({ action, children, ...props }: ModalToggleProps) {
+export default function ModalToggle({ action, modalId, children, ...props }: ModalToggleProps) {
   const dispatch = useModalDispatch();
 
   const handleClick = () => {
-    dispatch({ type: action });
+    dispatch({ type: action, modalId });
   };
 
   return (

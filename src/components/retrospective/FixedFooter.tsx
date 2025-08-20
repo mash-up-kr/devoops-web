@@ -1,13 +1,16 @@
 'use client';
 
 import { useQueryClient } from '@tanstack/react-query';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
+import {
+  useMarkPRAsDoneMutation,
+  useUpdateAllAnswersMutation,
+  useUpdateAnswerMutation,
+} from '@/apis/pull-requests/pullRequests.mutate';
 import Button from '@/components/common/Button';
 import AutoSaveStatus from '@/components/retrospective/AutoSaveStatus';
-import { useMarkPRAsDoneMutation } from '@/hooks/api/retrospective/useMarkPRAsDoneMutation';
-import { useUpdateAllAnswersMutation } from '@/hooks/api/retrospective/useUpdateAllAnswersMutation';
-import { useUpdateAnswerMutation } from '@/hooks/api/retrospective/useUpdateAnswerMutation';
 
 interface FixedFooterProps {
   pullRequestId: string;
@@ -37,6 +40,7 @@ export default function FixedFooter({
   const markPRAsDoneMutation = useMarkPRAsDoneMutation();
   const queryClient = useQueryClient();
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const router = useRouter();
 
   const hasChanges = () => {
     // 답변 개수가 다르면 변경사항이 있음 (삭제된 경우)
@@ -79,7 +83,7 @@ export default function FixedFooter({
     try {
       if (lastSubmittedAnswers.length === 0) {
         // First submit 처리
-        await updateAllAnswersMutation.mutateAsync({ answers });
+        await updateAllAnswersMutation.mutateAsync({ data: { answers } });
         setLastSubmittedAnswers([...answers]);
       } else {
         // Subsequent submit 처리
@@ -89,7 +93,12 @@ export default function FixedFooter({
         });
         if (changed.length > 0) {
           await Promise.all(
-            changed.map((ans) => updateAnswerMutation.mutateAsync({ answerId: ans.answerId, content: ans.content })),
+            changed.map((ans) =>
+              updateAnswerMutation.mutateAsync({
+                answerId: ans.answerId,
+                data: { content: ans.content },
+              }),
+            ),
           );
           setLastSubmittedAnswers([...answers]);
         }
@@ -109,6 +118,24 @@ export default function FixedFooter({
       console.error('회고 완료 실패', error);
       setIsRefreshing(false);
     }
+  };
+
+  const handleGoHome = () => {
+    // 추후 toast 와 자동저장 구현되면 적용 예정
+    // // 저장 중이면 경고
+    // if (autoSaveStatus === 'saving') {
+    //   const proceedWhileSaving = window.confirm(
+    //     '저장 중입니다. 홈으로 이동하시겠어요? 진행 중인 저장이 완료되지 않을 수 있습니다.',
+    //   );
+    //   if (!proceedWhileSaving) return;
+    // }
+    // // 변경사항이 있으면 경고
+    // if (hasChanges()) {
+    //   const proceed = window.confirm('작성 중인 회고가 저장되지 않았습니다. 홈으로 이동하시겠어요?');
+    //   if (!proceed) return;
+    // }
+
+    router.push('/', { scroll: true });
   };
 
   return (
@@ -132,6 +159,9 @@ export default function FixedFooter({
           }
         >
           {isRefreshing ? '새로고침 중...' : '회고완료'}
+        </Button>
+        <Button variant={'filledPrimary'} size={'medium'} onClick={handleGoHome}>
+          {'홈으로'}
         </Button>
       </div>
     </footer>

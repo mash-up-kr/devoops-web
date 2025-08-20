@@ -7,9 +7,11 @@ import PreviewSkeleton from '@/components/home/Skeleton/PreviewSkeleton';
 
 interface PreviewProps {
   pullRequestId?: number;
+  activeCategoryIndex: number;
+  setActiveCategoryIndex: (index: number) => void;
 }
 
-export default function Preview({ pullRequestId }: PreviewProps) {
+export default function Preview({ pullRequestId, activeCategoryIndex, setActiveCategoryIndex }: PreviewProps) {
   const { data: PRDetailData, isLoading } = useGetPullRequestQuery({
     variables: {
       pullRequestId: pullRequestId ?? 0,
@@ -30,7 +32,12 @@ export default function Preview({ pullRequestId }: PreviewProps) {
             <AISummary contents={PRDetailData.data.summary} />
           </div>
           <div className={'pt-7'}>
-            <QuestionPreview contents={PRDetailData.data} />
+            <QuestionPreview
+              key={PRDetailData.data.id}
+              contents={PRDetailData.data}
+              activeCategoryIndex={activeCategoryIndex}
+              setActiveCategoryIndex={setActiveCategoryIndex}
+            />
           </div>
         </div>
       )}

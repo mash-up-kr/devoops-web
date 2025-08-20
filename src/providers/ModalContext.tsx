@@ -19,23 +19,37 @@ export function useModalDispatch() {
   return context;
 }
 
+export function useIsModalOpen(modalId: string): boolean {
+  const state = useModalState();
+  return state.openModals.has(modalId);
+}
+
 interface ModalProviderProps {
   children: ReactNode;
 }
 
 function modalReducer(state: ModalState, action: ModalAction): ModalState {
   switch (action.type) {
-    case 'OPEN':
-      return { isOpen: true };
-    case 'CLOSE':
-      return { isOpen: false };
+    case 'OPEN': {
+      const newOpenModals = new Set(state.openModals);
+      newOpenModals.add(action.modalId);
+      return { openModals: newOpenModals };
+    }
+    case 'CLOSE': {
+      const newOpenModals = new Set(state.openModals);
+      newOpenModals.delete(action.modalId);
+      return { openModals: newOpenModals };
+    }
+    case 'CLOSE_ALL': {
+      return { openModals: new Set<string>() };
+    }
     default:
-      return state;
+      throw new Error(`Unhandled action`);
   }
 }
 
 export default function ModalProvider({ children }: ModalProviderProps) {
-  const [state, dispatch] = useReducer(modalReducer, { isOpen: false });
+  const [state, dispatch] = useReducer(modalReducer, { openModals: new Set<string>() });
 
   return (
     <ModalStateContext.Provider value={state}>
