@@ -39,6 +39,7 @@ const onError = async (error: AxiosError<IErrorResponse>) => {
     if (error.response.data?.code === 'TOKEN_EXPIRED') {
       await deleteTokenAction();
       window.location.href = '/landing';
+      // eslint-disable-next-line @typescript-eslint/no-empty-function
       return new Promise(() => {});
     }
     return Promise.reject(error);
