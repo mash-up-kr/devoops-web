@@ -1,13 +1,23 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useState, useEffect, PropsWithChildren } from 'react';
 
-import { initMSW } from '@/mocks';
+const isMockingEnabled = process.env.NEXT_PUBLIC_MOCK_API === 'enabled';
 
-export default function MSWClientProvider() {
+export default function MSWProvider({ children }: PropsWithChildren) {
+  const [mswReady, setMswReady] = useState(!isMockingEnabled);
+
   useEffect(() => {
-    initMSW();
+    if (isMockingEnabled) {
+      const enableMocking = async () => {
+        const { worker } = await import('@/mocks/browser');
+        await worker.start();
+        setMswReady(true);
+      };
+
+      enableMocking();
+    }
   }, []);
 
-  return null;
+  return mswReady ? <>{children}</> : null;
 }
