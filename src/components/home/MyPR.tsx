@@ -28,7 +28,8 @@ export default function MyPR({ initialRepositoryList }: MyPRProps) {
             <TabsList aria-label={'내 PR 목록'}>
               {initialRepositoryList.map((repository) => (
                 <TabsTrigger key={repository.id} value={repository.name || ''}>
-                  {repository.name}
+                  <p>{repository.name}</p>
+                  <p className={'text-dark-grey-500'}>{repository.pullRequestCount}</p>
                 </TabsTrigger>
               ))}
               <RepolinkButton action={'OPEN'} />

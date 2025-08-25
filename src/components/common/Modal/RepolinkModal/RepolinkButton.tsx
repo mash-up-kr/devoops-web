@@ -18,7 +18,7 @@ export default function RepolinkButton({ action, className = '' }: ModalButtonPr
       action={action}
       modalId={MODAL_ID.REPOLINK}
       className={cn(
-        'flex size-12 cursor-pointer items-center justify-center pb-4 transition-all duration-300 hover:brightness-200',
+        'flex size-7.5 cursor-pointer items-center justify-center transition-all duration-300 hover:brightness-200',
         className,
       )}
     >
