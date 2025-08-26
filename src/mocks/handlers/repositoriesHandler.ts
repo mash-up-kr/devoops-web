@@ -2,6 +2,7 @@ import { HttpResponse, http } from 'msw';
 
 import { NO_PR_IN_REPOSITORY_ID } from '@/constants/domain';
 import { ROUTES } from '@/constants/routes';
+import saveRepositories from '@/mocks/responses/repositories/errors/saveRepositories.json';
 import getEntirePullRequests from '@/mocks/responses/repositories/getEntirePullRequests.json';
 import getPullRequest from '@/mocks/responses/repositories/getPullRequest.json';
 import getRepositoriesMe from '@/mocks/responses/repositories/getRepositoriesMe.json';
@@ -28,6 +29,10 @@ const repositoriesHandler = [
 
   http.get(`*${ROUTES.API.GET_PULL_REQUEST(':pullRequestId')}`, () => {
     return HttpResponse.json(getPullRequest, { status: 200 });
+  }),
+
+  http.post(`*${ROUTES.API.SAVE_REPOSITORY}`, () => {
+    return HttpResponse.json(saveRepositories, { status: 400 });
   }),
 ];
 
