@@ -67,7 +67,9 @@ function RepolinkModal({ defaultOpen = false, isOutsideClickClose = false, butto
   })();
 
   const saveRepository = () => {
-    if (repositories.length === 5) return;
+    const trackingRepositories = repositories.filter((repository) => repository.isTracking === true);
+
+    if (trackingRepositories.length >= 5) return;
     mutate({ data: { url: input } });
   };
 
