@@ -3,7 +3,7 @@ import { apiApi } from '@/__generated__/Api/Api.api';
 import MyPR from '@/components/home/MyPR';
 
 export default async function Home() {
-  let initialRepositoryList: RepositorySummaryType[] = [];
+  let initialRepositoryList: RepositorySummaryType[];
 
   try {
     const { data: myReposRes } = await apiApi.getMyRepositories();
