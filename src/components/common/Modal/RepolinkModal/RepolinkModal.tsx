@@ -54,7 +54,7 @@ function RepolinkModal({ defaultOpen = false, isOutsideClickClose = false, butto
               '레포지토리 추가에 실패했습니다.\n혹시 레포지토리의 접근 권한을 허용하셨나요?\n\n[확인] 클릭 시 접근 권한 설정 페이지로 이동합니다.',
             )
           ) {
-            window.open(`${REDIRECT_NO_PERMISSION_URL}`, '_blank', 'noopener,noreferrer');
+            window.open(REDIRECT_NO_PERMISSION_URL, '_blank', 'noopener,noreferrer');
           }
           return null;
         }
