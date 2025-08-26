@@ -2,11 +2,12 @@ import { HttpResponse, http } from 'msw';
 
 import { NO_PR_IN_REPOSITORY_ID } from '@/constants/domain';
 import { ROUTES } from '@/constants/routes';
-import saveRepositories from '@/mocks/responses/repositories/errors/saveRepositories.json';
 import getEntirePullRequests from '@/mocks/responses/repositories/getEntirePullRequests.json';
 import getPullRequest from '@/mocks/responses/repositories/getPullRequest.json';
 import getRepositoriesMe from '@/mocks/responses/repositories/getRepositoriesMe.json';
 import getRepositoryPullRequests from '@/mocks/responses/repositories/getRepositoryPullRequests.json';
+import saveRepositoryNotFound from '@/mocks/responses/repositories/saveRepository/notFound.json';
+import saveRepositorySuccess from '@/mocks/responses/repositories/saveRepository/success.json';
 
 const repositoriesHandler = [
   http.get(`*${ROUTES.API.MY_REPOSITORIES}`, () => {
@@ -31,8 +32,14 @@ const repositoriesHandler = [
     return HttpResponse.json(getPullRequest, { status: 200 });
   }),
 
-  http.post(`*${ROUTES.API.SAVE_REPOSITORY}`, () => {
-    return HttpResponse.json(saveRepositories, { status: 400 });
+  http.post(`*${ROUTES.API.SAVE_REPOSITORY}`, async ({ request }) => {
+    const { url } = (await request.json()) as { url?: string };
+
+    if (typeof url === 'string' && /not-found/i.test(url)) {
+      return HttpResponse.json(saveRepositoryNotFound, { status: 400 });
+    }
+
+    return HttpResponse.json(saveRepositorySuccess, { status: 200 });
   }),
 ];
 
