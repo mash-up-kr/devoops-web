@@ -1,3 +1,5 @@
+'use client';
+
 /* eslint-disable no-alert */
 import { useQueryClient } from '@tanstack/react-query';
 import Image from 'next/image';
@@ -13,6 +15,7 @@ import RepoEmpty from '@/assets/svg/repo-empty.svg';
 import Button from '@/components/common/Button';
 import { Modal as ModalComponent } from '@/components/common/Modal';
 import { RepolinkButton } from '@/components/common/Modal/RepolinkModal/index';
+import { REDIRECT_NO_PERMISSION_URL } from '@/constants/domain';
 import { MODAL_ID } from '@/constants/modal';
 import { cn } from '@/utils/cn';
 
@@ -44,7 +47,20 @@ function RepolinkModal({ defaultOpen = false, isOutsideClickClose = false, butto
         if (error.code === 'MALFORMED_GITHUB_REPOSITORY_URL') {
           return alert('잘못된 형식의 레포지토리 url입니다');
         }
-        return alert('레포지토리 추가에 실패했습니다.');
+
+        if (error.response?.data?.code === 'REGISTRY_GITHUB_REPOSITORY_NOT_FOUND') {
+          if (
+            window.confirm(
+              '레포지토리 추가에 실패했습니다.\n혹시 레포지토리의 접근 권한을 허용하셨나요?\n\n[확인] 클릭 시 접근 권한 설정 페이지로 이동합니다.',
+            )
+          ) {
+            window.open(`${REDIRECT_NO_PERMISSION_URL}`, '_blank', 'noopener,noreferrer');
+          }
+          return null;
+        }
+
+        const serverErrorMessage = error.response?.data?.message ?? error.message;
+        return alert(`레포지토리 추가에 실패했습니다.\n${serverErrorMessage}.`);
       },
     },
   });
