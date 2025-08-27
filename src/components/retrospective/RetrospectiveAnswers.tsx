@@ -8,6 +8,8 @@ import PenIcon from '@/components/common/icons/PenIcon';
 import WarningIcon from '@/components/common/icons/WarningIcon';
 import SectionHeader from '@/components/retrospective/SectionHeader';
 
+type EditorTab = 'edit' | 'preview';
+
 interface RetrospectiveAnswersProps {
   selectedQuestions: { questionId: number; content: string }[];
   // eslint-disable-next-line react/no-unused-prop-types
@@ -21,9 +23,9 @@ interface RetrospectiveAnswersProps {
 interface AnswerEditorProps {
   questionId: number;
   isError: boolean;
-  activeTab: 'edit' | 'preview';
+  activeTab: EditorTab;
   content: string;
-  onTabChange: (questionId: number, tab: 'edit' | 'preview') => void;
+  onTabChange: (questionId: number, tab: EditorTab) => void;
   onChange: (questionId: number, content: string) => void;
 }
 
@@ -92,7 +94,7 @@ export default function RetrospectiveAnswers({
   errorIds,
 }: RetrospectiveAnswersProps) {
   const hasAnswers = selectedQuestions.length > 0;
-  const [activeTabs, setActiveTabs] = useState<{ [key: number]: 'edit' | 'preview' }>({});
+  const [activeTabs, setActiveTabs] = useState<{ [key: number]: EditorTab }>({});
 
   const itemRefs = useRef<{ [key: number]: HTMLLIElement | null }>({});
 
@@ -106,14 +108,14 @@ export default function RetrospectiveAnswers({
 
   // 모든 질문의 기본 탭을 'edit' 으로 설정
   useEffect(() => {
-    const initialTabs: { [key: number]: 'edit' | 'preview' } = {};
+    const initialTabs: { [key: number]: EditorTab } = {};
     selectedQuestions.forEach((question) => {
       initialTabs[question.questionId] = 'edit';
     });
     setActiveTabs(initialTabs);
   }, [selectedQuestions]);
 
-  const handleTabChange = (questionId: number, tab: 'edit' | 'preview') => {
+  const handleTabChange = (questionId: number, tab: EditorTab) => {
     setActiveTabs((prev) => ({
       ...prev,
       [questionId]: tab,
