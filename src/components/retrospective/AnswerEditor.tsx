@@ -2,6 +2,7 @@
 
 import React from 'react';
 import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 import Tabs from '@/components/common/Tabs/Tabs';
 import TabsContent from '@/components/common/Tabs/TabsContent';
@@ -65,8 +66,8 @@ export default function AnswerEditor({
         <TabsContent value={'preview'} className={'min-h-[120px]'}>
           <div className={'bg-dark-grey-100 min-h-[120px] overflow-auto rounded-md px-4 py-2'}>
             {content ? (
-              <div className={'prose prose-invert prose-sm max-w-none whitespace-pre-wrap'}>
-                <ReactMarkdown>{content}</ReactMarkdown>
+              <div className={'prose prose-invert prose-sm max-w-none whitespace-break-spaces'}>
+                <ReactMarkdown remarkPlugins={[remarkGfm]}>{content}</ReactMarkdown>
               </div>
             ) : (
               <p className={'text-on-surface-low italic'}>{'회고 내용이 없습니다.'}</p>
