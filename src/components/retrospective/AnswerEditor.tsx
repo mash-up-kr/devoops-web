@@ -66,7 +66,7 @@ export default function AnswerEditor({
         <TabsContent value={'preview'} className={'min-h-[120px]'}>
           <div className={'bg-dark-grey-100 min-h-[120px] overflow-auto rounded-md px-4 py-2'}>
             {content ? (
-              <div className={'prose prose-invert prose-sm max-w-none whitespace-break-spaces'}>
+              <div className={'prose prose-invert prose-sm max-w-none'}>
                 <ReactMarkdown remarkPlugins={[remarkGfm]}>{content}</ReactMarkdown>
               </div>
             ) : (
