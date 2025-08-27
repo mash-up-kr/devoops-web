@@ -3,6 +3,10 @@
 import React from 'react';
 import ReactMarkdown from 'react-markdown';
 
+import Tabs from '@/components/common/Tabs/Tabs';
+import TabsContent from '@/components/common/Tabs/TabsContent';
+import TabsTrigger from '@/components/common/Tabs/TabsTrigger';
+
 export type EditorTab = 'edit' | 'preview';
 
 interface AnswerEditorProps {
@@ -24,35 +28,29 @@ export default function AnswerEditor({
 }: AnswerEditorProps) {
   return (
     <div className={'w-full'}>
-      {/* 탭 헤더 - preview <-> edit */}
-      <div className={'border-dark-grey-100 mb-2 flex border-b'}>
-        <button
-          type={'button'}
-          onClick={() => onTabChange(questionId, 'edit')}
-          className={`border-b-2 px-4 py-2 text-sm font-medium transition-colors ${
-            activeTab === 'edit'
-              ? 'border-primary text-primary'
-              : 'text-on-surface-low border-transparent hover:text-on-surface'
-          }`}
-        >
-          {'편집'}
-        </button>
-        <button
-          type={'button'}
-          onClick={() => onTabChange(questionId, 'preview')}
-          className={`border-b-2 px-4 py-2 text-sm font-medium transition-colors ${
-            activeTab === 'preview'
-              ? 'border-primary text-primary'
-              : 'text-on-surface-low border-transparent hover:text-on-surface'
-          }`}
-        >
-          {'미리보기'}
-        </button>
-      </div>
+      <Tabs defaultValue={activeTab} className={'mb-2'}>
+        <div className={'border-dark-grey-100 flex border-b'}>
+          <TabsTrigger
+            value={'edit'}
+            onClick={() => onTabChange(questionId, 'edit')}
+            className={
+              'border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:text-primary'
+            }
+          >
+            {'편집'}
+          </TabsTrigger>
+          <TabsTrigger
+            value={'preview'}
+            onClick={() => onTabChange(questionId, 'preview')}
+            className={
+              'border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:text-primary'
+            }
+          >
+            {'미리보기'}
+          </TabsTrigger>
+        </div>
 
-      {/* 탭 내용 */}
-      <div className={'min-h-[120px]'}>
-        {activeTab === 'edit' ? (
+        <TabsContent value={'edit'} className={'min-h-[120px]'}>
           <textarea
             value={content}
             onChange={(e) => onChange(questionId, e.target.value)}
@@ -62,7 +60,9 @@ export default function AnswerEditor({
             }`}
             rows={4}
           />
-        ) : (
+        </TabsContent>
+
+        <TabsContent value={'preview'} className={'min-h-[120px]'}>
           <div className={'bg-dark-grey-100 min-h-[120px] overflow-auto rounded-md px-4 py-2'}>
             {content ? (
               <div className={'prose prose-invert prose-sm max-w-none'}>
@@ -72,8 +72,8 @@ export default function AnswerEditor({
               <p className={'text-on-surface-low italic'}>{'회고 내용이 없습니다.'}</p>
             )}
           </div>
-        )}
-      </div>
+        </TabsContent>
+      </Tabs>
     </div>
   );
 }
