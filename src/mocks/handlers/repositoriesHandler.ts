@@ -6,6 +6,8 @@ import getEntirePullRequests from '@/mocks/responses/repositories/getEntirePullR
 import getPullRequest from '@/mocks/responses/repositories/getPullRequest.json';
 import getRepositoriesMe from '@/mocks/responses/repositories/getRepositoriesMe.json';
 import getRepositoryPullRequests from '@/mocks/responses/repositories/getRepositoryPullRequests.json';
+import saveRepositoryNotFound from '@/mocks/responses/repositories/saveRepository/notFound.json';
+import saveRepositorySuccess from '@/mocks/responses/repositories/saveRepository/success.json';
 
 const repositoriesHandler = [
   http.get(`*${ROUTES.API.MY_REPOSITORIES}`, () => {
@@ -28,6 +30,16 @@ const repositoriesHandler = [
 
   http.get(`*${ROUTES.API.GET_PULL_REQUEST(':pullRequestId')}`, () => {
     return HttpResponse.json(getPullRequest, { status: 200 });
+  }),
+
+  http.post(`*${ROUTES.API.SAVE_REPOSITORY}`, async ({ request }) => {
+    const { url } = (await request.json()) as { url?: string };
+
+    if (typeof url === 'string' && /not-found/i.test(url)) {
+      return HttpResponse.json(saveRepositoryNotFound, { status: 400 });
+    }
+
+    return HttpResponse.json(saveRepositorySuccess, { status: 200 });
   }),
 ];
 

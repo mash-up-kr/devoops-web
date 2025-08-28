@@ -1,10 +1,11 @@
 'use client';
 
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 
 import EditButtonIcon from '@/components/common/icons/EditButtonIcon';
 import PenIcon from '@/components/common/icons/PenIcon';
 import WarningIcon from '@/components/common/icons/WarningIcon';
+import AnswerEditor, { EditorTab } from '@/components/retrospective/AnswerEditor';
 import SectionHeader from '@/components/retrospective/SectionHeader';
 
 interface RetrospectiveAnswersProps {
@@ -25,6 +26,7 @@ export default function RetrospectiveAnswers({
   errorIds,
 }: RetrospectiveAnswersProps) {
   const hasAnswers = selectedQuestions.length > 0;
+  const [activeTabs, setActiveTabs] = useState<{ [key: number]: EditorTab }>({});
 
   const itemRefs = useRef<{ [key: number]: HTMLLIElement | null }>({});
 
@@ -35,6 +37,22 @@ export default function RetrospectiveAnswers({
       if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
   }, [errorIds]);
+
+  // 모든 질문의 기본 탭을 'edit' 으로 설정
+  useEffect(() => {
+    const initialTabs: { [key: number]: EditorTab } = {};
+    selectedQuestions.forEach((question) => {
+      initialTabs[question.questionId] = 'edit';
+    });
+    setActiveTabs(initialTabs);
+  }, [selectedQuestions]);
+
+  const handleTabChange = (questionId: number, tab: EditorTab) => {
+    setActiveTabs((prev) => ({
+      ...prev,
+      [questionId]: tab,
+    }));
+  };
 
   return (
     <section className={'flex flex-col gap-[20px]'}>
@@ -57,6 +75,9 @@ export default function RetrospectiveAnswers({
         <ul className={'flex flex-col gap-[20px]'}>
           {selectedQuestions.map((question) => {
             const isError = errorIds.includes(question.questionId);
+            const activeTab = activeTabs[question.questionId] || 'edit';
+            const content = getAnswerContent(question.questionId);
+
             return (
               <li
                 key={question.questionId}
@@ -77,12 +98,13 @@ export default function RetrospectiveAnswers({
                     </button>
                   )}
                 </div>
-                <textarea
-                  value={getAnswerContent(question.questionId)}
-                  onChange={(e) => handleChange(question.questionId, e.target.value)}
-                  placeholder={'어떻게 문제를 해결했는지 어떤 고민을 했었는지 생각하며 기록해보세요.'}
-                  className={`text-body-small border-dark-grey-100 resize-none rounded-md border bg-transparent px-4 py-2 text-white focus:ring-primary focus:ring-1 focus:outline-none ${isError ? 'border-red-500' : ''}`}
-                  rows={4}
+                <AnswerEditor
+                  questionId={question.questionId}
+                  isError={isError}
+                  activeTab={activeTab}
+                  content={content}
+                  onTabChange={handleTabChange}
+                  onChange={handleChange}
                 />
                 {isError && (
                   <span className={'mt-1 text-xs text-red-500'}>{'회고를 완료하려면 답변을 작성해 주세요.'}</span>

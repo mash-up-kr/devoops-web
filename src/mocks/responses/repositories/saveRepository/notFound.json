@@ -1,0 +1,5 @@
+{
+  "code": "REGISTRY_GITHUB_REPOSITORY_NOT_FOUND",
+  "status": "BAD_REQUEST",
+  "message": "입력한 깃허브 레포지토리를 등록할 수 없습니다"
+}
