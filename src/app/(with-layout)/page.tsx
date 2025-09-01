@@ -1,16 +1,19 @@
 import { RepositorySummaryType } from '@/__generated__/@types';
 import { apiApi } from '@/__generated__/Api/Api.api';
 import MyPR from '@/components/home/MyPR';
+import { sortRepositoriesByTracking } from '@/utils/sortRepositoriesByTracking';
 
 export default async function Home() {
   let initialRepositoryList: RepositorySummaryType[];
 
   try {
-    const { data: myReposRes } = await apiApi.getMyRepositories();
-    const repos = myReposRes.repositories ?? [];
+    const { data: myRepositories } = await apiApi.getMyRepositories();
+    const repositoriesData = myRepositories.repositories ?? [];
+    const sortedRepositoriesByTracking = sortRepositoriesByTracking(repositoriesData);
+    console.log(sortedRepositoriesByTracking);
 
-    const totalCount = repos.reduce((sum, r) => sum + (r.pullRequestCount || 0), 0);
-    initialRepositoryList = [{ id: 0, name: '전체', pullRequestCount: totalCount }, ...repos];
+    const totalCount = repositoriesData.reduce((sum, r) => sum + (r.pullRequestCount || 0), 0);
+    initialRepositoryList = [{ id: 0, name: '전체', pullRequestCount: totalCount }, ...sortedRepositoriesByTracking];
   } catch {
     initialRepositoryList = [];
   }
