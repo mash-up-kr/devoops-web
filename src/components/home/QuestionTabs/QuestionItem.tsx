@@ -14,8 +14,8 @@ export default function QuestionItem({ category, content = '', isOpen, onToggle 
   return (
     <div
       className={cn(
-        'bg-dark-grey-25 relative flex flex-col gap-2 rounded-xl p-5 transition-all duration-500',
-        isContentLong && (isOpen ? 'max-h-[500px]' : 'max-h-35.5 overflow-hidden'),
+        'bg-dark-grey-25 relative flex flex-col gap-2 rounded-xl p-5 transition-[max-height] duration-500',
+        isContentLong && (isOpen ? 'max-h-none' : 'max-h-36 overflow-hidden'),
       )}
     >
       <div className={'text-body-small text-dark-blue-700 font-semibold'}>{category}</div>
@@ -29,6 +29,7 @@ export default function QuestionItem({ category, content = '', isOpen, onToggle 
           )}
           <div className={'relative'}>
             <button
+              type={'button'}
               className={
                 'text-body-small text-dark-grey-500 w-full cursor-pointer border-none py-2 font-medium outline-none hover:text-dark-grey-700'
               }
