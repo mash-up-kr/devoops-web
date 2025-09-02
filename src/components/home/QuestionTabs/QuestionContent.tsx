@@ -10,7 +10,7 @@ import { ROUTES } from '@/constants/routes';
 import { filterBy } from '@/utils/filter';
 
 interface QuestionContentProps {
-  pullRequestId: number;
+  pullRequestId: number | undefined;
   questions: QuestionBriefResponseType[];
   activeCategory: string;
 }
