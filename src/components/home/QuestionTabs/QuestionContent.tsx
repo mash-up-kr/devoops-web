@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import React from 'react';
+import React, { useState } from 'react';
 
 import { QuestionBriefResponseType } from '@/__generated__/@types';
 import Button from '@/components/common/Button';
@@ -10,13 +10,14 @@ import { ROUTES } from '@/constants/routes';
 import { filterBy } from '@/utils/filter';
 
 interface QuestionContentProps {
-  pullRequestId: number | undefined;
+  pullRequestId: number;
   questions: QuestionBriefResponseType[];
   activeCategory: string;
 }
 
 export default function QuestionContent({ pullRequestId, questions, activeCategory }: QuestionContentProps) {
   const router = useRouter();
+  const [openQuestionId, setOpenQuestionId] = useState<number | null>(null);
 
   const navigateToRetrospective = (prId: number | undefined) => {
     if (prId) {
@@ -24,12 +25,23 @@ export default function QuestionContent({ pullRequestId, questions, activeCatego
     }
   };
 
+  const handleToggleQuestion = (questionId: number) => {
+    setOpenQuestionId((prevOpenId) => (prevOpenId === questionId ? null : questionId));
+  };
+
   const matchedQuestionByCategory = filterBy(questions, 'category', activeCategory);
 
   return (
     <div className={'space-y-3'}>
       {matchedQuestionByCategory.map(({ id, category, content }) => (
-        <QuestionItem key={id} id={id} category={category} content={content} />
+        <QuestionItem
+          key={id}
+          id={id}
+          category={category}
+          content={content}
+          isOpen={openQuestionId === id}
+          onToggle={() => handleToggleQuestion(id ?? 0)}
+        />
       ))}
 
       {matchedQuestionByCategory.length === 0 && (
