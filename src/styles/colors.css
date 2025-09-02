@@ -79,7 +79,7 @@
     rgba(96, 139, 247, 0.05) 15%,
     rgba(96, 139, 247, 0) 100%
   );
-  --color-gradient-question-item-button: linear-gradient(180deg, rgb(20, 21, 26, 0) 0%, rgba(20, 21, 26, 0.95) 20%, rgb(20, 21, 26) 100%);
+  --color-gradient-question-item-button: linear-gradient(180deg, rgba(20, 21, 26, 0) 0%, rgba(20, 21, 26, 0.95) 20%, rgba(20, 21, 26) 100%);
 
   /* Shadow Colors */
   --shadow-modal: 0px 12px 50px 0px rgba(0, 0, 0, 0.5);
