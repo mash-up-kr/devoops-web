@@ -18,6 +18,7 @@ import { RepolinkButton } from '@/components/common/Modal/RepolinkModal/index';
 import { REDIRECT_NO_PERMISSION_URL } from '@/constants/domain';
 import { MODAL_ID } from '@/constants/modal';
 import { cn } from '@/utils/cn';
+import { sortRepositoriesByTracking } from '@/utils/sortRepositoriesByTracking';
 
 interface RepolinkModalProps {
   defaultOpen: boolean;
@@ -79,7 +80,7 @@ function RepolinkModal({ defaultOpen = false, isOutsideClickClose = false, butto
     // eslint-disable-next-line no-underscore-dangle
     const _repositories = repositoriesData?.data?.repositories;
     if (!_repositories?.length) return [];
-    return [..._repositories].sort((a, b) => Number(Boolean(b.isTracking)) - Number(Boolean(a.isTracking)));
+    return sortRepositoriesByTracking(_repositories);
   })();
 
   const saveRepository = () => {
