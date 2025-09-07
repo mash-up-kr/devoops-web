@@ -26,7 +26,7 @@ export default function RepolinkSection() {
               </span>
               {'이에요.'}
             </p>
-            <p>{'이제 회고는 DevOops가 자동으로 챙겨드려요.'}</p>
+            <p>{'이제 회고는 Devoops가 자동으로 챙겨드려요.'}</p>
           </div>
         </div>
       </div>
