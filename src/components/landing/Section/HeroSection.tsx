@@ -31,7 +31,7 @@ export default function HeroSection({ action }: HeroSectionProps) {
             </p>
             <p>
               <span className={'blue-tiny-right bg-clip-text font-semibold text-transparent'}>
-                {' 가볍게 적다 보면 중요한 게 자연'}
+                {'가볍게 적다 보면 중요한 게 자연'}
               </span>
               {'스럽게 남아요.'}
             </p>
