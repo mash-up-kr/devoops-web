@@ -21,12 +21,12 @@ export default function FeatureSection() {
                 {'회고, 더는 어렵지 않아요.'}
               </h1>
               <h1 className={'blue-tiny-right inline-block text-[48px] leading-[64px] font-bold'}>
-                {'DevOops가 다 챙겨줄게요.'}
+                {'Devoops가 다 챙겨줄게요.'}
               </h1>
             </div>
           </div>
           <div className={'text-body-large text-dark-grey-600 text-center text-[18px] font-medium'}>
-            <p>{'레포지토리 연동만 해두면, 요약도 질문도 DevOops가 알아서 챙겨줘요. '}</p>
+            <p>{'레포지토리 연동만 해두면, 요약도 질문도 Devoops가 알아서 챙겨줘요. '}</p>
           </div>
         </div>
       </div>
