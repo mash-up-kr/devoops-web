@@ -3,8 +3,6 @@ import { ButtonHTMLAttributes, PropsWithChildren } from 'react';
 
 import { cn } from '@/utils/cn';
 
-export type ButtonVariants = VariantProps<typeof buttonVariants>;
-
 export const buttonVariants = cva(
   `
     inline-flex cursor-pointer items-center justify-center rounded-lg
@@ -49,6 +47,8 @@ export const buttonVariants = cva(
     },
   },
 );
+
+export type ButtonVariants = VariantProps<typeof buttonVariants>;
 
 export default function Button({
   className,
