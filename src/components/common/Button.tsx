@@ -3,7 +3,7 @@ import { ButtonHTMLAttributes, PropsWithChildren } from 'react';
 
 import { cn } from '@/utils/cn';
 
-export const buttonVariants = cva(
+const buttonVariants = cva(
   `
     inline-flex cursor-pointer items-center justify-center rounded-lg
     font-semibold whitespace-nowrap
