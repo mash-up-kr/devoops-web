@@ -23,7 +23,7 @@ export default function HeroSection({ action }: HeroSectionProps) {
           </div>
           <div className={'text-dark-grey-600 flex flex-col text-center text-[18px] leading-[29px] font-medium'}>
             <p>
-              {'DevOops가 '}
+              {'Devoops가 '}
               <span className={'blue-tiny-right bg-clip-text font-semibold text-transparent'}>
                 {'PR을 요약하고 고민을 되살리는 질문'}
               </span>
@@ -38,7 +38,7 @@ export default function HeroSection({ action }: HeroSectionProps) {
           </div>
         </div>
         <LoadingButton variant={'filledPrimary'} size={'medium'} action={action}>
-          {'DevOops 시작하기'}
+          {'Devoops 시작하기'}
         </LoadingButton>
       </div>
       <div

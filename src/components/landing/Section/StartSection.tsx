@@ -18,7 +18,7 @@ export default function StartSection() {
             {'AI를 통한 간편한 회고'}
           </Tag>
           <h1 className={'blue-tiny-right inline-block text-[48px] leading-[58px] font-bold'}>
-            {'DevOops로 회고를 시작해볼까요?'}
+            {'Devoops로 회고를 시작해볼까요?'}
           </h1>
         </div>
         <div>
