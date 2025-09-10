@@ -3,7 +3,9 @@ import { ButtonHTMLAttributes, PropsWithChildren } from 'react';
 
 import { cn } from '@/utils/cn';
 
-const buttonVariants = cva(
+export type ButtonVariants = VariantProps<typeof buttonVariants>;
+
+export const buttonVariants = cva(
   `
     inline-flex cursor-pointer items-center justify-center rounded-lg
     font-semibold whitespace-nowrap
@@ -55,7 +57,7 @@ export default function Button({
   children,
   disabled,
   ...props
-}: PropsWithChildren<ButtonHTMLAttributes<HTMLButtonElement> & VariantProps<typeof buttonVariants>>) {
+}: PropsWithChildren<ButtonHTMLAttributes<HTMLButtonElement> & ButtonVariants>) {
   return (
     <button className={cn(buttonVariants({ variant, size, className }))} disabled={disabled} {...props}>
       {children}
