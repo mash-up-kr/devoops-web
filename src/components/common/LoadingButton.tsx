@@ -38,7 +38,7 @@ export function LoadingButton({ variant, size, action, children, className = '' 
       size={size}
       onClick={handleAction}
       disabled={isPending}
-      className={cn('transition-colors hover:duration-200', className)}
+      className={cn('transition-colors duration-200', className)}
     >
       <div ref={textRef} style={{ width: isPending ? `${width}px` : 'auto' }}>
         {isPending ? <ShinyText text={'로딩중...'} disabled={false} speed={2} /> : children}
