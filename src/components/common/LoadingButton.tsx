@@ -12,7 +12,14 @@ interface LoadingButtonProps extends ButtonVariants, ButtonHTMLAttributes<HTMLBu
   className?: string;
 }
 
-export function LoadingButton({ variant, size, action, children, className = '' }: LoadingButtonProps) {
+export function LoadingButton({
+  variant,
+  size,
+  action,
+  children,
+  type = 'button',
+  className = '',
+}: LoadingButtonProps) {
   const [width, setWidth] = useState<number | undefined>(undefined);
   const textRef = useRef<HTMLParagraphElement>(null);
 
@@ -38,6 +45,7 @@ export function LoadingButton({ variant, size, action, children, className = '' 
       size={size}
       onClick={handleAction}
       disabled={isPending}
+      type={type}
       className={cn('transition-colors duration-200', className)}
     >
       <div ref={textRef} style={{ width: isPending ? `${width}px` : 'auto' }}>
