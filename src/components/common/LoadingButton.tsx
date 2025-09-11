@@ -1,3 +1,5 @@
+'use client';
+
 import { ReactNode, useTransition, useRef, useState, useLayoutEffect } from 'react';
 
 import Button, { ButtonVariants } from '@/components/common/Button';
