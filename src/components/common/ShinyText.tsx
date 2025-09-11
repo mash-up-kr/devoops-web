@@ -11,7 +11,7 @@ export function ShinyText({ text, disabled = false, speed = 5, className = '' }:
   const animationDuration = `${speed}s`;
 
   return (
-    <div
+    <span
       className={cn(`text-shiny-text inline-block bg-clip-text ${disabled ? '' : 'animate-shine'}`, className)}
       style={{
         backgroundImage:
@@ -22,7 +22,7 @@ export function ShinyText({ text, disabled = false, speed = 5, className = '' }:
       }}
     >
       {text}
-    </div>
+    </span>
   );
 }
 

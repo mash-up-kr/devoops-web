@@ -21,7 +21,7 @@ export function LoadingButton({
   className = '',
 }: LoadingButtonProps) {
   const [width, setWidth] = useState<number | undefined>(undefined);
-  const textRef = useRef<HTMLParagraphElement>(null);
+  const textRef = useRef<HTMLSpanElement>(null);
 
   const [isPending, startTransition] = useTransition();
 
@@ -48,9 +48,9 @@ export function LoadingButton({
       type={type}
       className={cn('transition-colors duration-200', className)}
     >
-      <div ref={textRef} style={{ width: isPending ? `${width}px` : 'auto' }}>
+      <span ref={textRef} style={{ width: isPending ? `${width}px` : 'auto' }}>
         {isPending ? <ShinyText text={'로딩중...'} disabled={false} speed={2} /> : children}
-      </div>
+      </span>
     </Button>
   );
 }
