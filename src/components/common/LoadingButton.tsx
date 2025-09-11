@@ -1,12 +1,12 @@
 'use client';
 
-import { ReactNode, useTransition, useRef, useState, useLayoutEffect } from 'react';
+import { ReactNode, useTransition, useRef, useState, useLayoutEffect, ButtonHTMLAttributes } from 'react';
 
 import Button, { ButtonVariants } from '@/components/common/Button';
 import ShinyText from '@/components/common/ShinyText';
 import { cn } from '@/utils/cn';
 
-interface LoadingButtonProps extends ButtonVariants {
+interface LoadingButtonProps extends ButtonVariants, ButtonHTMLAttributes<HTMLButtonElement> {
   action?: () => Promise<void> | void;
   children: ReactNode;
   className?: string;
