@@ -198,6 +198,16 @@ export default function RetrospectivePage() {
   };
 
   const handleSelectQuestion = async (questionId: number) => {
+    // 이미 선택된 질문인지 확인
+    const isAlreadySelected = selectedQuestionIds.includes(questionId);
+
+    if (isAlreadySelected) {
+      // 이미 선택된 질문이면 선택 해제 (삭제)
+      await handleDeleteAnswer(questionId);
+      return;
+    }
+
+    // 선택되지 않은 질문이면 선택 (추가)
     try {
       const res = await createAnswerMutation.mutateAsync({ questionId });
       const answerId = res.data.id;
@@ -206,7 +216,7 @@ export default function RetrospectivePage() {
         if (!alreadyAnswered) {
           setAnswers((prev) => [...prev, { answerId, questionId, content: '' }]);
         }
-        setSelectedQuestionIds((prev) => (prev.includes(questionId) ? prev : [...prev, questionId]));
+        setSelectedQuestionIds((prev) => [...prev, questionId]);
       }
     } catch {
       // 에러 무시
