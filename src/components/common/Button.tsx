@@ -48,6 +48,8 @@ const buttonVariants = cva(
   },
 );
 
+export type ButtonVariants = VariantProps<typeof buttonVariants>;
+
 export default function Button({
   className,
   variant,
@@ -55,9 +57,9 @@ export default function Button({
   children,
   disabled,
   ...props
-}: PropsWithChildren<ButtonHTMLAttributes<HTMLButtonElement> & VariantProps<typeof buttonVariants>>) {
+}: PropsWithChildren<ButtonHTMLAttributes<HTMLButtonElement> & ButtonVariants>) {
   return (
-    <button className={cn(buttonVariants({ variant, size, className }))} disabled={disabled} {...props}>
+    <button className={cn(buttonVariants({ variant, size }), className)} disabled={disabled} {...props}>
       {children}
     </button>
   );

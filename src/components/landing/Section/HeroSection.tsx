@@ -1,7 +1,7 @@
 import Image from 'next/image';
 
 import LandingHero from '@/assets/images/landing/landing-hero.webp';
-import Button from '@/components/common/Button';
+import { LoadingButton } from '@/components/common/LoadingButton';
 import GradientBottomLayer from '@/components/landing/GradientBottomLayer';
 import GradientTopLayer from '@/components/landing/GradientTopLayer';
 
@@ -37,9 +37,9 @@ export default function HeroSection({ action }: HeroSectionProps) {
             </p>
           </div>
         </div>
-        <Button variant={'filledPrimary'} size={'medium'} onClick={action}>
+        <LoadingButton variant={'filledPrimary'} size={'medium'} action={action}>
           {'Devoops 시작하기'}
-        </Button>
+        </LoadingButton>
       </div>
       <div
         className={
