@@ -144,7 +144,7 @@ function RepolinkModal({ defaultOpen = false, isOutsideClickClose = false, butto
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   className={
-                    'text-body-medium text-dark-grey-900 border-dark-grey-200 h-[48px] w-[300px] rounded-[8px] border-[1px] px-[14px] py-[12px] placeholder:text-dark-grey-900'
+                    'placeholder-dark-grey-500 text-body-medium text-dark-grey-900 border-dark-grey-200 h-[48px] w-[300px] rounded-[8px] border-[1px] px-[14px] py-[12px]'
                   }
                   type={'text'}
                   placeholder={'레포지토리 주소를 입력해 주세요'}
