@@ -134,7 +134,7 @@ function RepolinkModal({ defaultOpen = false, isOutsideClickClose = false, butto
 
             <section className={'flex w-[380px] flex-col items-center justify-center gap-[8px]'}>
               <h3 className={'text-h3 pt-4.5'}>{'회고할 레포지토리를 추가해 주세요!'}</h3>
-              <p className={'text-body-small text-dark-grey-600'}>{'레포지토리는 5개까지 추가할 수 있어요'}</p>
+              <p className={'text-body-small text-dark-grey-600'}>{'레포지토리는 5개까지 연동할 수 있어요'}</p>
             </section>
 
             <form className={'mt-[40px] flex w-full flex-col'}>
@@ -144,7 +144,7 @@ function RepolinkModal({ defaultOpen = false, isOutsideClickClose = false, butto
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   className={
-                    'text-body-medium text-dark-grey-900 border-dark-grey-200 h-[48px] w-[300px] rounded-[8px] border-[1px] px-[14px] py-[12px] placeholder:text-dark-grey-900'
+                    'placeholder-dark-grey-500 text-body-medium text-dark-grey-900 border-dark-grey-200 h-[48px] w-[300px] rounded-[8px] border-[1px] px-[14px] py-[12px]'
                   }
                   type={'text'}
                   placeholder={'레포지토리 주소를 입력해 주세요'}
