@@ -45,8 +45,10 @@ export const dotVariants = cva('inline-block h-1.5 w-1.5 rounded-full', {
   },
 });
 
+export type TagDotColor = VariantProps<typeof dotVariants>['dotColor'];
+
 interface TagProps {
-  dotColor: VariantProps<typeof dotVariants>['dotColor'];
+  dotColor: TagDotColor;
   children: ReactNode;
   size?: VariantProps<typeof textVariants>['size'];
   padding?: VariantProps<typeof tagVariants>['padding'];

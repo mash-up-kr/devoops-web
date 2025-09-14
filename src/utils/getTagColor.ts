@@ -1,10 +1,8 @@
-import type { VariantProps } from 'class-variance-authority';
-
-import { dotVariants } from '@/components/common/Tag';
+import type { TagDotColor } from '@/components/common/Tag';
 
 type TagKeys = 'feat' | 'refactor' | 'bug' | 'chore' | 'style' | 'test' | 'pref' | 'deploy' | 'fix' | 'none';
 
-const tagColors: Record<TagKeys, VariantProps<typeof dotVariants>['dotColor']> = {
+const tagColors: Record<TagKeys, TagDotColor> = {
   feat: 'skyblue',
   refactor: 'violet',
   bug: 'red',
@@ -22,10 +20,10 @@ const findMatchingTag = (tagName: string) => {
     return new RegExp(tag, 'i').test(tagName);
   });
 
-  return checkTag || 'none';
+  return (checkTag || 'none') as TagKeys;
 };
 
 export const getTagColor = (tagName: string) => {
   const foundTag = findMatchingTag(tagName);
-  return tagColors[foundTag as TagKeys];
+  return tagColors[foundTag];
 };
