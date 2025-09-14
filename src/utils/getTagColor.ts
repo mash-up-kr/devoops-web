@@ -1,6 +1,6 @@
 import type { TagDotColor } from '@/components/common/Tag';
 
-type TagKeys = 'feat' | 'refactor' | 'bug' | 'chore' | 'style' | 'test' | 'pref' | 'deploy' | 'fix' | 'none';
+type TagKeys = 'feat' | 'refactor' | 'bug' | 'chore' | 'style' | 'test' | 'perf' | 'deploy' | 'fix' | 'none';
 
 const tagColors: Record<TagKeys, TagDotColor> = {
   feat: 'skyblue',
@@ -9,7 +9,7 @@ const tagColors: Record<TagKeys, TagDotColor> = {
   chore: 'olive',
   style: 'orange',
   test: 'blue',
-  pref: 'yellow',
+  perf: 'yellow',
   deploy: 'lime',
   fix: 'rose',
   none: 'gray',
