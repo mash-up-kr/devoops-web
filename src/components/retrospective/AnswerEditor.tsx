@@ -1,5 +1,6 @@
 'use client';
 
+import MDEditor from '@uiw/react-md-editor';
 import React from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
@@ -52,15 +53,24 @@ export default function AnswerEditor({
         </div>
 
         <TabsContent value={'edit'} className={'min-h-[120px]'}>
-          <textarea
-            value={content}
-            onChange={(e) => onChange(questionId, e.target.value)}
-            placeholder={'어떻게 문제를 해결했는지 어떤 고민을 했었는지 생각하며 기록해보세요.'}
-            className={`text-body-small border-dark-grey-100 w-full resize-none rounded-md border bg-transparent px-4 py-2 text-white focus:ring-primary focus:ring-1 focus:outline-none ${
-              isError ? 'border-red-500' : ''
-            }`}
-            rows={4}
-          />
+          <div className={`w-full rounded-md border ${isError ? 'border-red-500' : 'border-dark-grey-100'}`}>
+            <MDEditor
+              value={content}
+              onChange={(val) => onChange(questionId, val || '')}
+              data-color-mode={'dark'}
+              height={120}
+              textareaProps={{
+                placeholder: '어떻게 문제를 해결했는지 어떤 고민을 했었는지 생각하며 기록해보세요.',
+                style: {
+                  fontSize: '14px',
+                  lineHeight: '1.5',
+                },
+              }}
+              preview={'edit'}
+              hideToolbar={false}
+              visibleDragbar={false}
+            />
+          </div>
         </TabsContent>
 
         <TabsContent value={'preview'} className={'min-h-[120px]'}>
