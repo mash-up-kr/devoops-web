@@ -58,7 +58,7 @@ export default function AnswerEditor({
               value={content}
               onChange={(val) => onChange(questionId, val || '')}
               data-color-mode={'dark'}
-              height={120}
+              height={180}
               textareaProps={{
                 placeholder: '어떻게 문제를 해결했는지 어떤 고민을 했었는지 생각하며 기록해보세요.',
                 style: {
