@@ -91,6 +91,9 @@
 
   /* GNB Colors */
   --color-gnb: #0d0e12;
+
+  /* Shiny Text Colors */
+  --color-shiny-text: #b5b5b5a4
 }
 
 @utility blue-tiny-left {

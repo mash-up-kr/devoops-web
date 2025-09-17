@@ -1,7 +1,7 @@
 import Image from 'next/image';
 
 import LandingHero from '@/assets/images/landing/landing-hero.webp';
-import Button from '@/components/common/Button';
+import { LoadingButton } from '@/components/common/LoadingButton';
 import GradientBottomLayer from '@/components/landing/GradientBottomLayer';
 import GradientTopLayer from '@/components/landing/GradientTopLayer';
 
@@ -23,7 +23,7 @@ export default function HeroSection({ action }: HeroSectionProps) {
           </div>
           <div className={'text-dark-grey-600 flex flex-col text-center text-[18px] leading-[29px] font-medium'}>
             <p>
-              {'DevOops가 '}
+              {'Devoops가 '}
               <span className={'blue-tiny-right bg-clip-text font-semibold text-transparent'}>
                 {'PR을 요약하고 고민을 되살리는 질문'}
               </span>
@@ -31,15 +31,15 @@ export default function HeroSection({ action }: HeroSectionProps) {
             </p>
             <p>
               <span className={'blue-tiny-right bg-clip-text font-semibold text-transparent'}>
-                {' 가볍게 적다 보면 중요한 게 자연'}
+                {'가볍게 적다 보면 중요한 게 자연'}
               </span>
               {'스럽게 남아요.'}
             </p>
           </div>
         </div>
-        <Button variant={'filledPrimary'} size={'medium'} onClick={action}>
-          {'DevOops 시작하기'}
-        </Button>
+        <LoadingButton variant={'filledPrimary'} size={'medium'} action={action}>
+          {'Devoops 시작하기'}
+        </LoadingButton>
       </div>
       <div
         className={

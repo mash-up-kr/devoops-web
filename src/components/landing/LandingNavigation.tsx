@@ -3,7 +3,7 @@
 import Link from 'next/link';
 
 import Logo from '@/assets/svg/logo.svg';
-import Button from '@/components/common/Button';
+import { LoadingButton } from '@/components/common/LoadingButton';
 import { useLoginRedirect } from '@/hooks/useLoginRedirect';
 import { cn } from '@/utils/cn';
 
@@ -27,9 +27,9 @@ export default function LandingNavigation({ className }: LandingNavigationProps)
       <Link href={'/'} className={'text-h4 font-bold'}>
         <Logo />
       </Link>
-      <Button variant={'filledPrimary'} size={'small'} onClick={handleLogin}>
+      <LoadingButton variant={'filledPrimary'} size={'small'} action={handleLogin}>
         {'시작하기'}
-      </Button>
+      </LoadingButton>
     </nav>
   );
 }
