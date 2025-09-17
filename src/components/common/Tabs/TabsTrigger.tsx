@@ -58,13 +58,13 @@ export default function TabsTrigger({
         tabsTriggerVariants({ size }),
         isActive
           ? `
-            enabled:text-on-surface-high enabled:inset-shadow-tabs-active
+            enabled:text-dark-grey-900 enabled:inset-shadow-tabs-active
             enabled:font-semibold
           `
           : `
             hover:enabled:text-dark-grey-700
             hover:enabled:inset-shadow-tabs-hover
-            enabled:text-shadow-on-surface-lowest
+            enabled:text-dark-grey-600
             enabled:inset-shadow-tabs-enabled
           `,
         disabled && `disabled:text-dark-grey-300 disabled:cursor-not-allowed`,

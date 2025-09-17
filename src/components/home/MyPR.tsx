@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 
 import { RepositorySummaryType } from '@/__generated__/@types';
 import { RepolinkButton, RepolinkModal } from '@/components/common/Modal/RepolinkModal';
+import Spacing from '@/components/common/Spacing';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/common/Tabs';
 import Overview from '@/components/home/Overview';
 import { useModalDispatch } from '@/providers/ModalContext';
@@ -43,6 +44,7 @@ export default function MyPR({ initialRepositoryList }: MyPRProps) {
             ))}
           </div>
         </Tabs>
+        <Spacing size={400} />
       </div>
       <RepolinkModal defaultOpen={false} isOutsideClickClose button={<div />} />
     </>

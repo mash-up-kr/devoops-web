@@ -27,7 +27,7 @@ const textVariants = cva('text-dark-grey-800', {
   },
 });
 
-const dotVariants = cva('inline-block h-1.5 w-1.5 rounded-full', {
+export const dotVariants = cva('inline-block h-1.5 w-1.5 rounded-full', {
   variants: {
     dotColor: {
       violet: 'bg-sub-violet',
@@ -38,13 +38,17 @@ const dotVariants = cva('inline-block h-1.5 w-1.5 rounded-full', {
       skyblue: 'bg-sub-skyblue',
       gray: 'bg-dark-grey-300',
       red: 'bg-sub-red',
+      lime: 'bg-lime-300',
+      rose: 'bg-rose-300',
       primary: 'bg-primary',
     },
   },
 });
 
+export type TagDotColor = VariantProps<typeof dotVariants>['dotColor'];
+
 interface TagProps {
-  dotColor: VariantProps<typeof dotVariants>['dotColor'];
+  dotColor: TagDotColor;
   children: ReactNode;
   size?: VariantProps<typeof textVariants>['size'];
   padding?: VariantProps<typeof tagVariants>['padding'];
