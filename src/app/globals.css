@@ -6,6 +6,7 @@
 @import '../styles/tabs.css';
 @import '../styles/z-index.css';
 @import '../styles/typography.css';
+@import '../styles/markdown.css';
 @import '@uiw/react-md-editor/markdown-editor.css';
 @plugin '@tailwindcss/typography';
 
@@ -18,17 +19,6 @@ html {
   font-family: var(--font-pretendard);
   background-color: var(--background);
   color: var(--foreground);
-}
-
-/* 마크다운 에디터 */
-.w-md-editor {
-  background-color: #0d0e12;
-  color: #ffffff;
-}
-
-.w-md-editor-text-input textarea {
-  color: #ffffff;
-  background-color: #0d0e12;
 }
 
 .custom-scrollbar::-webkit-scrollbar {

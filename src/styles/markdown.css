@@ -1,0 +1,10 @@
+/* 마크다운 에디터 */
+.w-md-editor {
+  background-color: #0d0e12;
+  color: #ffffff;
+}
+
+.w-md-editor-text-input textarea {
+  color: #ffffff;
+  background-color: #0d0e12;
+}
