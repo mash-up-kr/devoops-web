@@ -6,11 +6,15 @@
 @import '../styles/tabs.css';
 @import '../styles/z-index.css';
 @import '../styles/typography.css';
+@import '@uiw/react-md-editor/markdown-editor.css';
+@import '../styles/markdown.css';
 @plugin '@tailwindcss/typography';
 
 :root {
   --background: #0d0e12;
   --foreground: #ffffff;
+  --mdeditor-bg: #0d0e12;
+  --mdeditor-fg: #ffffff;
 }
 
 html {

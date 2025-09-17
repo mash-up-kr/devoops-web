@@ -1,0 +1,11 @@
+/* 마크다운 에디터 - 다크 모드 */
+[data-color-mode='dark'] .w-md-editor {
+  background-color: var(--mdeditor-bg, #0d0e12);
+  color: var(--mdeditor-fg, #ffffff);
+  color-scheme: dark;
+}
+
+[data-color-mode='dark'] .w-md-editor-text-input textarea {
+  color: var(--mdeditor-fg, #ffffff);
+  background-color: var(--mdeditor-bg, #0d0e12);
+}
