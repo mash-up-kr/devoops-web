@@ -12,7 +12,7 @@ export default function RepolinkSection() {
             <Tag dotColor={'primary'} size={'medium'} padding={'medium'}>
               {'AI를 통한 간편한 회고'}
             </Tag>
-            <h1 className={'blue-tiny-right inline-block text-[48px] leading-[64px] font-bold'}>
+            <h1 className={'blue-tiny-right text-landing-h1 inline-block text-center font-bold'}>
               {'레포 주소만 입력하면. 끝'}
             </h1>
           </div>
@@ -29,7 +29,7 @@ export default function RepolinkSection() {
       </div>
       <div
         className={
-          'border-dark-grey-200 bg-gradient-landing-image mx-auto mt-[78px] max-w-[1000px] overflow-hidden rounded-tl-[28px] rounded-tr-[28px] border-1 pt-[53px] pb-[38px]'
+          'border-dark-grey-200 bg-gradient-landing-image mx-auto mt-[78px] max-w-[1000px] overflow-hidden rounded-tl-[28px] rounded-tr-[28px] border-1 pt-[53px] pb-[38px] max-md:pt-[13px]'
         }
       >
         <Image src={RepolinkImage} alt={'Landing Hero'} width={508} className={'mx-auto'} />
