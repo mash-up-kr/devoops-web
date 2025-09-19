@@ -2,13 +2,10 @@ import Image from 'next/image';
 
 import RepolinkImage from '@/assets/images/landing/landing-repolink.webp';
 import Tag from '@/components/common/Tag';
-import GradientBottomLayer from '@/components/landing/GradientBottomLayer';
-import GradientTopLayer from '@/components/landing/GradientTopLayer';
 
 export default function RepolinkSection() {
   return (
-    <section className={'relative overflow-hidden'}>
-      <GradientTopLayer />
+    <section>
       <div className={'mt-[80px] flex flex-col items-center'}>
         <div className={'flex flex-col items-center gap-5'}>
           <div className={'flex flex-col items-center gap-4'}>
@@ -37,7 +34,6 @@ export default function RepolinkSection() {
       >
         <Image src={RepolinkImage} alt={'Landing Hero'} width={508} className={'mx-auto'} />
       </div>
-      <GradientBottomLayer />
     </section>
   );
 }

@@ -2,8 +2,6 @@ import Image from 'next/image';
 
 import LandingHero from '@/assets/images/landing/landing-hero.webp';
 import { LoadingButton } from '@/components/common/LoadingButton';
-import GradientBottomLayer from '@/components/landing/GradientBottomLayer';
-import GradientTopLayer from '@/components/landing/GradientTopLayer';
 
 interface HeroSectionProps {
   action: () => void;
@@ -11,8 +9,7 @@ interface HeroSectionProps {
 
 export default function HeroSection({ action }: HeroSectionProps) {
   return (
-    <section className={'relative overflow-hidden'}>
-      <GradientTopLayer />
+    <section>
       <div className={'mt-[144px] flex flex-col items-center gap-7'}>
         <div>
           <div className={'mb-4.5 flex flex-col items-center'}>
@@ -48,7 +45,6 @@ export default function HeroSection({ action }: HeroSectionProps) {
       >
         <Image src={LandingHero} alt={'Landing Hero'} priority />
       </div>
-      <GradientBottomLayer />
     </section>
   );
 }

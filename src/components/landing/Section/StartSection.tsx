@@ -5,13 +5,10 @@ import LandingRetrospectiveAnswer from '@/assets/images/landing/landing-retrospe
 import LandingRetrospectiveQuestion from '@/assets/images/landing/landing-retrospective-question.webp';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/common/Tabs';
 import Tag from '@/components/common/Tag';
-import GradientBottomLayer from '@/components/landing/GradientBottomLayer';
-import GradientTopLayer from '@/components/landing/GradientTopLayer';
 
 export default function StartSection() {
   return (
-    <section className={'relative overflow-hidden'}>
-      <GradientTopLayer />
+    <section>
       <div>
         <div className={'mt-[80px] mb-12 flex flex-col items-center gap-4'}>
           <Tag dotColor={'primary'} size={'medium'} padding={'medium'}>
@@ -111,7 +108,6 @@ export default function StartSection() {
           </Tabs>
         </div>
       </div>
-      <GradientBottomLayer />
     </section>
   );
 }

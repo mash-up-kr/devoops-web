@@ -3,13 +3,10 @@ import LandingSymbol2 from '@/assets/images/landing/landing-symbol-2.webp';
 import LandingSymbol3 from '@/assets/images/landing/landing-symbol-3.webp';
 import Tag from '@/components/common/Tag';
 import FeatureCard from '@/components/landing/FeatureCard';
-import GradientBottomLayer from '@/components/landing/GradientBottomLayer';
-import GradientTopLayer from '@/components/landing/GradientTopLayer';
 
 export default function FeatureSection() {
   return (
-    <section className={'relative overflow-hidden'}>
-      <GradientTopLayer />
+    <section>
       <div className={'mt-[80px] flex flex-col items-center'}>
         <div className={'flex flex-col items-center gap-5'}>
           <div className={'flex flex-col items-center gap-4'}>
@@ -75,7 +72,6 @@ export default function FeatureSection() {
           </FeatureCard>
         </div>
       </div>
-      <GradientBottomLayer />
     </section>
   );
 }
