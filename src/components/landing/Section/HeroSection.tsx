@@ -2,8 +2,6 @@ import Image from 'next/image';
 
 import LandingHero from '@/assets/images/landing/landing-hero.webp';
 import { LoadingButton } from '@/components/common/LoadingButton';
-import GradientBottomLayer from '@/components/landing/GradientBottomLayer';
-import GradientTopLayer from '@/components/landing/GradientTopLayer';
 
 interface HeroSectionProps {
   action: () => void;
@@ -11,17 +9,14 @@ interface HeroSectionProps {
 
 export default function HeroSection({ action }: HeroSectionProps) {
   return (
-    <section className={'relative overflow-hidden'}>
-      <GradientTopLayer />
+    <section>
       <div className={'mt-[144px] flex flex-col items-center gap-7'}>
         <div>
-          <div className={'mb-4.5 flex flex-col items-center'}>
-            <h1 className={'blue-tiny-right inline-block text-[48px] leading-[64px] font-bold'}>{'코드는 남았는데'}</h1>
-            <h1 className={'blue-tiny-right inline-block text-[48px] leading-[64px] font-bold'}>
-              {'고민은 사라졌다면...?'}
-            </h1>
+          <div className={'mb-4.5 flex flex-col items-center text-center'}>
+            <h1 className={'blue-tiny-right text-landing-h1 inline-block font-bold'}>{'코드는 남았는데'}</h1>
+            <h1 className={'blue-tiny-right text-landing-h1 inline-block font-bold'}>{'고민은 사라졌다면...?'}</h1>
           </div>
-          <div className={'text-dark-grey-600 flex flex-col text-center text-[18px] leading-[29px] font-medium'}>
+          <div className={'text-dark-grey-600 text-landing-content flex flex-col text-center font-medium'}>
             <p>
               {'Devoops가 '}
               <span className={'blue-tiny-right bg-clip-text font-semibold text-transparent'}>
@@ -43,12 +38,11 @@ export default function HeroSection({ action }: HeroSectionProps) {
       </div>
       <div
         className={
-          'border-dark-grey-200 shadow-landing-image mx-auto mt-[67px] max-w-[1000px] overflow-hidden rounded-tl-[28px] rounded-tr-[28px] border-1'
+          'border-dark-grey-200 shadow-landing-image mx-auto mt-[67px] max-w-[1000px] overflow-hidden rounded-tl-[28px] rounded-tr-[28px] border-1 max-md:rounded-tl-[20px] max-md:rounded-tr-[20px]'
         }
       >
         <Image src={LandingHero} alt={'Landing Hero'} priority />
       </div>
-      <GradientBottomLayer />
     </section>
   );
 }
