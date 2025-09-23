@@ -42,7 +42,7 @@ export async function MyPR() {
         </Tabs>
         <Spacing size={400} />
       </div>
-      <RepolinkModal defaultOpen={false} isOutsideClickClose button={<div />} />
+      <RepolinkModal defaultOpen={false} isOutsideClickClose button={null} />
     </>
   );
 }
