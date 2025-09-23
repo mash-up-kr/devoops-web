@@ -24,7 +24,7 @@ export default function ErrorView({ error }: { error: Error & { digest?: string 
         </div>
       </div>
       <Button variant={'filledPrimary'} size={'large'} onClick={handleClick}>
-        {'홈으로 돌아가기'}
+        {'메인으로'}
       </Button>
     </StatusView>
   );
