@@ -18,7 +18,7 @@ export default function MyPR({ initialRepositoryList }: MyPRProps) {
 
   useEffect(() => {
     dispatch({ type: 'CLOSE_ALL' });
-  });
+  }, []);
 
   return (
     <>
