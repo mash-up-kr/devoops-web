@@ -1,24 +1,20 @@
-'use client';
-
-import { useEffect } from 'react';
-
-import { RepositorySummaryType } from '@/__generated__/@types';
+import { apiApi } from '@/__generated__/Api/Api.api';
 import { RepolinkButton, RepolinkModal } from '@/components/common/Modal/RepolinkModal';
 import Spacing from '@/components/common/Spacing';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/common/Tabs';
 import Overview from '@/components/home/Overview';
-import { useModalDispatch } from '@/providers/ModalContext';
+import { sortRepositoriesByTracking } from '@/utils/sortRepositoriesByTracking';
 
-interface MyPRProps {
-  initialRepositoryList: RepositorySummaryType[];
-}
+export async function MyPR() {
+  const { data: myRepositories } = await apiApi.getMyRepositories();
 
-export default function MyPR({ initialRepositoryList }: MyPRProps) {
-  const dispatch = useModalDispatch();
-
-  useEffect(() => {
-    dispatch({ type: 'CLOSE_ALL' });
-  }, []);
+  const repositoriesData = myRepositories.repositories ?? [];
+  const sortedRepositoriesByTracking = sortRepositoriesByTracking(repositoriesData);
+  const totalCount = repositoriesData.reduce((total, repository) => total + (repository.pullRequestCount || 0), 0);
+  const initialRepositoryList = [
+    { id: 0, name: '전체', pullRequestCount: totalCount },
+    ...sortedRepositoriesByTracking,
+  ];
 
   return (
     <>
