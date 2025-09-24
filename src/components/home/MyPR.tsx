@@ -44,7 +44,7 @@ export async function MyPR() {
         <Tabs defaultValue={initRepositories[0]?.name || ''}>
           <div className={'border-dark-grey-100 border-b-1'}>
             <TabsList aria-label={'내 PR 목록'}>
-              {repositories.map((repository) => (
+              {initRepositories.map((repository) => (
                 <TabsTrigger key={repository.id} value={repository.name || ''}>
                   <RepositoryTrigger repository={repository} />
                 </TabsTrigger>
