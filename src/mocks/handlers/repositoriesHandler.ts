@@ -5,7 +5,8 @@ import { ROUTES } from '@/constants/routes';
 import getEntirePullRequests from '@/mocks/responses/repositories/getEntirePullRequests.json';
 import getPullRequest from '@/mocks/responses/repositories/getPullRequest.json';
 import getRepositoriesMe from '@/mocks/responses/repositories/getRepositoriesMe.json';
-import getRepositoryPullRequests from '@/mocks/responses/repositories/getRepositoryPullRequests.json';
+import getRepositoryPullRequestsNoPR from '@/mocks/responses/repositories/getRepositoryPullRequests/noPR.json';
+import getRepositoryPullRequests from '@/mocks/responses/repositories/getRepositoryPullRequests/success.json';
 import saveRepositoryNotFound from '@/mocks/responses/repositories/saveRepository/notFound.json';
 import saveRepositorySuccess from '@/mocks/responses/repositories/saveRepository/success.json';
 
@@ -18,7 +19,7 @@ const repositoriesHandler = [
     const { repositoryId } = params;
 
     if (Number(repositoryId) === NO_PR_IN_REPOSITORY_ID) {
-      return new HttpResponse(null, { status: 404 });
+      return HttpResponse.json(getRepositoryPullRequestsNoPR, { status: 200 });
     }
 
     return HttpResponse.json(getRepositoryPullRequests, { status: 200 });
