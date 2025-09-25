@@ -5,19 +5,16 @@ import LandingRetrospectiveAnswer from '@/assets/images/landing/landing-retrospe
 import LandingRetrospectiveQuestion from '@/assets/images/landing/landing-retrospective-question.webp';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/common/Tabs';
 import Tag from '@/components/common/Tag';
-import GradientBottomLayer from '@/components/landing/GradientBottomLayer';
-import GradientTopLayer from '@/components/landing/GradientTopLayer';
 
 export default function StartSection() {
   return (
-    <section className={'relative overflow-hidden'}>
-      <GradientTopLayer />
+    <section>
       <div>
         <div className={'mt-[80px] mb-12 flex flex-col items-center gap-4'}>
           <Tag dotColor={'primary'} size={'medium'} padding={'medium'}>
             {'AI를 통한 간편한 회고'}
           </Tag>
-          <h1 className={'blue-tiny-right inline-block text-[48px] leading-[58px] font-bold'}>
+          <h1 className={'blue-tiny-right text-landing-h1 inline-block text-center font-bold'}>
             {'Devoops로 회고를 시작해볼까요?'}
           </h1>
         </div>
@@ -47,7 +44,7 @@ export default function StartSection() {
                 </div>
                 <div
                   className={
-                    'border-dark-grey-200 max-w-[1000px] overflow-hidden rounded-tl-[36px] rounded-tr-[36px] border-1 px-[100px] pt-[58px]'
+                    'border-dark-grey-200 max-w-[1000px] overflow-hidden rounded-tl-[36px] rounded-tr-[36px] border-1 px-[100px] pt-[58px] max-lg:rounded-tl-[20px] max-lg:rounded-tr-[20px] max-lg:p-0'
                   }
                 >
                   <Image src={LandingPRSummary} alt={'PR 요약'} />
@@ -74,7 +71,7 @@ export default function StartSection() {
                 </div>
                 <div
                   className={
-                    'border-dark-grey-200 max-w-[1000px] overflow-hidden rounded-tl-[36px] rounded-tr-[36px] border-1 px-[100px] pt-[58px]'
+                    'border-dark-grey-200 max-w-[1000px] overflow-hidden rounded-tl-[36px] rounded-tr-[36px] border-1 px-[100px] pt-[58px] max-lg:rounded-tl-[20px] max-lg:rounded-tr-[20px] max-lg:p-0'
                   }
                 >
                   <Image src={LandingRetrospectiveQuestion} alt={'회고 질문 제공'} />
@@ -101,7 +98,7 @@ export default function StartSection() {
                 </div>
                 <div
                   className={
-                    'border-dark-grey-200 max-w-[1000px] overflow-hidden rounded-tl-[36px] rounded-tr-[36px] border-1 px-[100px] pt-[58px]'
+                    'border-dark-grey-200 max-w-[1000px] overflow-hidden rounded-tl-[36px] rounded-tr-[36px] border-1 px-[100px] pt-[58px] max-lg:rounded-tl-[20px] max-lg:rounded-tr-[20px] max-lg:p-0'
                   }
                 >
                   <Image src={LandingRetrospectiveAnswer} alt={'회고 답변'} />
@@ -111,7 +108,6 @@ export default function StartSection() {
           </Tabs>
         </div>
       </div>
-      <GradientBottomLayer />
     </section>
   );
 }

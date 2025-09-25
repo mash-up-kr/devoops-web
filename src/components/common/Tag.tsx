@@ -55,10 +55,12 @@ interface TagProps {
 }
 
 export default function Tag({ dotColor, children, size, padding }: TagProps) {
+  const responsiveSize = size === 'medium' ? 'small' : size;
+
   return (
     <span className={cn(tagVariants({ padding }))}>
       <span className={cn(dotVariants({ dotColor }))} />
-      <p className={cn(textVariants({ size }))}>{children}</p>
+      <p className={cn(textVariants({ size: responsiveSize }), 'lg:text-body-medium lg:font-medium')}>{children}</p>
     </span>
   );
 }
