@@ -87,7 +87,7 @@ export default function RetrospectiveAnswers({
                 className={'bg-dark-grey-50 relative flex flex-col gap-[8px] rounded-[8px] px-[24px] py-[20px]'}
               >
                 <div className={'flex items-center justify-between'}>
-                  <p className={'text-body-medium font-semibold'}>{question.content}</p>
+                  <p className={'text-body-medium font-semibold break-all'}>{question.content}</p>
                   {onDeleteAnswer && (
                     <button
                       type={'button'}
