@@ -14,8 +14,8 @@ export default function QuestionItem({ category, content = '', isOpen, onToggle 
   return (
     <div
       className={cn(
-        'bg-dark-grey-25 relative flex flex-col gap-2 rounded-xl p-5 transition-[max-height] duration-500',
-        isContentLong && (isOpen ? 'max-h-none' : 'max-h-36 overflow-hidden'),
+        'bg-dark-grey-25 relative flex flex-col gap-2 rounded-xl p-5 transition-all duration-500 ease-in-out',
+        isContentLong && (isOpen ? 'max-h-100' : 'max-h-36 overflow-hidden'),
       )}
     >
       <div className={'text-body-small text-dark-blue-700 font-semibold'}>{category}</div>
@@ -25,7 +25,7 @@ export default function QuestionItem({ category, content = '', isOpen, onToggle 
       {isContentLong && (
         <div className={'absolute right-0 bottom-0 left-0'}>
           {!isOpen && (
-            <div className={'absolute bottom-0 h-12 w-full [background:var(--color-gradient-question-item-button)]'} />
+            <div className={'absolute bottom-0 h-13 w-full [background:var(--color-gradient-question-item-button)]'} />
           )}
           <div className={'relative'}>
             <button
