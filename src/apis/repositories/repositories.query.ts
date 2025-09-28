@@ -48,7 +48,7 @@ export const useGetPullRequestsQuery = (params: UseQueryParams<typeof apiApi.get
 export const useGetPullRequestQuery = (params: UseQueryParams<typeof apiApi.getPullRequest>) => {
   const queryKey = REPOSITORIES_API_QUERY_KEY.GET_PULL_REQUEST(params?.variables);
 
-  return useSuspenseQuery({
+  return useQuery({
     queryKey,
     queryFn: () => apiApi.getPullRequest(params?.variables),
     ...params?.options,
