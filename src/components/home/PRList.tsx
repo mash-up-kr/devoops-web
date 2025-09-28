@@ -42,6 +42,11 @@ export function PRList({
     pullRequestIdAction(pr.id);
   };
 
+  const handlePageChange = (newPage: number) => {
+    pullRequestIdAction(undefined);
+    currentPageAction(newPage);
+  };
+
   useEffect(() => {
     if (prListData.length === 0) {
       pullRequestIdAction(undefined);
@@ -59,9 +64,6 @@ export function PRList({
       });
       return newIndexes;
     });
-
-    // 초기 미리보기의 값을 맨 처음 것으로 두기 위함.
-    pullRequestIdAction(prListData[0].id);
   }, [prListData]);
 
   if (prListData.length === 0) {
@@ -73,7 +75,7 @@ export function PRList({
   }
 
   return (
-    <div className={'border-dark-grey-100 flex flex-1 flex-col gap-5 border-e-1 py-4 pe-8'}>
+    <div className={'max-w-pr-item border-dark-grey-100 flex flex-1 flex-col gap-5 border-e-1 py-4 pe-8'}>
       {prListData.map((pr) => (
         <Link href={ROUTES.PAGE.RETROSPECTIVE(pr.id || 0)} key={pr.id}>
           <PRItem onMouseOver={() => handlePRItemOver(pr)}>
@@ -87,7 +89,7 @@ export function PRList({
           <PaginationItem>
             <PaginationPrevious
               className={'flex size-10 items-center justify-center rounded-full'}
-              onClick={() => currentPageAction((prev) => Math.max(prev - 1, 0))}
+              onClick={() => handlePageChange(Math.max(currentPage - 1, 0))}
             />
           </PaginationItem>
 
@@ -100,7 +102,7 @@ export function PRList({
               <PaginationItem key={`page-${page}`}>
                 <PaginationLink
                   isActive={currentPage === page - 1}
-                  onClick={() => currentPageAction(Number(page) - 1)}
+                  onClick={() => handlePageChange(Number(page) - 1)}
                   className={`text-body-medium flex size-10 cursor-pointer items-center justify-center rounded-full transition-colors duration-100 ease-out ${currentPage === page - 1 ? 'bg-dark-grey-50 font-medium' : 'font-regular'}`}
                 >
                   {page}
@@ -112,7 +114,7 @@ export function PRList({
           <PaginationItem>
             <PaginationNext
               className={'flex size-10 items-center justify-center rounded-full'}
-              onClick={() => currentPageAction((prev: number) => Math.min(prev + 1, totalPage - 1))}
+              onClick={() => handlePageChange(Math.min(currentPage + 1, totalPage - 1))}
             />
           </PaginationItem>
         </PaginationContent>
