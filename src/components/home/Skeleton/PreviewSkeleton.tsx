@@ -3,7 +3,7 @@ import Button from '@/components/common/Button';
 
 export default function PreviewSkeleton() {
   return (
-    <div className={'mx-8 my-5 flex animate-pulse flex-col pt-5 md:w-[300px] xl:w-[438px]'}>
+    <div className={'min-h-preview mx-8 my-5 flex max-w-[438px] animate-pulse flex-col pt-5 max-lg:w-[338px]'}>
       <h5 className={'text-h5 mb-[23px] font-medium'}>{'미리보기'}</h5>
       <div className={'border-dark-grey-100 border-b pb-7'}>
         <div className={'flex flex-col gap-2'}>
