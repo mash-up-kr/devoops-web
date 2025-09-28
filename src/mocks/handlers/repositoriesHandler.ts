@@ -4,7 +4,7 @@ import { NO_PR_IN_REPOSITORY_ID } from '@/constants/domain';
 import { ROUTES } from '@/constants/routes';
 import getEntirePullRequests from '@/mocks/responses/repositories/getEntirePullRequests.json';
 import getPullRequest from '@/mocks/responses/repositories/getPullRequest.json';
-import getRepositoriesMe from '@/mocks/responses/repositories/getRepositoriesMe.json';
+import getRepositoriesMe from '@/mocks/responses/repositories/getRepositoriesMe/success.json';
 import getRepositoryPullRequestsNoPR from '@/mocks/responses/repositories/getRepositoryPullRequests/noPR.json';
 import getRepositoryPullRequests from '@/mocks/responses/repositories/getRepositoryPullRequests/success.json';
 import saveRepositoryNotFound from '@/mocks/responses/repositories/saveRepository/notFound.json';
