@@ -1,12 +1,15 @@
+import React from 'react';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
+
 import { QuestionBriefResponseType } from '@/__generated__/@types';
+import { CONTENT_TRUNCATE_THRESHOLD } from '@/constants/domain';
 import { cn } from '@/utils/cn';
 
 interface QuestionItemProps extends QuestionBriefResponseType {
   isOpen: boolean;
   onToggle: () => void;
 }
-
-const CONTENT_TRUNCATE_THRESHOLD = 85;
 
 export default function QuestionItem({ category, content = '', isOpen, onToggle }: QuestionItemProps) {
   const isContentLong = content.length > CONTENT_TRUNCATE_THRESHOLD;
@@ -20,7 +23,7 @@ export default function QuestionItem({ category, content = '', isOpen, onToggle 
     >
       <div className={'text-body-small text-dark-blue-700 font-semibold'}>{category}</div>
       <h5 className={cn('text-body-medium text-dark-grey-800 font-medium break-all', isContentLong && 'pb-6')}>
-        {content}
+        <ReactMarkdown remarkPlugins={[remarkGfm]}>{content}</ReactMarkdown>
       </h5>
       {isContentLong && (
         <div className={'absolute right-0 bottom-0 left-0'}>
