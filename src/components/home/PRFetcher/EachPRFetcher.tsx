@@ -15,7 +15,7 @@ interface EachPRFetcherProps {
 export function EachPRFetcher({ repository, currentPage, renderAction }: EachPRFetcherProps) {
   const { data } = useGetPullRequestsQuery({
     variables: {
-      repositoryId: repository.id || 0,
+      repositoryId: repository.id ?? 0,
       query: { page: currentPage, size: ITEMS_PER_PAGE },
     },
     options: { staleTime: 0, refetchOnMount: 'always' },
