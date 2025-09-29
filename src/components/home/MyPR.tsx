@@ -25,6 +25,10 @@ export async function MyPR({ searchParams }: MyPRProps) {
 
   const PRPreFetcher = isTotalTab ? EntirePRPreFetcher : EachPRPreFetcher;
 
+  if (!currentRepository) {
+    throw new Error(`잘못된 경로로 접근하셨습니다. URL을 확인해주세요.`);
+  }
+
   return (
     <PRPreFetcher repositoryId={currentRepositoryId}>
       <MyPRContent initRepositories={initRepositories} currentTab={currentTab} />
