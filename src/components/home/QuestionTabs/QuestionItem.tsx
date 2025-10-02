@@ -22,9 +22,9 @@ export default function QuestionItem({ category, content = '', isOpen, onToggle 
       )}
     >
       <div className={'text-body-small text-dark-blue-700 font-semibold'}>{category}</div>
-      <h5 className={cn('text-body-medium text-dark-grey-800 font-medium break-all', isContentLong && 'pb-6')}>
+      <div className={cn('text-body-medium text-dark-grey-800 font-medium break-all', isContentLong && 'pb-6')}>
         <ReactMarkdown remarkPlugins={[remarkGfm]}>{content}</ReactMarkdown>
-      </h5>
+      </div>
       {isContentLong && (
         <div className={'absolute right-0 bottom-0 left-0'}>
           {!isOpen && (
