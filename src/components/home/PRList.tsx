@@ -77,7 +77,7 @@ export function PRList({
   return (
     <div className={'max-w-pr-item border-dark-grey-100 flex flex-1 flex-col gap-5 border-e-1 py-4 pe-8'}>
       {prListData.map((pr) => (
-        <Link href={ROUTES.PAGE.RETROSPECTIVE(pr.id || 0)} key={pr.id}>
+        <Link href={ROUTES.PAGE.RETROSPECTIVE(pr.id)} key={pr.id}>
           <PRItem onMouseOver={() => handlePRItemOver(pr)}>
             <PRStatus status={pr.recordStatus} />
             <PRContent content={pr.title} label={pr.tag || 'none'} />
