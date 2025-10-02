@@ -1,7 +1,7 @@
 'use client';
 
 import { useSearchParams, useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { RepositorySummaryType } from '@/__generated__/@types';
 import { RepolinkButton } from '@/components/common/Modal/RepolinkModal';
@@ -20,6 +20,10 @@ export function MyPRContent({ initRepositories, currentTab }: MyPRContentProps) 
   const router = useRouter();
 
   const [activeTab, setActiveTab] = useState(currentTab);
+
+  useEffect(() => {
+    setActiveTab(currentTab);
+  }, [currentTab]);
 
   const handleTabChange = (tabValue: string) => {
     const params = new URLSearchParams(searchParams);
