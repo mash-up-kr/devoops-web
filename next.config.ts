@@ -8,8 +8,8 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 });
 
 const nextConfig: NextConfig = {
-  webpack: (config, { isServer }) => {
-    if (!isServer) {
+  webpack: (config, { isServer, dev }) => {
+    if (!isServer && !dev) {
       config.plugins.push(
         new CompressionPlugin({
           algorithm: 'gzip',
