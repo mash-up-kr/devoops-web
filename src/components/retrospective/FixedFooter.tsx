@@ -114,6 +114,9 @@ export default function FixedFooter({
       await queryClient.refetchQueries({ queryKey: ['pullRequestDetail', Number(pullRequestId)] });
       setIsRefreshing(false);
       if (onComplete) onComplete();
+
+      // 홈으로 리다이렉트
+      router.push('/', { scroll: true });
     } catch (error) {
       console.error('회고 완료 실패', error);
       setIsRefreshing(false);
@@ -146,6 +149,9 @@ export default function FixedFooter({
     >
       <div className={'flex items-center gap-4'}>
         <AutoSaveStatus status={autoSaveStatus} />
+        <Button variant={'outlineGrey'} size={'medium'} onClick={handleGoHome}>
+          {'임시 저장'}
+        </Button>
         <Button
           variant={'filledPrimary'}
           size={'medium'}
@@ -159,9 +165,6 @@ export default function FixedFooter({
           }
         >
           {isRefreshing ? '새로고침 중...' : '회고완료'}
-        </Button>
-        <Button variant={'filledPrimary'} size={'medium'} onClick={handleGoHome}>
-          {'홈으로'}
         </Button>
       </div>
     </footer>
