@@ -123,21 +123,36 @@ export default function FixedFooter({
     }
   };
 
-  const handleGoHome = () => {
-    // 추후 toast 와 자동저장 구현되면 적용 예정
-    // // 저장 중이면 경고
-    // if (autoSaveStatus === 'saving') {
-    //   const proceedWhileSaving = window.confirm(
-    //     '저장 중입니다. 홈으로 이동하시겠어요? 진행 중인 저장이 완료되지 않을 수 있습니다.',
-    //   );
-    //   if (!proceedWhileSaving) return;
-    // }
-    // // 변경사항이 있으면 경고
-    // if (hasChanges()) {
-    //   const proceed = window.confirm('작성 중인 회고가 저장되지 않았습니다. 홈으로 이동하시겠어요?');
-    //   if (!proceed) return;
-    // }
+  // 임시 저장 처리 함수
+  const handleTempSave = async () => {
+    if (isRefreshing) return;
 
+    if (hasChanges()) {
+      try {
+        if (lastSubmittedAnswers.length === 0) {
+          // 임시저장 처음 하는 경우
+          await updateAllAnswersMutation.mutateAsync({ data: { answers } });
+        } else {
+          // 이후 임시저장
+          const changed = answers.filter((a) => {
+            const prev = lastSubmittedAnswers.find((p) => p.answerId === a.answerId);
+            return !prev || prev.content !== a.content;
+          });
+          if (changed.length > 0) {
+            await Promise.all(
+              changed.map((ans) =>
+                updateAnswerMutation.mutateAsync({
+                  answerId: ans.answerId,
+                  data: { content: ans.content },
+                }),
+              ),
+            );
+          }
+        }
+      } catch (error) {
+        console.error('임시 저장 실패', error);
+      }
+    }
     router.push('/', { scroll: true });
   };
 
@@ -149,7 +164,7 @@ export default function FixedFooter({
     >
       <div className={'flex items-center gap-4'}>
         <AutoSaveStatus status={autoSaveStatus} />
-        <Button variant={'outlineGrey'} size={'medium'} onClick={handleGoHome}>
+        <Button variant={'outlineGrey'} size={'medium'} onClick={handleTempSave}>
           {'임시 저장'}
         </Button>
         <Button
