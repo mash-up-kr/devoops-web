@@ -164,23 +164,41 @@ export default function FixedFooter({
     >
       <div className={'flex items-center gap-4'}>
         <AutoSaveStatus status={autoSaveStatus} />
-        <Button variant={'outlineGrey'} size={'medium'} onClick={handleTempSave}>
-          {'임시 저장'}
-        </Button>
-        <Button
-          variant={'filledPrimary'}
-          size={'medium'}
-          onClick={handleComplete}
-          disabled={
-            answers.length === 0 ||
-            updateAllAnswersMutation.isPending ||
-            updateAnswerMutation.isPending ||
-            markPRAsDoneMutation.isPending ||
-            isRefreshing
-          }
-        >
-          {isRefreshing ? '새로고침 중...' : '회고완료'}
-        </Button>
+        {!isCompleted ? (
+          <>
+            <Button variant={'outlineGrey'} size={'medium'} onClick={handleTempSave}>
+              {'임시 저장'}
+            </Button>
+            <Button
+              variant={'filledPrimary'}
+              size={'medium'}
+              onClick={handleComplete}
+              disabled={
+                answers.length === 0 ||
+                updateAllAnswersMutation.isPending ||
+                updateAnswerMutation.isPending ||
+                markPRAsDoneMutation.isPending ||
+                isRefreshing
+              }
+            >
+              {isRefreshing ? '새로고침 중...' : '회고 완료'}
+            </Button>
+          </>
+        ) : (
+          <Button
+            variant={'filledPrimary'}
+            size={'medium'}
+            onClick={handleComplete}
+            disabled={
+              answers.length === 0 ||
+              updateAllAnswersMutation.isPending ||
+              updateAnswerMutation.isPending ||
+              isRefreshing
+            }
+          >
+            {isRefreshing ? '새로고침 중...' : '저장'}
+          </Button>
+        )}
       </div>
     </footer>
   );
