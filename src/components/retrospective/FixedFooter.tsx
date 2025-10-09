@@ -88,6 +88,7 @@ export default function FixedFooter({
 
     // 변경사항이 없는 경우
     if (isCompleted && !hasChanges()) {
+      router.push('/', { scroll: true });
       return;
     }
 
