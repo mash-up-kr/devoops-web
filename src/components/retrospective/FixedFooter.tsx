@@ -137,7 +137,7 @@ export default function FixedFooter({
         await saveAnswers();
         router.push('/', { scroll: true });
       } catch {
-        // toast 필요 부분
+        // TODO : 토스트 메시지 표시 (예: "저장에 실패했습니다. 다시 시도해주세요.")
       } finally {
         setIsTempSaving(false);
       }
