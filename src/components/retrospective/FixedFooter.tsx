@@ -40,6 +40,7 @@ export default function FixedFooter({
   const markPRAsDoneMutation = useMarkPRAsDoneMutation();
   const queryClient = useQueryClient();
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [isTempSaving, setIsTempSaving] = useState(false);
   const router = useRouter();
 
   const hasChanges = () => {
@@ -55,15 +56,42 @@ export default function FixedFooter({
     });
   };
 
+  // 공통 저장 로직 함수
+  const saveAnswers = async () => {
+    if (lastSubmittedAnswers.length === 0) {
+      // 첫 저장
+      await updateAllAnswersMutation.mutateAsync({ data: { answers } });
+      setLastSubmittedAnswers([...answers]);
+    } else {
+      // 변경된 답변만 저장
+      const changed = answers.filter((a) => {
+        const prev = lastSubmittedAnswers.find((p) => p.answerId === a.answerId);
+        return !prev || prev.content !== a.content;
+      });
+      if (changed.length > 0) {
+        await Promise.all(
+          changed.map((ans) =>
+            updateAnswerMutation.mutateAsync({
+              answerId: ans.answerId,
+              data: { content: ans.content },
+            }),
+          ),
+        );
+        setLastSubmittedAnswers([...answers]);
+      }
+    }
+  };
+
+  // 저장 처리 함수
   const handleComplete = async () => {
     if (isRefreshing) return;
 
-    // 변경사항이 없으면 fetch 보내지 않음
+    // 변경사항이 없는 경우
     if (isCompleted && !hasChanges()) {
       return;
     }
 
-    // answerId가 없는 값이 있으면 요청을 보내지 않음
+    // answerId가 없는 값이 있는 경우
     const invalidAnswers = answers.filter((a) => typeof a.answerId !== 'number' || Number.isNaN(a.answerId));
     if (invalidAnswers.length > 0) {
       return;
@@ -81,28 +109,7 @@ export default function FixedFooter({
     }
 
     try {
-      if (lastSubmittedAnswers.length === 0) {
-        // First submit 처리
-        await updateAllAnswersMutation.mutateAsync({ data: { answers } });
-        setLastSubmittedAnswers([...answers]);
-      } else {
-        // Subsequent submit 처리
-        const changed = answers.filter((a) => {
-          const prev = lastSubmittedAnswers.find((p) => p.answerId === a.answerId);
-          return !prev || prev.content !== a.content;
-        });
-        if (changed.length > 0) {
-          await Promise.all(
-            changed.map((ans) =>
-              updateAnswerMutation.mutateAsync({
-                answerId: ans.answerId,
-                data: { content: ans.content },
-              }),
-            ),
-          );
-          setLastSubmittedAnswers([...answers]);
-        }
-      }
+      await saveAnswers();
 
       // 완료되지 않은 상태에서만 markPRAsDone 호출
       if (!isCompleted) {
@@ -110,50 +117,33 @@ export default function FixedFooter({
       }
 
       setIsRefreshing(true);
-      // refetch 서버 데이터
       await queryClient.refetchQueries({ queryKey: ['pullRequestDetail', Number(pullRequestId)] });
       setIsRefreshing(false);
       if (onComplete) onComplete();
 
-      // 홈으로 리다이렉트
       router.push('/', { scroll: true });
-    } catch (error) {
-      console.error('회고 완료 실패', error);
+    } catch {
       setIsRefreshing(false);
     }
   };
 
   // 임시 저장 처리 함수
   const handleTempSave = async () => {
-    if (isRefreshing) return;
+    if (isRefreshing || isTempSaving) return;
 
     if (hasChanges()) {
+      setIsTempSaving(true);
       try {
-        if (lastSubmittedAnswers.length === 0) {
-          // 임시저장 처음 하는 경우
-          await updateAllAnswersMutation.mutateAsync({ data: { answers } });
-        } else {
-          // 이후 임시저장
-          const changed = answers.filter((a) => {
-            const prev = lastSubmittedAnswers.find((p) => p.answerId === a.answerId);
-            return !prev || prev.content !== a.content;
-          });
-          if (changed.length > 0) {
-            await Promise.all(
-              changed.map((ans) =>
-                updateAnswerMutation.mutateAsync({
-                  answerId: ans.answerId,
-                  data: { content: ans.content },
-                }),
-              ),
-            );
-          }
-        }
-      } catch (error) {
-        console.error('임시 저장 실패', error);
+        await saveAnswers();
+        router.push('/', { scroll: true });
+      } catch {
+        // toast 필요 부분
+      } finally {
+        setIsTempSaving(false);
       }
+    } else {
+      router.push('/', { scroll: true });
     }
-    router.push('/', { scroll: true });
   };
 
   return (
@@ -166,8 +156,13 @@ export default function FixedFooter({
         <AutoSaveStatus status={autoSaveStatus} />
         {!isCompleted ? (
           <>
-            <Button variant={'outlineGrey'} size={'medium'} onClick={handleTempSave}>
-              {'임시 저장'}
+            <Button
+              variant={'outlineGrey'}
+              size={'medium'}
+              onClick={handleTempSave}
+              disabled={isTempSaving || isRefreshing}
+            >
+              {isTempSaving ? '저장 중...' : '임시 저장'}
             </Button>
             <Button
               variant={'filledPrimary'}
@@ -178,7 +173,8 @@ export default function FixedFooter({
                 updateAllAnswersMutation.isPending ||
                 updateAnswerMutation.isPending ||
                 markPRAsDoneMutation.isPending ||
-                isRefreshing
+                isRefreshing ||
+                isTempSaving
               }
             >
               {isRefreshing ? '새로고침 중...' : '회고 완료'}
@@ -193,7 +189,8 @@ export default function FixedFooter({
               answers.length === 0 ||
               updateAllAnswersMutation.isPending ||
               updateAnswerMutation.isPending ||
-              isRefreshing
+              isRefreshing ||
+              isTempSaving
             }
           >
             {isRefreshing ? '새로고침 중...' : '저장'}
