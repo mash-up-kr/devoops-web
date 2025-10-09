@@ -40,6 +40,7 @@ export default function FixedFooter({
   const markPRAsDoneMutation = useMarkPRAsDoneMutation();
   const queryClient = useQueryClient();
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [isTempSaving, setIsTempSaving] = useState(false);
   const router = useRouter();
 
   const hasChanges = () => {
@@ -55,15 +56,43 @@ export default function FixedFooter({
     });
   };
 
+  // 공통 저장 로직 함수
+  const saveAnswers = async () => {
+    if (lastSubmittedAnswers.length === 0) {
+      // 첫 저장
+      await updateAllAnswersMutation.mutateAsync({ data: { answers } });
+      setLastSubmittedAnswers([...answers]);
+    } else {
+      // 변경된 답변만 저장
+      const changed = answers.filter((a) => {
+        const prev = lastSubmittedAnswers.find((p) => p.answerId === a.answerId);
+        return !prev || prev.content !== a.content;
+      });
+      if (changed.length > 0) {
+        await Promise.all(
+          changed.map((ans) =>
+            updateAnswerMutation.mutateAsync({
+              answerId: ans.answerId,
+              data: { content: ans.content },
+            }),
+          ),
+        );
+        setLastSubmittedAnswers([...answers]);
+      }
+    }
+  };
+
+  // 저장 처리 함수
   const handleComplete = async () => {
     if (isRefreshing) return;
 
-    // 변경사항이 없으면 fetch 보내지 않음
+    // 변경사항이 없는 경우
     if (isCompleted && !hasChanges()) {
+      router.push('/', { scroll: true });
       return;
     }
 
-    // answerId가 없는 값이 있으면 요청을 보내지 않음
+    // answerId가 없는 값이 있는 경우
     const invalidAnswers = answers.filter((a) => typeof a.answerId !== 'number' || Number.isNaN(a.answerId));
     if (invalidAnswers.length > 0) {
       return;
@@ -81,28 +110,7 @@ export default function FixedFooter({
     }
 
     try {
-      if (lastSubmittedAnswers.length === 0) {
-        // First submit 처리
-        await updateAllAnswersMutation.mutateAsync({ data: { answers } });
-        setLastSubmittedAnswers([...answers]);
-      } else {
-        // Subsequent submit 처리
-        const changed = answers.filter((a) => {
-          const prev = lastSubmittedAnswers.find((p) => p.answerId === a.answerId);
-          return !prev || prev.content !== a.content;
-        });
-        if (changed.length > 0) {
-          await Promise.all(
-            changed.map((ans) =>
-              updateAnswerMutation.mutateAsync({
-                answerId: ans.answerId,
-                data: { content: ans.content },
-              }),
-            ),
-          );
-          setLastSubmittedAnswers([...answers]);
-        }
-      }
+      await saveAnswers();
 
       // 완료되지 않은 상태에서만 markPRAsDone 호출
       if (!isCompleted) {
@@ -110,32 +118,33 @@ export default function FixedFooter({
       }
 
       setIsRefreshing(true);
-      // refetch 서버 데이터
       await queryClient.refetchQueries({ queryKey: ['pullRequestDetail', Number(pullRequestId)] });
       setIsRefreshing(false);
       if (onComplete) onComplete();
-    } catch (error) {
-      console.error('회고 완료 실패', error);
+
+      router.push('/', { scroll: true });
+    } catch {
       setIsRefreshing(false);
     }
   };
 
-  const handleGoHome = () => {
-    // 추후 toast 와 자동저장 구현되면 적용 예정
-    // // 저장 중이면 경고
-    // if (autoSaveStatus === 'saving') {
-    //   const proceedWhileSaving = window.confirm(
-    //     '저장 중입니다. 홈으로 이동하시겠어요? 진행 중인 저장이 완료되지 않을 수 있습니다.',
-    //   );
-    //   if (!proceedWhileSaving) return;
-    // }
-    // // 변경사항이 있으면 경고
-    // if (hasChanges()) {
-    //   const proceed = window.confirm('작성 중인 회고가 저장되지 않았습니다. 홈으로 이동하시겠어요?');
-    //   if (!proceed) return;
-    // }
+  // 임시 저장 처리 함수
+  const handleTempSave = async () => {
+    if (isRefreshing || isTempSaving) return;
 
-    router.push('/', { scroll: true });
+    if (hasChanges()) {
+      setIsTempSaving(true);
+      try {
+        await saveAnswers();
+        router.push('/', { scroll: true });
+      } catch {
+        // TODO : 토스트 메시지 표시 (예: "저장에 실패했습니다. 다시 시도해주세요.")
+      } finally {
+        setIsTempSaving(false);
+      }
+    } else {
+      router.push('/', { scroll: true });
+    }
   };
 
   return (
@@ -146,23 +155,48 @@ export default function FixedFooter({
     >
       <div className={'flex items-center gap-4'}>
         <AutoSaveStatus status={autoSaveStatus} />
-        <Button
-          variant={'filledPrimary'}
-          size={'medium'}
-          onClick={handleComplete}
-          disabled={
-            answers.length === 0 ||
-            updateAllAnswersMutation.isPending ||
-            updateAnswerMutation.isPending ||
-            markPRAsDoneMutation.isPending ||
-            isRefreshing
-          }
-        >
-          {isRefreshing ? '새로고침 중...' : '회고완료'}
-        </Button>
-        <Button variant={'filledPrimary'} size={'medium'} onClick={handleGoHome}>
-          {'홈으로'}
-        </Button>
+        {!isCompleted ? (
+          <>
+            <Button
+              variant={'outlineGrey'}
+              size={'medium'}
+              onClick={handleTempSave}
+              disabled={isTempSaving || isRefreshing}
+            >
+              {isTempSaving ? '저장 중...' : '임시 저장'}
+            </Button>
+            <Button
+              variant={'filledPrimary'}
+              size={'medium'}
+              onClick={handleComplete}
+              disabled={
+                answers.length === 0 ||
+                updateAllAnswersMutation.isPending ||
+                updateAnswerMutation.isPending ||
+                markPRAsDoneMutation.isPending ||
+                isRefreshing ||
+                isTempSaving
+              }
+            >
+              {isRefreshing ? '새로고침 중...' : '회고 완료'}
+            </Button>
+          </>
+        ) : (
+          <Button
+            variant={'filledPrimary'}
+            size={'medium'}
+            onClick={handleComplete}
+            disabled={
+              answers.length === 0 ||
+              updateAllAnswersMutation.isPending ||
+              updateAnswerMutation.isPending ||
+              isRefreshing ||
+              isTempSaving
+            }
+          >
+            {isRefreshing ? '새로고침 중...' : '저장'}
+          </Button>
+        )}
       </div>
     </footer>
   );
