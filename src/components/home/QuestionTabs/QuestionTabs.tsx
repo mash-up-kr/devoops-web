@@ -4,10 +4,14 @@ import { CategoryCarousel, QuestionContent } from '@/components/home/QuestionTab
 interface QuestionTabsProps {
   contents: PullRequestReadResponseType;
   activeCategoryIndex: number;
-  setActiveCategoryIndex: (index: number) => void;
+  activeCategoryIndexesAction: (index: number) => void;
 }
 
-export default function QuestionTabs({ contents, activeCategoryIndex, setActiveCategoryIndex }: QuestionTabsProps) {
+export default function QuestionTabs({
+  contents,
+  activeCategoryIndex,
+  activeCategoryIndexesAction,
+}: QuestionTabsProps) {
   const { categories } = contents;
 
   const activeCategory = categories[activeCategoryIndex] ?? '';
@@ -17,7 +21,7 @@ export default function QuestionTabs({ contents, activeCategoryIndex, setActiveC
       <CategoryCarousel
         categories={categories}
         activeIndex={activeCategoryIndex}
-        setActiveIndex={setActiveCategoryIndex}
+        setActiveIndex={activeCategoryIndexesAction}
       />
       <QuestionContent pullRequestId={contents.id} questions={contents.questions} activeCategory={activeCategory} />
     </>

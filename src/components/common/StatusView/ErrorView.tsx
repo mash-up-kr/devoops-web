@@ -19,12 +19,14 @@ export default function ErrorView({ error }: { error: Error & { digest?: string 
         <div className={'flex flex-col items-center gap-1'}>
           <p className={'text-body-large font-medium'}>{'문제가 발생했어요. 잠시 후 다시 시도해 주세요.'}</p>
           {error.message && (
-            <p className={'text-caption text-dark-grey-400 font-regular'}>{`에러 메세지: ${error.message}`}</p>
+            <p
+              className={'text-caption text-dark-grey-400 font-regular text-center'}
+            >{`에러 메세지: ${error.message}`}</p>
           )}
         </div>
       </div>
       <Button variant={'filledPrimary'} size={'large'} onClick={handleClick}>
-        {'홈으로 돌아가기'}
+        {'메인으로'}
       </Button>
     </StatusView>
   );

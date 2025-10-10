@@ -1,0 +1,5 @@
+{
+  "code": "TOKEN_EXPIRED",
+  "status": 401,
+  "message": "토큰이 만료되었습니다"
+}

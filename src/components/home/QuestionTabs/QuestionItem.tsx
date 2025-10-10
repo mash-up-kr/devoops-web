@@ -1,4 +1,9 @@
+import React from 'react';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
+
 import { QuestionBriefResponseType } from '@/__generated__/@types';
+import { CONTENT_TRUNCATE_THRESHOLD } from '@/constants/domain';
 import { cn } from '@/utils/cn';
 
 interface QuestionItemProps extends QuestionBriefResponseType {
@@ -6,26 +11,24 @@ interface QuestionItemProps extends QuestionBriefResponseType {
   onToggle: () => void;
 }
 
-const CONTENT_TRUNCATE_THRESHOLD = 85;
-
 export default function QuestionItem({ category, content = '', isOpen, onToggle }: QuestionItemProps) {
   const isContentLong = content.length > CONTENT_TRUNCATE_THRESHOLD;
 
   return (
     <div
       className={cn(
-        'bg-dark-grey-25 relative flex flex-col gap-2 rounded-xl p-5 transition-[max-height] duration-500',
-        isContentLong && (isOpen ? 'max-h-none' : 'max-h-36 overflow-hidden'),
+        'bg-dark-grey-25 relative flex flex-col gap-2 rounded-xl p-5 transition-all duration-500 ease-in-out',
+        isContentLong && (isOpen ? 'max-h-100' : 'max-h-36 overflow-hidden'),
       )}
     >
       <div className={'text-body-small text-dark-blue-700 font-semibold'}>{category}</div>
-      <h5 className={cn('text-body-medium text-dark-grey-800 font-medium break-all', isContentLong && 'pb-6')}>
-        {content}
-      </h5>
+      <div className={cn('text-body-medium text-dark-grey-800 font-medium break-all', isContentLong && 'pb-6')}>
+        <ReactMarkdown remarkPlugins={[remarkGfm]}>{content}</ReactMarkdown>
+      </div>
       {isContentLong && (
         <div className={'absolute right-0 bottom-0 left-0'}>
           {!isOpen && (
-            <div className={'absolute bottom-0 h-12 w-full [background:var(--color-gradient-question-item-button)]'} />
+            <div className={'absolute bottom-0 h-13 w-full [background:var(--color-gradient-question-item-button)]'} />
           )}
           <div className={'relative'}>
             <button

@@ -4,13 +4,13 @@ import { QuestionTabs } from '@/components/home/QuestionTabs';
 interface QuestionPreviewProps {
   contents: PullRequestReadResponseType;
   activeCategoryIndex: number;
-  setActiveCategoryIndex: (index: number) => void;
+  activeCategoryIndexesAction: (index: number) => void;
 }
 
 export default function QuestionPreview({
   contents,
   activeCategoryIndex,
-  setActiveCategoryIndex,
+  activeCategoryIndexesAction,
 }: QuestionPreviewProps) {
   return (
     <div className={'flex flex-col gap-2'}>
@@ -18,7 +18,7 @@ export default function QuestionPreview({
       <QuestionTabs
         contents={contents}
         activeCategoryIndex={activeCategoryIndex}
-        setActiveCategoryIndex={setActiveCategoryIndex}
+        activeCategoryIndexesAction={activeCategoryIndexesAction}
       />
     </div>
   );

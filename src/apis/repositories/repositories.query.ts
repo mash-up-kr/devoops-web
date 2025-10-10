@@ -28,7 +28,7 @@ export const useGetEntirePullRequestsQuery = (
 ) => {
   const queryKey = REPOSITORIES_API_QUERY_KEY.GET_REPOSITORY_ENTIRE_PULL_REQUESTS(params?.variables);
 
-  return useQuery({
+  return useSuspenseQuery({
     queryKey,
     queryFn: () => apiApi.getRepositoryEntirePullRequests(params?.variables),
     ...params?.options,
@@ -38,7 +38,7 @@ export const useGetEntirePullRequestsQuery = (
 export const useGetPullRequestsQuery = (params: UseQueryParams<typeof apiApi.getRepositoryPullRequests>) => {
   const queryKey = REPOSITORIES_API_QUERY_KEY.GET_PULL_REQUESTS(params?.variables);
 
-  return useQuery({
+  return useSuspenseQuery({
     queryKey,
     queryFn: () => apiApi.getRepositoryPullRequests(params?.variables),
     ...params?.options,
@@ -48,7 +48,7 @@ export const useGetPullRequestsQuery = (params: UseQueryParams<typeof apiApi.get
 export const useGetPullRequestQuery = (params: UseQueryParams<typeof apiApi.getPullRequest>) => {
   const queryKey = REPOSITORIES_API_QUERY_KEY.GET_PULL_REQUEST(params?.variables);
 
-  return useSuspenseQuery({
+  return useQuery({
     queryKey,
     queryFn: () => apiApi.getPullRequest(params?.variables),
     ...params?.options,

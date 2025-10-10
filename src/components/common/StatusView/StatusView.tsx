@@ -10,7 +10,7 @@ export default function StatusView({ children }: StatusViewProps) {
   return (
     <div className={'flex flex-col items-center py-30'}>
       <section className={'flex flex-col items-center'}>
-        <Image src={StatusViewImage} alt={'status view image'} width={180} />
+        <Image src={StatusViewImage} alt={'status view image'} width={180} priority />
         <div className={'flex flex-col items-center gap-4'}>{children}</div>
       </section>
     </div>

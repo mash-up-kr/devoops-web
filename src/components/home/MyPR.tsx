@@ -1,52 +1,38 @@
-'use client';
+import dynamic from 'next/dynamic';
 
-import { useEffect } from 'react';
+import { repositoriesApi } from '@/apis/repositories/repositories.api';
+import { MyPRContent } from '@/components/home/MyPRContent';
+import { EachPRPreFetcher } from '@/components/home/PRPreFetcher/EachPRPreFetcher';
+import { EntirePRPreFetcher } from '@/components/home/PRPreFetcher/EntirePRPreFetcher';
+import { TOTAL_TABS } from '@/constants/domain';
 
-import { RepositorySummaryType } from '@/__generated__/@types';
-import { RepolinkButton, RepolinkModal } from '@/components/common/Modal/RepolinkModal';
-import Spacing from '@/components/common/Spacing';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/common/Tabs';
-import Overview from '@/components/home/Overview';
-import { useModalDispatch } from '@/providers/ModalContext';
+const RepolinkModal = dynamic(() =>
+  import('@/components/common/Modal/RepolinkModal').then((module) => module.RepolinkModal),
+);
 
 interface MyPRProps {
-  initialRepositoryList: RepositorySummaryType[];
+  searchParams?: { tab?: string };
 }
 
-export default function MyPR({ initialRepositoryList }: MyPRProps) {
-  const dispatch = useModalDispatch();
+export async function MyPR({ searchParams }: MyPRProps) {
+  const initRepositories = await repositoriesApi.getRepositories();
 
-  useEffect(() => {
-    dispatch({ type: 'CLOSE_ALL' });
-  });
+  const currentTab = searchParams?.tab || TOTAL_TABS.NAME;
+  const isTotalTab = currentTab === TOTAL_TABS.NAME;
+
+  const currentRepository = initRepositories.find((repository) => repository.name === currentTab);
+  const currentRepositoryId = currentRepository?.id || TOTAL_TABS.ID;
+
+  const PRPreFetcher = isTotalTab ? EntirePRPreFetcher : EachPRPreFetcher;
+
+  if (!currentRepository) {
+    throw new Error(`잘못된 경로로 접근하셨습니다. URL을 확인해주세요.`);
+  }
 
   return (
-    <>
-      <div>
-        <h1 className={'text-h1 blue-tiny-left inline-block pt-2.5 pb-6 font-semibold'}>{'내 PR'}</h1>
-        <Tabs defaultValue={initialRepositoryList[0]?.name || ''}>
-          <div className={'border-dark-grey-100 border-b-1'}>
-            <TabsList aria-label={'내 PR 목록'}>
-              {initialRepositoryList.map((repository) => (
-                <TabsTrigger key={repository.id} value={repository.name || ''}>
-                  <p>{repository.name}</p>
-                  <p className={'text-dark-grey-500'}>{repository.pullRequestCount}</p>
-                </TabsTrigger>
-              ))}
-              <RepolinkButton action={'OPEN'} />
-            </TabsList>
-          </div>
-          <div>
-            {initialRepositoryList.map((repository) => (
-              <TabsContent key={repository.id} value={repository.name || ''}>
-                <Overview repository={repository} />
-              </TabsContent>
-            ))}
-          </div>
-        </Tabs>
-        <Spacing size={400} />
-      </div>
-      <RepolinkModal defaultOpen={false} isOutsideClickClose button={<div />} />
-    </>
+    <PRPreFetcher repositoryId={currentRepositoryId}>
+      <MyPRContent initRepositories={initRepositories} currentTab={currentTab} />
+      <RepolinkModal defaultOpen={false} isOutsideClickClose button={null} />
+    </PRPreFetcher>
   );
 }

@@ -1,4 +1,7 @@
 @theme {
+  --spacing-pr-item: 618px; /** max size */
+  --spacing-preview: 632px; /** min size */
+
   --spacing-gnb-height: 54px;
 
   --spacing-landing-mobile-padding: 30px;
