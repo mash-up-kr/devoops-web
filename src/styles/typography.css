@@ -91,3 +91,23 @@
   font-size: var(--font-size-caption);
   line-height: var(--leading-caption);
 }
+
+@utility text-landing-h1 {
+  font-size: 48px;
+  line-height: 64px;
+
+  @media (max-width: 1024px) {
+    font-size: var(--font-size-h2);
+    line-height: var(--leading-h2);
+  }
+}
+
+@utility text-landing-content {
+  font-size: 18px;
+  line-height: 29px;
+
+  @media (max-width: 1024px) {
+    font-size: var(--font-size-body-large);
+    line-height: var(--leading-body-large);
+  }
+}

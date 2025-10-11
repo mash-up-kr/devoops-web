@@ -1,5 +1,6 @@
 'use client';
 
+import GradientWrapper from '@/components/landing/Gradient/GradientWrapper';
 import FeatureSection from '@/components/landing/Section/FeatureSection';
 import FooterCTA from '@/components/landing/Section/FooterCTA';
 import HeroSection from '@/components/landing/Section/HeroSection';
@@ -13,10 +14,10 @@ function Landing() {
   return (
     <main className={'h-screen w-full'}>
       <div className={'flex flex-col gap-12'}>
-        <HeroSection action={handleLogin} />
-        <FeatureSection />
-        <StartSection />
-        <RepolinkSection />
+        <GradientWrapper content={<HeroSection action={handleLogin} />} />
+        <GradientWrapper content={<FeatureSection />} />
+        <GradientWrapper content={<StartSection />} />
+        <GradientWrapper content={<RepolinkSection />} />
         <FooterCTA action={handleLogin} />
       </div>
     </main>

@@ -4,7 +4,7 @@ export const ROUTES = {
     LANDING: '/landing',
     AUTH_GITHUB: '/auth/github',
     REPOLINK: '/repolink',
-    RETROSPECTIVE: (pullRequestId: number) => `/retrospective/${pullRequestId}`,
+    RETROSPECTIVE: (pullRequestId: number | undefined) => `/retrospective/${pullRequestId}`,
   },
   API: {
     // Auth API
