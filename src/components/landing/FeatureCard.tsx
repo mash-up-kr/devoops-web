@@ -5,10 +5,11 @@ import FeatureCardGradient from '@/assets/svg/feature-card-gradient.svg';
 
 interface FeatureCardProps {
   image: StaticImageData;
+  alt: string;
   children: ReactNode;
 }
 
-export default function FeatureCard({ image, children }: FeatureCardProps) {
+export default function FeatureCard({ image, alt, children }: FeatureCardProps) {
   return (
     <div
       className={
@@ -17,7 +18,7 @@ export default function FeatureCard({ image, children }: FeatureCardProps) {
     >
       <FeatureCardGradient className={'absolute'} />
       <div className={'flex h-full flex-col justify-between p-6'}>
-        <Image src={image} alt={'Landing Symbol 1'} width={100} />
+        <Image src={image} alt={alt} width={100} />
         <div className={'flex flex-col gap-4 font-medium max-md:gap-3'}>{children}</div>
       </div>
     </div>
