@@ -13,8 +13,11 @@ export default function HeroSection({ action }: HeroSectionProps) {
       <div className={'mt-[144px] flex flex-col items-center gap-7'}>
         <div>
           <div className={'mb-4.5 flex flex-col items-center text-center'}>
-            <h1 className={'blue-tiny-right text-landing-h1 inline-block font-bold'}>{'코드는 남았는데'}</h1>
-            <h1 className={'blue-tiny-right text-landing-h1 inline-block font-bold'}>{'고민은 사라졌다면...?'}</h1>
+            <h1 className={'blue-tiny-right text-landing-h1 inline-block font-bold'}>
+              {'코드는 남았는데 '}
+              <br />
+              {'고민은 사라졌다면...?'}
+            </h1>
           </div>
           <div className={'text-dark-grey-600 text-landing-content flex flex-col text-center font-medium'}>
             <p>
@@ -41,7 +44,7 @@ export default function HeroSection({ action }: HeroSectionProps) {
           'border-dark-grey-200 shadow-landing-image mx-auto mt-[67px] max-w-[1000px] overflow-hidden rounded-tl-[28px] rounded-tr-[28px] border-1 max-md:rounded-tl-[20px] max-md:rounded-tr-[20px]'
         }
       >
-        <Image src={LandingHero} alt={'Landing Hero'} priority />
+        <Image src={LandingHero} alt={'Devoops 웹페이지의 기능 요약을 보여주는 스크린샷'} priority />
       </div>
     </section>
   );
