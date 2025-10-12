@@ -32,7 +32,7 @@ export default function RepolinkSection() {
           'border-dark-grey-200 bg-gradient-landing-image mx-auto mt-[78px] max-w-[1000px] overflow-hidden rounded-tl-[28px] rounded-tr-[28px] border-1 pt-[53px] pb-[38px] max-md:pt-[13px]'
         }
       >
-        <Image src={RepolinkImage} alt={'Landing Hero'} width={508} className={'mx-auto'} />
+        <Image src={RepolinkImage} alt={'회고할 레포지토리를 입력하는 시연 이미지'} width={508} className={'mx-auto'} />
       </div>
     </section>
   );
