@@ -47,8 +47,9 @@ export function LoadingButton({
       disabled={isPending}
       type={type}
       className={cn('transition-colors duration-200', className)}
+      aria-busy={isPending}
     >
-      <span ref={textRef} style={{ width: isPending ? `${width}px` : 'auto' }}>
+      <span ref={textRef} style={{ width: isPending ? `${width}px` : 'auto' }} aria-live={'polite'}>
         {isPending ? <ShinyText text={'로딩중...'} disabled={false} speed={2} /> : children}
       </span>
     </Button>

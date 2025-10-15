@@ -12,9 +12,9 @@ export default function FooterCTA({ action }: FooterCTAProps) {
           'mx-auto mb-[48px] flex items-center justify-center gap-8 py-[96px] max-lg:flex-col max-lg:text-center'
         }
       >
-        <h1 className={'text-h1 blue-tiny-right inline-block leading-[58px] font-bold max-lg:text-h2'}>
+        <h2 className={'text-h1 blue-tiny-right inline-block leading-[58px] font-bold max-lg:text-h2'}>
           {'복잡한 회고, Devoops가 슬쩍 정리해줄게요.'}
-        </h1>
+        </h2>
         <LoadingButton variant={'filledPrimary'} size={'medium'} action={action}>
           {'Devoops 시작하기'}
         </LoadingButton>

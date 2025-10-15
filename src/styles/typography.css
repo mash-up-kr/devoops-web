@@ -92,7 +92,7 @@
   line-height: var(--leading-caption);
 }
 
-@utility text-landing-h1 {
+@utility text-landing-title {
   font-size: 48px;
   line-height: 64px;
 
