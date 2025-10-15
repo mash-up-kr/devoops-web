@@ -12,9 +12,9 @@ export default function RepolinkSection() {
             <Tag dotColor={'primary'} size={'medium'} padding={'medium'}>
               {'AI를 통한 간편한 회고'}
             </Tag>
-            <h1 className={'blue-tiny-right text-landing-h1 inline-block text-center font-bold'}>
+            <h2 className={'blue-tiny-right text-landing-title inline-block text-center font-bold'}>
               {'레포 주소만 입력하면. 끝'}
-            </h1>
+            </h2>
           </div>
           <div className={'text-dark-grey-600 flex flex-col text-center text-[18px] leading-[29px] font-medium'}>
             <p>

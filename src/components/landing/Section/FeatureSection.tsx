@@ -14,11 +14,11 @@ export default function FeatureSection() {
               {'주요 기능'}
             </Tag>
             <div className={'flex flex-col items-center text-center'}>
-              <h1 className={'blue-tiny-right text-landing-h1 inline-block font-bold'}>
+              <h2 className={'blue-tiny-right text-landing-title inline-block font-bold'}>
                 {'회고, 더는 어렵지 않아요.'}
                 <br />
                 {'Devoops가 다 챙겨줄게요.'}
-              </h1>
+              </h2>
             </div>
           </div>
           <div className={'text-dark-grey-600 text-landing-content text-center font-medium'}>
@@ -29,7 +29,7 @@ export default function FeatureSection() {
       <div className={'mt-[38px] mb-[72px] flex flex-col items-center'}>
         <div className={'flex items-center gap-3 max-md:w-full max-md:flex-col'}>
           <FeatureCard image={LandingSymbol1} alt={''}>
-            <h2 className={'text-h3'}>{'레포지토리 연동'}</h2>
+            <h3 className={'text-h3'}>{'레포지토리 연동'}</h3>
             <div className={'max-md:text-body-medium'}>
               <p className={'text-h5 max-md:text-body-medium'}>
                 <span className={'blue-tiny-right bg-clip-text font-semibold text-transparent'}>
@@ -41,7 +41,7 @@ export default function FeatureSection() {
             </div>
           </FeatureCard>
           <FeatureCard image={LandingSymbol2} alt={''}>
-            <h2 className={'text-h3'}>{'회고를 돕는 AI'}</h2>
+            <h3 className={'text-h3'}>{'회고를 돕는 AI'}</h3>
             <div className={'max-md:text-body-medium'}>
               <p className={'text-h5 max-md:text-body-medium'}>
                 <span className={'blue-tiny-right bg-clip-text font-semibold text-transparent'}>
@@ -58,7 +58,7 @@ export default function FeatureSection() {
             </div>
           </FeatureCard>
           <FeatureCard image={LandingSymbol3} alt={''}>
-            <h2 className={'text-h3'}>{'질문만 답해서 완료!'}</h2>
+            <h3 className={'text-h3'}>{'질문만 답해서 완료!'}</h3>
             <div className={'max-md:text-body-medium'}>
               <p className={'text-h5 max-md:text-body-medium'}>{'부담 없이 한 줄씩 적다 보면'}</p>
               <p className={'text-h5 max-md:text-body-medium'}>

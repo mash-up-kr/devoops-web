@@ -14,9 +14,9 @@ export default function StartSection() {
           <Tag dotColor={'primary'} size={'medium'} padding={'medium'}>
             {'AI를 통한 간편한 회고'}
           </Tag>
-          <h1 className={'blue-tiny-right text-landing-h1 inline-block text-center font-bold'}>
+          <h2 className={'blue-tiny-right text-landing-title inline-block text-center font-bold'}>
             {'Devoops로 회고를 시작해볼까요?'}
-          </h1>
+          </h2>
         </div>
         <div>
           <Tabs defaultValue={'PR 요약'}>

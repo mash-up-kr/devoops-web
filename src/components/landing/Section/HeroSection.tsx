@@ -13,7 +13,7 @@ export default function HeroSection({ action }: HeroSectionProps) {
       <div className={'mt-[144px] flex flex-col items-center gap-7'}>
         <div>
           <div className={'mb-4.5 flex flex-col items-center text-center'}>
-            <h1 className={'blue-tiny-right text-landing-h1 inline-block font-bold'}>
+            <h1 className={'blue-tiny-right text-landing-title inline-block font-bold'}>
               {'코드는 남았는데 '}
               <br />
               {'고민은 사라졌다면...?'}
