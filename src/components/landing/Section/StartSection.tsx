@@ -14,23 +14,38 @@ export default function StartSection() {
           <Tag dotColor={'primary'} size={'medium'} padding={'medium'}>
             {'AI를 통한 간편한 회고'}
           </Tag>
-          <h1 className={'blue-tiny-right text-landing-h1 inline-block text-center font-bold'}>
+          <h2 className={'blue-tiny-right text-landing-title inline-block text-center font-bold'}>
             {'Devoops로 회고를 시작해볼까요?'}
-          </h1>
+          </h2>
         </div>
         <div>
           <Tabs defaultValue={'PR 요약'}>
             <div className={'flex items-center justify-center'}>
               <TabsList>
-                <TabsTrigger value={'PR 요약'}>{'PR 요약'}</TabsTrigger>
-                <TabsTrigger value={'회고 질문 제공'}>{'회고 질문 제공'}</TabsTrigger>
-                <TabsTrigger value={'회고 답변'}>{'회고 답변'}</TabsTrigger>
+                <TabsTrigger value={'PR 요약'} id={'tab-pr-summary'} aria-controls={'panel-pr-summary'}>
+                  {'PR 요약'}
+                </TabsTrigger>
+                <TabsTrigger
+                  value={'회고 질문 제공'}
+                  id={'tab-retrospective-question'}
+                  aria-controls={'panel-retrospective-question'}
+                >
+                  {'회고 질문 제공'}
+                </TabsTrigger>
+                <TabsTrigger
+                  value={'회고 답변'}
+                  id={'tab-retrospective-answer'}
+                  aria-controls={'panel-retrospective-answer'}
+                >
+                  {'회고 답변'}
+                </TabsTrigger>
               </TabsList>
             </div>
             <div>
               <TabsContent
                 value={'PR 요약'}
-                aria-label={'PR summary'}
+                id={'panel-pr-summary'}
+                aria-labelledby={'tab-pr-summary'}
                 className={'flex flex-col items-center gap-[30px] pt-[36px]'}
               >
                 <div className={'text-body-large text-dark-grey-600 flex flex-col text-center font-medium'}>
@@ -52,7 +67,8 @@ export default function StartSection() {
               </TabsContent>
               <TabsContent
                 value={'회고 질문 제공'}
-                aria-label={'Retrospective question'}
+                id={'panel-retrospective-question'}
+                aria-labelledby={'tab-retrospective-question'}
                 className={'flex flex-col items-center gap-[30px] pt-[36px] pb-[48px]'}
               >
                 <div className={'text-body-large text-dark-grey-600 flex flex-col text-center font-medium'}>
@@ -79,7 +95,8 @@ export default function StartSection() {
               </TabsContent>
               <TabsContent
                 value={'회고 답변'}
-                aria-label={'Retrospective answer'}
+                id={'panel-retrospective-answer'}
+                aria-labelledby={'tab-retrospective-answer'}
                 className={'flex flex-col items-center gap-[30px] pt-[36px] pb-[48px]'}
               >
                 <div className={'text-body-large text-dark-grey-600 flex flex-col text-center font-medium'}>

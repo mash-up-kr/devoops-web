@@ -138,11 +138,17 @@ export default function RetrospectivePage() {
   );
 
   const selectedQuestions = groupedQuestions
-    ?.flatMap((categoryItem) => categoryItem.questions)
+    ?.flatMap((categoryItem) =>
+      categoryItem.questions.map((q) => ({
+        category: categoryItem.category,
+        ...q,
+      })),
+    )
     ?.filter((q) => selectedQuestionIds.includes(q.questionId))
     ?.map((q) => ({
       questionId: q.questionId,
       content: q.question,
+      category: q.category,
       answer: null,
     }));
 
