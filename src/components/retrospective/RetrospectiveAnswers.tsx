@@ -5,11 +5,13 @@ import React, { useRef, useEffect, useState } from 'react';
 import EditButtonIcon from '@/components/common/icons/EditButtonIcon';
 import PenIcon from '@/components/common/icons/PenIcon';
 import WarningIcon from '@/components/common/icons/WarningIcon';
+import Tag from '@/components/common/Tag';
 import AnswerEditor, { EditorTab } from '@/components/retrospective/AnswerEditor';
 import SectionHeader from '@/components/retrospective/SectionHeader';
+import { getCategoryColor } from '@/utils/getTagColor';
 
 interface RetrospectiveAnswersProps {
-  selectedQuestions: { questionId: number; content: string }[];
+  selectedQuestions: { questionId: number; content: string; category?: string }[];
   // eslint-disable-next-line react/no-unused-prop-types
   answers: { answerId: number; questionId: number; content: string }[];
   getAnswerContent: (questionId: number) => string;
@@ -87,7 +89,10 @@ export default function RetrospectiveAnswers({
                 className={'bg-dark-grey-50 relative flex flex-col gap-[8px] rounded-[8px] px-[24px] py-[20px]'}
               >
                 <div className={'flex items-center justify-between'}>
-                  <p className={'text-body-medium font-semibold break-all'}>{question.content}</p>
+                  <div className={'flex items-center gap-3'}>
+                    <p className={'text-body-medium font-semibold break-all'}>{question.content}</p>
+                    {question.category && <Tag dotColor={getCategoryColor()}>{question.category}</Tag>}
+                  </div>
                   {onDeleteAnswer && (
                     <button
                       type={'button'}
