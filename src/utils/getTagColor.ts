@@ -27,6 +27,3 @@ export const getTagColor = (tagName: string) => {
   const foundTag = findMatchingTag(tagName);
   return tagColors[foundTag];
 };
-
-// 회고페이지 -  질문 카테고리 색상
-export const getCategoryColor = (): TagDotColor => 'lime';

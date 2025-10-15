@@ -8,7 +8,7 @@ import WarningIcon from '@/components/common/icons/WarningIcon';
 import Tag from '@/components/common/Tag';
 import AnswerEditor, { EditorTab } from '@/components/retrospective/AnswerEditor';
 import SectionHeader from '@/components/retrospective/SectionHeader';
-import { getCategoryColor } from '@/utils/getTagColor';
+import { CATEGORY_COLOR } from '@/constants/colors';
 
 interface RetrospectiveAnswersProps {
   selectedQuestions: { questionId: number; content: string; category?: string }[];
@@ -90,7 +90,7 @@ export default function RetrospectiveAnswers({
               >
                 {question.category && (
                   <div className={'w-fit'}>
-                    <Tag dotColor={getCategoryColor()} size={'small'}>
+                    <Tag dotColor={CATEGORY_COLOR} size={'small'}>
                       {question.category}
                     </Tag>
                   </div>
