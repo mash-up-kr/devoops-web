@@ -24,8 +24,8 @@ export default function LandingNavigation({ className }: LandingNavigationProps)
         className,
       )}
     >
-      <Link href={'/'} aria-label={'홈으로'} className={'text-h4 font-bold'}>
-        <Logo />
+      <Link href={'/'} className={'text-h4 font-bold'}>
+        <Logo aria-label={'홈 이동'} />
       </Link>
       <LoadingButton variant={'filledPrimary'} size={'small'} action={handleLogin}>
         {'시작하기'}
