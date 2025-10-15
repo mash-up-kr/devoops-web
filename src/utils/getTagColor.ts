@@ -29,4 +29,4 @@ export const getTagColor = (tagName: string) => {
 };
 
 // 회고페이지 -  질문 카테고리 색상
-export const getCategoryColor = (): TagDotColor => 'gray';
+export const getCategoryColor = (): TagDotColor => 'lime';

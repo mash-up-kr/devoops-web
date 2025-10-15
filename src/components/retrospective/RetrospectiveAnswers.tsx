@@ -88,10 +88,15 @@ export default function RetrospectiveAnswers({
                 }}
                 className={'bg-dark-grey-50 relative flex flex-col gap-[8px] rounded-[8px] px-[24px] py-[20px]'}
               >
+                {question.category && (
+                  <Tag dotColor={getCategoryColor()} size={'small'}>
+                    {question.category}
+                  </Tag>
+                )}
+
                 <div className={'flex items-center justify-between'}>
                   <div className={'flex items-center gap-3'}>
                     <p className={'text-body-medium font-semibold break-all'}>{question.content}</p>
-                    {question.category && <Tag dotColor={getCategoryColor()}>{question.category}</Tag>}
                   </div>
                   {onDeleteAnswer && (
                     <button
