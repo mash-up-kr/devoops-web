@@ -1,6 +1,6 @@
 'use client';
 
-import { Suspense, useState } from 'react';
+import { Dispatch, SetStateAction, Suspense, useState } from 'react';
 
 import { RepositoryPullRequestResponseType, RepositorySummaryType } from '@/__generated__/@types';
 import { Preview } from '@/components/home/Preview';
@@ -14,11 +14,12 @@ export type ActiveCategoryIndexesType = { [key: number]: number };
 
 interface OverviewProps {
   repository: RepositorySummaryType;
+  currentPage: number;
+  currentPageAction: Dispatch<SetStateAction<number>>;
 }
 
-export function Overview({ repository }: OverviewProps) {
+export function Overview({ repository, currentPage, currentPageAction }: OverviewProps) {
   const [pullRequestId, setPullRequestId] = useState<number | undefined>(undefined);
-  const [currentPage, setCurrentPage] = useState<number>(0);
   const [activeCategoryIndexes, setActiveCategoryIndexes] = useState<ActiveCategoryIndexesType>({});
 
   const PRFetcher = repository.id === TOTAL_TABS.ID ? EntirePRFetcher : EachPRFetcher;
@@ -36,7 +37,7 @@ export function Overview({ repository }: OverviewProps) {
               totalPage={totalPage}
               pullRequestIdAction={setPullRequestId}
               currentPage={currentPage}
-              currentPageAction={setCurrentPage}
+              currentPageAction={currentPageAction}
               activeCategoryIndexesAction={setActiveCategoryIndexes}
             />
           )}
