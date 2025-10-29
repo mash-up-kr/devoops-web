@@ -35,7 +35,7 @@ export function MyPRContent({ initRepositories, currentTab }: MyPRContentProps) 
     setCurrentPage(initPage);
 
     setActiveTab(currentTab);
-  }, [currentTab]);
+  }, [currentTab, searchParams]);
 
   const handleTabChange = (tabValue: string) => {
     const params = new URLSearchParams(searchParams);
