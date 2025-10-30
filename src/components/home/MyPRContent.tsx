@@ -15,20 +15,37 @@ interface MyPRContentProps {
   currentTab: string;
 }
 
+function getInitPageFromParams(searchParams: URLSearchParams) {
+  const pageParam = searchParams.get('page');
+  const urlPageValue = parseInt(pageParam || '0', 10) || 0;
+  const initPage = urlPageValue > 0 ? urlPageValue - 1 : 0;
+
+  return initPage;
+}
+
 export function MyPRContent({ initRepositories, currentTab }: MyPRContentProps) {
   const searchParams = useSearchParams();
   const router = useRouter();
 
   const [activeTab, setActiveTab] = useState(currentTab);
+  const [currentPage, setCurrentPage] = useState<number>(0);
 
   useEffect(() => {
+    const initPage = getInitPageFromParams(searchParams);
+    setCurrentPage(initPage);
+
     setActiveTab(currentTab);
-  }, [currentTab]);
+  }, [currentTab, searchParams]);
 
   const handleTabChange = (tabValue: string) => {
     const params = new URLSearchParams(searchParams);
+
     setActiveTab(tabValue);
     params.set('tab', tabValue);
+
+    setCurrentPage(0);
+    params.set('page', '1');
+
     router.push(`?${params.toString()}`, { scroll: false });
   };
 
@@ -52,7 +69,7 @@ export function MyPRContent({ initRepositories, currentTab }: MyPRContentProps) 
         </div>
         {initRepositories.map((repository) => (
           <TabsContent key={repository.id} value={repository.name || ''}>
-            <Overview repository={repository} />
+            <Overview repository={repository} currentPage={currentPage} currentPageAction={setCurrentPage} />
           </TabsContent>
         ))}
       </Tabs>

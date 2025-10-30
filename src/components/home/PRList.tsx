@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { Dispatch, SetStateAction, useEffect } from 'react';
 
 import { RepositoryPullRequestResponseType } from '@/__generated__/@types';
@@ -36,15 +37,25 @@ export function PRList({
   currentPageAction,
   activeCategoryIndexesAction,
 }: PRListProps) {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+
   const { pagesToShow } = usePagination({ totalPage, currentPage: currentPage + 1 });
 
   const handlePRItemOver = (pr: RepositoryPullRequestResponseType) => {
     pullRequestIdAction(pr.id);
   };
 
-  const handlePageChange = (newPage: number) => {
+  const handlePageChange = (page: number) => {
+    // 페이지 이동 시, 선택된 PRItem을 초기화 하기 위함.
     pullRequestIdAction(undefined);
-    currentPageAction(newPage);
+
+    const params = new URLSearchParams(searchParams);
+
+    currentPageAction(page);
+    params.set('page', String(page + 1));
+
+    router.push(`?${params.toString()}`, { scroll: false });
   };
 
   useEffect(() => {
